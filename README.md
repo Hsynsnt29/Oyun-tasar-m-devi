@@ -45,7 +45,9 @@ Amacı Rank 10’a ulaşarak gücünün zirvesine çıkmak ve geçmişte hissett
 ## H — Oyun Mekanikleri
 - [İkili Güç Sistemi: Oyunda hem karakterin hem de envanterdeki Gu'ların Rank 1'den 10'a kadar seviyesi vardır.]
 - [Karakter Gelişimi,yetiştirme (Cultivation): Karakterin rütbesi (Rank), toplanan "Öz" miktarına göre artar. Rank 6'dan itibaren gelişim için "Ölümsüz Öz" (Immortal Essence) gerekir (Örn: Rank 3 için 40 Öz, Rank 7 için 250 Öz + 20 Ölümsüz Öz).]
-- [Dinamik Şerit Sistemi: Karakterin Rank'ı arttıkça yoldaki şerit (lane) sayısı değişir (Rank 1-3 = 3 şerit, Rank 4-6 = 4 şerit, Rank 7-9 = 5 şerit) ve Rank 10 için özel boss savaş arenası.]
+- [Dinamik Şerit Sistemi: Karakterin Rank'ı arttıkça yoldaki şerit (lane) sayısı değişir (Rank 1-3 = 3 şerit, Rank 4-6 = 4 şerit, Rank 7-9 = 5 şerit),her şeritte farklı fırsatlar vardır ve Rank 10 için özel boss savaş arenası.]
+-[İçsel şeytanla aramızdaki mesafe ne kadar azalırsa hasarı o kadar artar bize yaklaşma durumları 1-öz miktarı bizimkinden fazla bir seviyeye gelmiştir.
+2-Tuzaktan dolayı aldığımız bir nerf(zayıflatıcı)etki.
 
 ## I — Kontroller
 **Bilgisayar:** [W (İleri) / S (Geri) ile koşu hızını ayarlama, A (Sol) / D (Sağ) ile şerit değiştirme. Klavyedeki 1, 2, 3... 0 sayı tuşları ile Gu (yetenek) kullanımı. [Boşluk] tuşu ile saldırı/onay.]
@@ -69,28 +71,29 @@ Amacı Rank 10’a ulaşarak gücünün zirvesine çıkmak ve geçmişte hissett
 
 ## M — Zorluk Artışı
 - [Lane(şerit)sayısı artıcak.] — [Rütbe atlayınca.]
-
+- [Rütbe atladıkça karşılaştığımız canavarlar,legacyler ve tuzaklar daha ölümcül olucak.]
 ## N — Oyun Ekranları
-**Başlangıç ekranı:** [...]
-**Oyun ekranı:** [...]
-**Oyun sonu ekranı:** [...]
+**Başlangıç ekranı:** [Başlangıç Ekranı: Yıkılmış, küller içindeki bir köy manzarası. Ön planda elinde parlayan bir Gu tutan karakterimiz dururken, arka planda yavaşça hareket eden devasa karanlık İçsel Şeytan silüeti yer alıyor. Ekranda "Miras'a Gir (Başla)", "Gu Envanteri" ve "Ayarlar" butonları.]
+**Oyun ekranı:** [Yatay düzende ileriye uzanan mistik bir koşu yolu. Ekranın alt kısmında 1'den 10'a kadar sıralanmış Gu yetenek slotları. Üst ortada Karakter Rank'ı ile toplanan Öz / Ölümsüz Öz miktarı. Sağ üst köşede ise İçsel Şeytan'ın yaklaşma durumunu ve kalan süreyi (maksimum 20 dakika) gösteren dinamik bir "Yozlaşma Barı".]
+**Oyun sonu ekranı:** [Kazanma durumu:Rank 10 Boss Arenasında İçsel Şeytan'ın parçalandığı bir zafer sinematiği, elde edilen harf notu ve bitirme süresi.
+Kaybetme durumu:Ekranı kaplayan siyah/mor yozlaşma efekti, "Ruhun Tüketildi" yazısı ve "Yeniden Dene" butonu.]
 
 ## O — Görsel Tarz
-**Tarz:** [...]
-**Renkler:** [...]
+**Tarz:** [Karanlık fantezi,mistik bir hava ve yeteneklerin türüne göre animasyonları]
+**Renkler:** [Çevre ve İçsel Şeytan için oyuncuyu geren boğucu tonlar (koyu mor, obsidyen siyah). Toplanabilir özler, Gu'lar ve yetenek efektleri için ise yeteneğin,özün türüne göre değişken örn:Fire gu kırmızı Lighting gu beyaz/mavi.]
 
 ## P — Hedef Oyuncu
-[...]
+[Mobil ve PC platformlarında refleks tabanlı, akıcı oyunları seven ancak klasik oyunlardan farklı olarak belirli bir sona ulaşma ve taktiksel derinlik arayan oyuncular. Özellikle fantastik edebiyata ve "Cultivation" (Gelişim/Güçlenme) temalı Web Novel evrenlerine ilgi duyan; risk/ödül mekanikleriyle oynamaktan ve zaman baskısı altında karakter geliştirmekten keyif alan geniş oyuncu kitlesi.]
 
 ## R — Oyun Oturumu Süresi
-[...]
+[Maksimum 20 dakika]
 
 ## S — İlk Sürümde Olması Gerekenler
-1. [...]
-2. [...]
-3. [...]
-4. [...]
-5. [...]
+1. [Temel koşu, şerit değiştirme kontrolleri ve karakterin rütbesine bağlı olarak yoldaki şerit sayısının dinamik olarak artması (3, 4 ve 5 şerit) mekaniği.]
+2. [Haritadan "Öz" ile "Ölümsüz Öz" toplama sistemi ve belirlenen matematiksel formüle (Örn: Rank 3 için 40 öz, Rank 7 için 250 öz + 20 ölümsüz öz) göre karakterin Rank atlama altyapısı.]
+3. [Arayüzde yer alan 1'den 10'a kadar Gu (yetenek) slotlarının çalışması ve oyuncunun öz harcayarak bu yetenekleri aktif edebilmesi.]
+4. [İçsel Şeytan'ın maksimum 20 dakikalık zaman sınırını (Yozlaşma Barı) hesaplayan ve engellere çarpıldığında süreyi kısaltarak Şeytan'ı yaklaştıran dinamik takip sistemi.]
+5. [Oyun sonu kazanma (Rank 10'a ulaşıp boss arenasına geçme) ve kaybetme (ölme veya sürenin dolması) durumlarının tetiklenip S'den F'ye kadar olan skor ekranının gösterilmesi.]
 
 ## T — Kapak Görseli Promptu
 [Dikey 9:16 story formatı, 80–200 kelime]
