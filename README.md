@@ -4,7 +4,7 @@
 **Öğrenci Numarası:** [26253021]
 **Öğrenci E-mail Adresi:** [hsenturk26@posta.pau.edu.tr]
 **GitHub Kullanıcı Adı:** [hsynsnt29]
-**GitHub Profil URL:** [https://github.com/kullaniciadi]
+**GitHub Profil URL:** [https://github.com/hsynsnt29]
 
 ---
 
