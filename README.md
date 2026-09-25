@@ -29,7 +29,7 @@ Amacı Rank 10’a ulaşarak gücünün zirvesine çıkmak ve geçmişte hissett
 
 ## D — İlham Alınan Oyunlar
 1. **[Subway Surfers]** — [Sürükleyici takip koşusu,lane sistemi]
-2. **[Reverend Insanity]** — [Güç sistemi]
+2. **[Reverend Insanity]** — [Mistik canavarların özünü emerek Gu'yu Rank 1'den Rank 10'a kadar rafine etme işlemi ve büyük ödül barındıran gizli Miras (Legacy) alanları.]
 
 ## E — Farklılıklar
 1. [Risk-ödül sistemi]
