@@ -47,7 +47,7 @@ Amacı Rank 10’a ulaşarak gücünün zirvesine çıkmak ve geçmişte hissett
 - [Karakter Gelişimi,yetiştirme (Cultivation): Karakterin rütbesi (Rank), toplanan "Öz" miktarına göre artar. Rank 6'dan itibaren gelişim için "Ölümsüz Öz" (Immortal Essence) gerekir (Örn: Rank 3 için 40 Öz, Rank 7 için 250 Öz + 20 Ölümsüz Öz).]
 - [Dinamik Şerit Sistemi: Karakterin Rank'ı arttıkça yoldaki şerit (lane) sayısı değişir (Rank 1-3 = 3 şerit, Rank 4-6 = 4 şerit, Rank 7-9 = 5 şerit),her şeritte farklı fırsatlar vardır ve Rank 10 için özel boss savaş arenası.]
 -[İçsel şeytanla aramızdaki mesafe ne kadar azalırsa hasarı o kadar artar bize yaklaşma durumları 1-öz miktarı bizimkinden fazla bir seviyeye gelmiştir.
-2-Tuzaktan dolayı aldığımız bir nerf(zayıflatıcı)etki.
+2-Tuzaktan dolayı aldığımız bir nerf(zayıflatıcı)etki.]
 
 ## I — Kontroller
 **Bilgisayar:** [W (İleri) / S (Geri) ile koşu hızını ayarlama, A (Sol) / D (Sağ) ile şerit değiştirme. Klavyedeki 1, 2, 3... 0 sayı tuşları ile Gu (yetenek) kullanımı. [Boşluk] tuşu ile saldırı/onay.]
@@ -96,7 +96,7 @@ Kaybetme durumu:Ekranı kaplayan siyah/mor yozlaşma efekti, "Ruhun Tüketildi" 
 5. [Oyun sonu kazanma (Rank 10'a ulaşıp boss arenasına geçme) ve kaybetme (ölme veya sürenin dolması) durumlarının tetiklenip S'den F'ye kadar olan skor ekranının gösterilmesi.]
 
 ## T — Kapak Görseli Promptu
-[Dikey 9:16 (Story)formatında, karanlık fantezi tarzında, yüksek kontrastlı ve sinematik ışıklandırmaya sahip mistik bir dijital illüstrasyon. Görselin merkezinde, küller içindeki yıkılmış bir köyün kalıntılarında duran kararlı genç bir çocuk yer alıyor. Çocuğun tam karşısında, yolunu kesen ve onu tüketmek için bekleyen devasa bir "İçsel Şeytan" var. Bu şeytan, koyu mor ve obsidyen siyahı dumanlardan oluşmuş, ürkütücü boynuzlara sahip karanlık bir ruh formunda. Çocuğun ileriye uzattığı elinde karanlığı delen neon yeşili ışıklar saçan mistik bir mücevher (Gu) parlıyor. En can alıcı detay ise çocuğun arkasında yer alıyor: Anne ve babasının huzur veren, soluk bir ışıkla parlayan ölü ruhları, şefkatli bir ifadeyle çocuklarının arkasında duruyor ve her biri destek olmak amacıyla çocuğun birer omuzundan sıkıca tutuyor.
+[Dikey 9:16 (Story)formatında, karanlık fantezi tarzında, yüksek kontrastlı ve sinematik ışıklandırmaya sahip mistik bir dijital illüstrasyon. Görselin merkezinde, küller içindeki yıkılmış bir köyün kalıntılarında duran kararlı genç bir çocuk yer alıyor. Çocuğun tam karşısında, yolunu kesen ve onu tüketmek için bekleyen devasa bir "İçsel Şeytan" var. Bu şeytan, koyu mor ve obsidyen siyahı dumanlardan oluşmuş, ürkütücü boynuzlara sahip karanlık bir ruh formunda. Çocuğun ileriye uzattığı elinde karanlığı delen neon yeşili ışıklar saçan mistik bir mücevher (Gu) parlıyor. En can alıcı detay ise çocuğun arkasında yer alıyor: Anne ve babasının huzur veren, soluk bir ışıkla parlayan ölü ruhları, şefkatli bir ifadeyle çocuklarının arkasında duruyor ve her biri destek olmak amacıyla çocuğun birer omuzundan sıkıca tutuyor.] 
 
 ## U — Oyunu 20 Saniyede Anlat
 Benim oyunumda oyuncu [acımasız bir büyü dünyasında zayıflığın en büyük günah olduğunu zor yollarla deneyimleyip ailesini kaybettikten sonra, zihnini yutmak isteyen İçsel Şeytan'a yenilmeden kadim kaynakları toplayıp Rank 10'a ulaşmaya çalışan bir Gu Ustası'nı kontrol edecek] ve oyunun eğlenceli tarafı [karakter geliştikçe genişleyen şeritlerde yüksek riskli kararlar almak, 20 dakikalık zaman baskısı altında 10 farklı Gu yeteneğini taktiksel olarak yönetip peşimizdeki şeytanı nihai boss savaşında yok etmek] olacaktır.
