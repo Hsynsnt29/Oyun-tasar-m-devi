@@ -37,7 +37,7 @@ Amacı Rank 10’a ulaşarak gücünün zirvesine çıkmak ve geçmişte hissett
 3. [Güç sistemi]
 
 ## F — Oyuncunun Ana Hedefi
-[]
+[Mümkün olan en kısa sürede yoldaki riskleri yönetip öz ve kaynak toplamak, İçsel Şeytan'a (Inner Demon) yenik düşmeden Gu'yu Rank 10'a ulaştırarak nihai güce ulaşmak ve İçsel Şeytan'ı yok etmek.]
 
 ## G — Temel Oyun Döngüsü
 [...] → [...] → [...] → [...]
