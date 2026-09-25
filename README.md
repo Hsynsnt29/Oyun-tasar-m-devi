@@ -33,8 +33,8 @@ Amacı Rank 10’a ulaşarak gücünün zirvesine çıkmak ve geçmişte hissett
 
 ## E — Farklılıklar
 1. [Risk-ödül sistemi]
-2. [Fusion sistemi..]
-3. [Güç sistemi..]
+2. [Fusion sistemi]
+3. [Güç sistemi]
 
 ## F — Oyuncunun Ana Hedefi
 []
