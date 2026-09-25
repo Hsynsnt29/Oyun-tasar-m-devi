@@ -9,7 +9,7 @@
 ---
 
 ## A — Oyunun Adı
-[.Gu:Ascension..]
+[Gu:Ascension]
 
 ## B — Tek Cümlelik Tanım
 [Köyünü ve sevdiklerini yok eden çaresizliği bir daha yaşamamak için kadim bir mirasa tutunan genç bir çocuğun, peşindeki İçsel Şeytan'a (Inner Demon) yakalanmadan riskli yollardan öz toplayıp Gu'sunu Rank 10'a ulaştırmaya çalıştığı, süreli ve dinamik bir koşu oyunu.]
@@ -32,9 +32,9 @@ Amacı Rank 10’a ulaşarak gücünün zirvesine çıkmak ve geçmişte hissett
 2. **[Reverend Insanity]** — [Güç sistemi]
 
 ## E — Farklılıklar
-1. [.Risk-ödül sistemi..]
-2. [.Fusion sistemi..]
-3. [.Güç sistemi..]
+1. [Risk-ödül sistemi]
+2. [Fusion sistemi..]
+3. [Güç sistemi..]
 
 ## F — Oyuncunun Ana Hedefi
 []
