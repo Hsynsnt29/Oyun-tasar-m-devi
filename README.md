@@ -1,10 +1,10 @@
-# [26253021-hsynsnt29]
+# [26253021-Hsynsnt29]
 
 **İsim Soyisim:** [Hüseyin Şentürk]
 **Öğrenci Numarası:** [26253021]
 **Öğrenci E-mail Adresi:** [hsenturk26@posta.pau.edu.tr]
-**GitHub Kullanıcı Adı:** [hsynsnt29]
-**GitHub Profil URL:** [https://github.com/hsynsnt29]
+**GitHub Kullanıcı Adı:** [Hsynsnt29]
+**GitHub Profil URL:** [https://github.com/Hsynsnt29]
 
 ---
 
