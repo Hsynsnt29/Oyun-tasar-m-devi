@@ -1,4 +1,4 @@
-# [20260045-githubkullaniciadi]
+# [26253021-hsynsnt29]
 
 **İsim Soyisim:** [Hüseyin Şentürk]
 **Öğrenci Numarası:** [26253021]
@@ -53,13 +53,13 @@ Amacı Rank 10’a ulaşarak gücünün zirvesine çıkmak ve geçmişte hissett
 **Ekran yönelimi:** [dikey / yatay / her ikisi]
 
 ## J — Kazanma Durumu
-[...]
+[Zaman sınırını (20 dakikayı) aşmadan gerekli özü toplayarak Rank 10 seviyesine ulaşmak ve Boss Arenasında bossu yenmek.]
 
 ## K — Kaybetme Durumu
 - [Gelişimi yeterince hızlı yapamayıp zaman sınırını (20 dakika) aşmak ve İçsel Şeytan'ın karakterin zihnini tamamen yutması.]
 - [Yol üzerindeki tuzaklardan,mistik canavarlardan veya  Legacy alanlarındaki canavarlardan ölümcül hasar almak.]
 ## L — Skor Sistemi
-- [8 dakikadan önce bitirmek] = [S]
+- [8 dakikadan önce bitirmek(t<8)] = [S]
 - [8≤t<10] = [A]
 - [10≤t<13] = [B]
 - [13≤t<16] = [C]
@@ -68,7 +68,7 @@ Amacı Rank 10’a ulaşarak gücünün zirvesine çıkmak ve geçmişte hissett
 
 
 ## M — Zorluk Artışı
-- [ne değişecek] — [ne zaman]
+- [Lane(şerit)sayısı artıcak.] — [Rütbe atlayınca.]
 
 ## N — Oyun Ekranları
 **Başlangıç ekranı:** [...]
