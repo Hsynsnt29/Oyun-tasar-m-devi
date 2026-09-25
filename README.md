@@ -96,7 +96,7 @@ Kaybetme durumu:Ekranı kaplayan siyah/mor yozlaşma efekti, "Ruhun Tüketildi" 
 5. [Oyun sonu kazanma (Rank 10'a ulaşıp boss arenasına geçme) ve kaybetme (ölme veya sürenin dolması) durumlarının tetiklenip S'den F'ye kadar olan skor ekranının gösterilmesi.]
 
 ## T — Kapak Görseli Promptu
-[Dikey 9:16 story formatı, 80–200 kelime]
+[Dikey 9:16 (Story)formatında, karanlık fantezi tarzında, yüksek kontrastlı ve sinematik ışıklandırmaya sahip mistik bir dijital illüstrasyon. Görselin merkezinde, küller içindeki yıkılmış bir köyün kalıntılarında duran kararlı genç bir çocuk yer alıyor. Çocuğun tam karşısında, yolunu kesen ve onu tüketmek için bekleyen devasa bir "İçsel Şeytan" var. Bu şeytan, koyu mor ve obsidyen siyahı dumanlardan oluşmuş, ürkütücü boynuzlara sahip karanlık bir ruh formunda. Çocuğun ileriye uzattığı elinde karanlığı delen neon yeşili ışıklar saçan mistik bir mücevher (Gu) parlıyor. En can alıcı detay ise çocuğun arkasında yer alıyor: Anne ve babasının huzur veren, soluk bir ışıkla parlayan ölü ruhları, şefkatli bir ifadeyle çocuklarının arkasında duruyor ve her biri destek olmak amacıyla çocuğun birer omuzundan sıkıca tutuyor.
 
 ## U — Oyunu 20 Saniyede Anlat
-Benim oyunumda oyuncu [...] ve oyunun eğlenceli tarafı [...] olacaktır.
+Benim oyunumda oyuncu [acımasız bir büyü dünyasında zayıflığın en büyük günah olduğunu zor yollarla deneyimleyip ailesini kaybettikten sonra, zihnini yutmak isteyen İçsel Şeytan'a yenilmeden kadim kaynakları toplayıp Rank 10'a ulaşmaya çalışan bir Gu Ustası'nı kontrol edecek] ve oyunun eğlenceli tarafı [karakter geliştikçe genişleyen şeritlerde yüksek riskli kararlar almak, 20 dakikalık zaman baskısı altında 10 farklı Gu yeteneğini taktiksel olarak yönetip peşimizdeki şeytanı nihai boss savaşında yok etmek] olacaktır.
