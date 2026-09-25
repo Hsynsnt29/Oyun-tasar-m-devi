@@ -25,7 +25,7 @@ Genç, mirastan aldığı güçlerle Rank 1’den başlayarak daha yüksek Rank�
 
 Ancak güçlendikçe karşılaştığı tehlikeler de büyür. Yolculuğunun başından beri onu takip eden Inner Demon, yaptığı her hatayı ve aldığı her riski onun aleyhine çevirmektedir.
 
-Amacı Rank 10’a ulaşarak gücünün zirvesine çıkmak ve geçmişte hissettiği çaresizliği bir daha yaşamamaktır. Fakat sonunda karşısındaki en büyük engelin dışarıdaki düşmanlar değil, yolculuğu boyunca onu takip eden Inner Demon olduğu ortaya çıkar.kelime]
+Amacı Rank 10’a ulaşarak gücünün zirvesine çıkmak ve geçmişte hissettiği çaresizliği bir daha yaşamamaktır. Fakat sonunda karşısındaki en büyük engelin dışarıdaki düşmanlar değil, yolculuğu boyunca onu takip eden Inner Demon olduğu ortaya çıkar.]
 
 ## D — İlham Alınan Oyunlar
 1. **[Subway Surfers]** — [Sürükleyici takip koşusu,lane sistemi]
