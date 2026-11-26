@@ -34,6 +34,7 @@ header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:50}
 .coin{width:1.1em;height:1.1em;border-radius:50%;background:var(--yellow);color:var(--navy);display:inline-grid;place-items:center;font-size:.7em;font-weight:800}
 .btn{border:0;border-radius:10px;padding:.65rem 1.1rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:background .15s,transform .15s}
 .btn:active{transform:scale(.97)}
+a.btn{text-decoration:none}
 .btn-y{background:var(--yellow);color:var(--navy)} .btn-y:hover{background:var(--yellow-d)}
 .btn-b{background:var(--blue);color:#fff} .btn-b:hover{background:#1d4fc4}
 .btn-l{background:#eef2fa;color:var(--ink)} .btn-l:hover{background:#e1e8f6}
@@ -104,11 +105,18 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
 #toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);background:var(--navy);color:#fff;padding:.8rem 1.2rem;border-radius:12px;border-left:5px solid var(--yellow);box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:.25s;z-index:200;max-width:92vw}
 #toast.on{opacity:1;transform:translate(-50%,0)}
 
+.av{width:1.7rem;height:1.7rem;border-radius:50%;background:var(--yellow);color:var(--navy);display:grid;place-items:center;font-weight:800;font-size:.85rem;flex:none}
+.btn-g{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);text-decoration:none} .btn-g:hover{background:rgba(255,255,255,.2)}
+.authbox{background:#f7f9fd;border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;display:grid;gap:.5rem;font-size:.93rem}
+.authbox li{display:flex;gap:.5rem;align-items:center;list-style:none} .authbox li svg{color:var(--ok)}
+.dfoot a.btn{text-decoration:none}
 @media(max-width:720px){
+  .chip .tl{display:none} .panel{gap:6px} .panel .btn{padding:.55rem .75rem} .chip{padding:.4rem .75rem}
   .steps{grid-template-columns:1fr} .step+.step{border-left:0;border-top:1px solid var(--line)}
   .panel .btn span{display:none}
   .hero{padding:2.2rem 0 3.5rem}
 }
+@media(max-width:400px){ .logo{font-size:1.05rem} .bar{gap:8px} }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -122,6 +130,7 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
   <symbol id="crown" viewBox="0 0 24 24"><path d="m3 7 4 4 5-7 5 7 4-4-2 12H5z"/></symbol>
   <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
   <symbol id="star" viewBox="0 0 24 24"><path d="m12 2 3 7 7 .6-5.3 4.7 1.6 7.2L12 17.8 5.7 21.5l1.6-7.2L2 9.6 9 9z" fill="currentColor"/></symbol>
+  <symbol id="login" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5M15 12H3"/></symbol>
   <symbol id="close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
 </svg>
 
@@ -129,8 +138,13 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
   <div class="wrap bar">
     <a href="#" class="logo"><svg class="i"><use href="#book"/></svg> Öğrencinotu101</a>
     <div class="panel">
-      <div class="chip" title="Kalan token"><span class="coin">T</span> Token: <b id="tokenCount">5</b></div>
-      <button class="btn btn-y" id="premiumBtn"><svg class="i"><use href="#crown"/></svg><span id="premiumLabel">Premium'a geç</span></button>
+      <!-- Giriş yapılmamışsa -->
+      <a class="btn btn-g" href="login.html" data-guest><svg class="i"><use href="#login"/></svg> Giriş yap</a>
+      <a class="btn btn-y" href="register.html" data-guest>Kayıt ol</a>
+      <!-- Giriş yapılmışsa -->
+      <div class="chip" title="Kalan token" data-user hidden><span class="coin">T</span> <span class="tl">Token:</span> <b id="tokenCount">5</b></div>
+      <button class="btn btn-y" id="premiumBtn" data-user hidden><svg class="i"><use href="#crown"/></svg><span id="premiumLabel">Premium'a geç</span></button>
+      <a class="btn btn-g" href="dashboard.html" data-user hidden title="Panelim"><span class="av" id="userAv">?</span><span>Panelim</span></a>
     </div>
   </div>
 </header>
@@ -222,11 +236,28 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
   </div>
 </dialog>
 
+<!-- Giriş gerekli penceresi -->
+<dialog id="authDlg" aria-labelledby="auTitle">
+  <div class="dh"><h2 id="auTitle">Notu indirmek için giriş yap</h2><button class="x" data-close aria-label="Kapat"><svg class="i"><use href="#close"/></svg></button></div>
+  <div class="db">
+    <p id="auText" style="color:var(--muted);margin-bottom:.9rem">Önizleme herkese açık. Notları indirmek için hesabına giriş yapmalısın.</p>
+    <ul class="authbox">
+      <li><svg class="i"><use href="#check"/></svg> Ücretsiz hesapla her hafta 5 token</li>
+      <li><svg class="i"><use href="#check"/></svg> İndirdiğin notlar panelinde saklanır</li>
+      <li><svg class="i"><use href="#check"/></svg> Bölümüne uygun not önerileri</li>
+    </ul>
+    <div class="dfoot">
+      <a class="btn btn-b" href="login.html"><svg class="i"><use href="#login"/></svg> Giriş yap</a>
+      <a class="btn btn-y" href="register.html">Ücretsiz kayıt ol</a>
+    </div>
+  </div>
+</dialog>
+
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 /* ---------- Ayarlar ve örnek veri ---------- */
-const WEEK = 7 * 864e5, FREE = 5, PREMIUM = 60, KEY = 'ogrencinotu101';
+const WEEK = 7 * 864e5, FREE = 5, PREMIUM = 60;
 const NOTES = [
   {id:1, uni:'Pamukkale Üni.', dept:'Bilgisayar Müh.', title:'BMG Vize Özet Notları 2026', rate:4.8, votes:62, date:'2026-10-20', ex:['Bölüm 1: Bilgisayar Mühendisliğine Giriş','Algoritma ve program kavramı','Bilgisayarın temel bileşenleri','Sayı sistemleri: ikilik, onluk, onaltılık'] },
   {id:2, uni:'Pamukkale Üni.', dept:'Fizik', title:'Fizik Lab Raporları ve Formüller', rate:4.0, votes:21, date:'2026-10-12', ex:['Deney 1: Ölçme ve hata analizi','Standart sapma ve belirsizlik hesabı','Temel formül tablosu','Birim dönüşümleri'] },
@@ -238,18 +269,39 @@ const NOTES = [
   {id:8, uni:'Pamukkale Üni.', dept:'Bilgisayar Müh.', title:'Ayrık Matematik Konu Anlatımı', rate:4.6, votes:19, date:'2026-10-18', ex:['Önermeler ve doğruluk tabloları','Kümeler ve bağıntılar','Tümevarım ispatı','Sayma ilkeleri'] }
 ];
 
-/* ---------- Durum (localStorage hata verirse bile çalışır) ---------- */
+/* ---------- Durum ----------
+   Token, plan ve indirilen notlar giriş yapmış kullanıcının kaydında tutulur
+   (register.html kaydeder, dashboard.html ile ortak). Misafir sadece önizleyebilir. */
+const USERS_KEY = 'ogrencinotu101_users', SESSION_KEY = 'ogrencinotu101_session';
+function loadUsers(){ try{ const u = JSON.parse(localStorage.getItem(USERS_KEY)); return Array.isArray(u) ? u : []; }catch(e){ return []; } }
+function saveUsers(list){ try{ localStorage.setItem(USERS_KEY, JSON.stringify(list)); }catch(e){} }
+function sessionEmail(){ try{ return (JSON.parse(sessionStorage.getItem(SESSION_KEY)) || {}).email; }catch(e){ return null; } }
+let ME = null;                       // giriş yapmış kullanıcı (yoksa misafir)
 function load(){
-  try{ const s = JSON.parse(localStorage.getItem(KEY)); if(s && typeof s.tokens === 'number') return s; }catch(e){}
-  return {tokens:FREE, premium:false, owned:[], week:Date.now()};
+  const em = sessionEmail();
+  ME = em ? loadUsers().find(u => u.email === em) || null : null;
+  if(!ME) return {tokens:0, premium:false, owned:[], week:Date.now()};
+  ME.plan = ME.plan || {tokens:FREE, premium:false, owned:[], week:Date.now()};
+  ME.plan.ownedAt = ME.plan.ownedAt || {};
+  return ME.plan;
 }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+// Kaydet: en güncel listeyi okuyup sadece bu kullanıcının planını ve hareketlerini yazar
+function save(){
+  if(!ME) return;
+  const users = loadUsers(), me = users.find(u => u.email === ME.email);
+  if(!me) return;
+  me.plan = S; me.activity = ME.activity || me.activity; saveUsers(users);
+}
+function logAct(type, text){
+  if(!ME) return;
+  ME.activity = [{type, text, at:new Date().toISOString()}, ...(ME.activity || [])].slice(0, 50);
+}
 let S = load();
 // Haftalık yenileme: 7 gün geçtiyse token hakkı sıfırdan verilir
-if(Date.now() - S.week >= WEEK){ S.tokens = S.premium ? PREMIUM : FREE; S.week = Date.now(); save(); }
+if(ME && Date.now() - S.week >= WEEK){ S.tokens = S.premium ? PREMIUM : FREE; S.week = Date.now(); logAct('plan', `Haftalık token hakkın yenilendi (${S.tokens} token)`); save(); }
 
 const $ = s => document.querySelector(s);
-const pct = () => S.premium ? 15 : 5;
+const pct = () => ME && S.premium ? 15 : 5;
 let dept = 'Tümü', query = '', current = null;
 
 /* ---------- Yardımcılar ---------- */
@@ -262,6 +314,9 @@ const stars = r => `<svg class="i" aria-hidden="true"><use href="#star"/></svg>`
 
 /* ---------- Çizim ---------- */
 function renderHeader(){
+  document.querySelectorAll('[data-guest]').forEach(el => el.hidden = !!ME);
+  document.querySelectorAll('[data-user]').forEach(el => el.hidden = !ME);
+  if(ME) $('#userAv').textContent = ME.name[0].toLocaleUpperCase('tr');
   $('#tokenCount').textContent = S.tokens;
   $('#premiumLabel').textContent = S.premium ? 'Premium aktif' : "Premium'a geç";
 }
@@ -283,7 +338,7 @@ function renderList(){
       ${own ? '<div class="owned"><svg class="i"><use href="#check"/></svg> İndirildi</div>' : ''}
       <div class="acts">
         <button class="btn btn-l" data-preview="${n.id}"><svg class="i"><use href="#eye"/></svg> %${pct()} Önizle</button>
-        <button class="btn btn-b" data-download="${n.id}"><svg class="i"><use href="#dl"/></svg> ${own ? 'Tekrar indir' : '1 token'}</button>
+        <button class="btn btn-b" data-download="${n.id}"><svg class="i"><use href="#dl"/></svg> ${own ? 'Tekrar indir' : ME ? '1 token' : 'İndir'}</button>
       </div>
     </article>`;
   }).join('') : '<div class="empty">Aramana uygun not bulunamadı. Başka bir ders adı veya bölüm dene.</div>';
@@ -297,14 +352,22 @@ function fileFor(n){
   a.href = URL.createObjectURL(blob); a.download = n.title.replace(/[^\wığüşöçİĞÜŞÖÇ ]/g,'').replace(/\s+/g,'-') + '.txt';
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
+function openAuth(title, text){
+  $('#previewDlg').open && $('#previewDlg').close();
+  $('#premiumDlg').open && $('#premiumDlg').close();
+  $('#auTitle').textContent = title; $('#auText').textContent = text;
+  $('#authDlg').showModal();
+}
 function download(id){
+  if(!ME) return openAuth('Notu indirmek için giriş yap', 'Önizleme herkese açık. Notları indirmek için hesabına giriş yapmalısın.');
   const n = NOTES.find(x => x.id === id), own = S.owned.includes(id);
   if(!own){
     if(S.tokens < 1){
       toast('Token hakkın bitti. Haftalık hakkın yenilenene kadar bekleyebilir veya Premium\'a geçebilirsin.');
       openPremium(); return;
     }
-    S.tokens--; S.owned.push(id); save();
+    S.tokens--; S.owned.push(id); S.ownedAt = S.ownedAt || {}; S.ownedAt[id] = new Date().toISOString();
+    logAct('download', `"${n.title}" indirildi (1 token)`); save();
     toast(`"${n.title}" indirildi. 1 token harcandı, kalan: ${S.tokens}`);
   } else toast('Bu notu daha önce aldın, token harcanmadı.');
   fileFor(n); renderAll();
@@ -315,18 +378,20 @@ function preview(id){
   $('#pvTitle').textContent = current.title;
   $('#pvPct').textContent = '%' + pct();
   $('#pvText').innerHTML = lines.map(l => `<p>${l}</p>`).join('');
-  $('#pvDownload').innerHTML = `<svg class="i"><use href="#dl"/></svg> ${S.owned.includes(id) ? 'Tekrar indir' : '1 token ile indir'}`;
+  $('#pvDownload').innerHTML = `<svg class="i"><use href="#dl"/></svg> ${S.owned.includes(id) ? 'Tekrar indir' : ME ? '1 token ile indir' : 'Giriş yap ve indir'}`;
   $('#pvPremium').hidden = S.premium;
   $('#previewDlg').showModal();
 }
 function openPremium(){
+  if(!ME) return openAuth("Premium'a geçmek için giriş yap", "Premium plan hesabına tanımlanır. Önce giriş yap ya da ücretsiz hesap oluştur.");
   $('#previewDlg').close();
   $('#prAction').textContent = S.premium ? 'Ücretsiz plana dön (demo)' : "Premium'a yüksel";
   $('#premiumDlg').showModal();
 }
 function togglePremium(){
   S.premium = !S.premium;
-  S.tokens = S.premium ? PREMIUM : Math.min(S.tokens, FREE); S.week = Date.now(); save();
+  S.tokens = S.premium ? PREMIUM : Math.min(S.tokens, FREE); S.week = Date.now();
+  logAct('plan', S.premium ? 'Premium plana geçildi (60 token yüklendi)' : 'Ücretsiz plana dönüldü'); save();
   $('#premiumDlg').close(); renderAll();
   toast(S.premium ? 'Premium aktif: 60 token yüklendi, önizleme %15 oldu.' : 'Ücretsiz plana dönüldü.');
 }

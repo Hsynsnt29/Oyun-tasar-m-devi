@@ -506,9 +506,17 @@ const hashPass = (email, pass) => cyrb53(email + '|' + pass);
 const loadUsers = () => { const u = ls && read(ls, USERS_KEY); return Array.isArray(u) ? u : []; };
 const saveUsers = list => ls && store(ls, USERS_KEY, list);
 const findUser = email => loadUsers().find(u => u.email === email);
-function startSession(user){
-  if(ss) store(ss, SESSION_KEY, {email:user.email, provider:user.provider, at:Date.now()});
+function startSession(user, via){
+  if(ss) store(ss, SESSION_KEY, {email:user.email, provider:via || 'email', at:Date.now()});
   if(ss) ss.removeItem(GUARD_KEY);
+  // Panelde "Son hareketler" listesinde görünür
+  const users = loadUsers(), me = users.find(u => u.email === user.email);
+  if(me){
+    const lbl = via && via !== 'email' ? PROVIDERS[via].label : 'E-posta ve şifre';
+    me.activity = [{type:'login', text:`Giriş yapıldı (${lbl})`, at:new Date().toISOString()}, ...(me.activity || [])].slice(0, 50);
+    me.lastLogin = new Date().toISOString();
+    saveUsers(users);
+  }
 }
 // Zaten giriş yapmış kullanıcı doğrudan panele gider
 (() => { const s = ss && read(ss, SESSION_KEY); if(s && findUser(s.email)) location.replace('dashboard.html'); })();
@@ -627,8 +635,8 @@ function setLoading(on, text){
   btn.querySelector('.spin').hidden = !on; btn.disabled = on;
   $('#loginTxt').textContent = text || 'Oturum aç';
 }
-function enterDashboard(user){
-  startSession(user);
+function enterDashboard(user, via){
+  startSession(user, via);
   setLoading(true, 'Giriş yapılıyor…');
   setTimeout(() => location.href = 'dashboard.html', 900);
 }
@@ -647,7 +655,7 @@ $('#loginForm').addEventListener('submit', e => {
   hideAlert(); setLoading(true, 'Kontrol ediliyor…');
   setTimeout(() => {                                  // sunucuya gidip gelme süresini taklit eder
     const u = findUser(em);
-    if(u && u.passHash && u.passHash === hashPass(em, pw)) return enterDashboard(u);
+    if(u && u.passHash && u.passHash === hashPass(em, pw)) return enterDashboard(u, 'email');
 
     // Hata: hangisinin yanlış olduğu bilinçli olarak söylenmez
     guard.fails++;
@@ -716,7 +724,7 @@ function socialLogin(email){
   }
   $('#oaDlg').close();
   toast(`${PROVIDERS[oaProvider].label} hesabınla giriş yapılıyor…`);
-  enterDashboard(u);
+  enterDashboard(u, oaProvider);
 }
 $$('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
 $('#oaDlg').addEventListener('click', e => { if(e.target === e.currentTarget) e.currentTarget.close(); });

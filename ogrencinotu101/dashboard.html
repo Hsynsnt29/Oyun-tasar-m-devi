@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panelim | Öğrencinotu101</title>
+<meta name="description" content="Öğrencinotu101 kullanıcı paneli: tokenların, indirdiğin notlar, planın ve hesap ayarların.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0b2447; --navy-2:#15366d; --blue:#2563eb; --yellow:#ffc914; --yellow-d:#e5b000;
+  --ink:#16233b; --muted:#566782; --paper:#f4f6fb; --card:#fff; --line:#dde4f0; --ok:#12805c;
+  --bad:#c62f3c; --mid:#c98a00;
+  --font:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--paper);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+svg.i{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 5%;width:100%}
+
+/* Üst menü (index.html ile aynı) */
+header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:50}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:.8rem 0}
+.logo{display:flex;align-items:center;gap:.5rem;color:#fff;text-decoration:none;font-weight:800;font-size:1.3rem}
+.logo svg{width:1.6em;height:1.6em}
+.hright{display:flex;align-items:center;gap:10px}
+.tchip{display:flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;padding:.45rem .9rem;border-radius:99px;font-weight:600;font-size:.92rem}
+.tchip b{color:var(--yellow);font-size:1.05rem}
+.coin{width:1.1em;height:1.1em;border-radius:50%;background:var(--yellow);color:var(--navy);display:inline-grid;place-items:center;font-size:.7em;font-weight:800}
+.hlink{color:#fff;text-decoration:none;font-weight:600;display:flex;align-items:center;gap:.4rem;padding:.45rem .7rem;border-radius:10px}
+.hlink:hover{background:rgba(255,255,255,.1)}
+.btn{border:0;border-radius:10px;padding:.7rem 1.15rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:.45rem;transition:background .15s,transform .15s,opacity .15s;text-decoration:none;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn-y{background:var(--yellow);color:var(--navy)} .btn-y:hover{background:var(--yellow-d)}
+.btn-b{background:var(--blue);color:#fff} .btn-b:hover{background:#1d4fc4}
+.btn-l{background:#eef2fa;color:var(--ink)} .btn-l:hover{background:#e1e8f6}
+.btn-t{background:transparent;color:var(--muted)} .btn-t:hover{color:var(--ink);background:#eef2fa}
+.btn-d{background:var(--bad);color:#fff} .btn-d:hover{background:#a92632}
+.btn-do{background:#fff;color:var(--bad);border:1.5px solid #f0b9bf} .btn-do:hover{background:#fdecee}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn.sm{padding:.45rem .85rem;font-size:.9rem}
+.av{width:2.4rem;height:2.4rem;border-radius:50%;background:var(--yellow);color:var(--navy);display:grid;place-items:center;font-weight:800;flex:none}
+
+/* Panel yerleşimi */
+main{flex:1;padding:2rem 0 3rem}
+.dash{display:grid;grid-template-columns:240px minmax(0,1fr);gap:24px;align-items:start}
+.sidenav{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:.8rem;position:sticky;top:5.2rem;display:grid;gap:2px}
+.me{display:flex;align-items:center;gap:.7rem;padding:.5rem .5rem .9rem;margin-bottom:.4rem;border-bottom:1px solid var(--line);min-width:0}
+.me div{display:grid;min-width:0;line-height:1.3}
+.me small{color:var(--muted);font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.navlink{display:flex;align-items:center;gap:.65rem;padding:.65rem .75rem;border-radius:10px;color:var(--ink);text-decoration:none;font-weight:600;background:none;border:0;width:100%;text-align:left;white-space:nowrap}
+.navlink:hover{background:#f1f4fa}
+.navlink[aria-current=page]{background:var(--navy);color:#fff}
+.navlink[aria-current=page] svg{color:var(--yellow)}
+.navlink.out{color:var(--bad);margin-top:.4rem;border-top:1px solid var(--line);border-radius:0 0 10px 10px;padding-top:.85rem}
+.view{display:grid;gap:20px}
+.view.enter{animation:enter .3s ease}
+.vh h1{font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.02em;line-height:1.15}
+.vh p{color:var(--muted);margin-top:.2rem}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.3rem 1.4rem}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.ph h2{font-size:1.15rem;display:flex;align-items:center;gap:.5rem}
+.ph h2 svg{color:var(--blue)}
+.ph a{color:var(--blue);font-weight:600;text-decoration:none;font-size:.92rem}
+.ph a:hover{text-decoration:underline}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+
+/* İstatistik kartları */
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.2rem;display:grid;gap:.35rem;align-content:start}
+.stat .lbl{color:var(--muted);font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:.4rem}
+.stat .big{font-size:2rem;font-weight:800;line-height:1.1}
+.stat .big small{font-size:1rem;color:var(--muted);font-weight:600}
+.stat .sub{color:var(--muted);font-size:.86rem}
+.stat a{color:var(--blue);font-weight:600;font-size:.9rem;text-decoration:none;margin-top:.2rem}
+.stat a:hover{text-decoration:underline}
+.stat.pro{background:var(--navy);color:#fff;border-color:var(--navy)}
+.stat.pro .lbl,.stat.pro .sub{color:#c6d3ee} .stat.pro a{color:var(--yellow)}
+.meterbar{height:8px;background:#e8edf6;border-radius:99px;overflow:hidden;margin:.2rem 0}
+.meterbar i{display:block;height:100%;background:linear-gradient(90deg,var(--yellow),#ffdb5c);border-radius:99px;transition:width .4s}
+.badge{display:inline-flex;align-items:center;gap:.3rem;background:#eef2fa;color:var(--ink);border-radius:99px;padding:.15rem .6rem;font-size:.8rem;font-weight:700}
+.badge.pro{background:var(--yellow);color:var(--navy)}
+.badge.ok{background:#e3f6ee;color:var(--ok)}
+
+/* Not kartları */
+.ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.note{border:1px solid var(--line);border-radius:14px;padding:1rem;display:flex;flex-direction:column;gap:.55rem;background:#fff}
+.meta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:.82rem}
+.tag{background:#e8efff;color:var(--blue);border-radius:6px;padding:.1rem .5rem;font-weight:600;font-size:.76rem;align-self:flex-start;white-space:nowrap}
+.note h3{font-size:1.02rem;line-height:1.3}
+.rate{display:flex;align-items:center;gap:.35rem;color:#b07d00;font-weight:700;font-size:.88rem}
+.rate small{color:var(--muted);font-weight:400}
+.note .btn{margin-top:auto}
+.why{font-size:.8rem;color:var(--ok);font-weight:600}
+.empty{text-align:center;padding:2rem 1rem;color:var(--muted);border:1px dashed var(--line);border-radius:14px;display:grid;gap:.8rem;justify-items:center}
+
+/* Listeler */
+.rows{list-style:none;display:grid}
+.rows li{display:flex;align-items:center;gap:1rem;padding:.85rem 0;border-top:1px solid var(--line)}
+.rows li:first-child{border-top:0;padding-top:0}
+.rows .ri{width:2.5rem;height:2.5rem;border-radius:12px;background:#e8efff;color:var(--blue);display:grid;place-items:center;flex:none}
+.rows .rt{flex:1;min-width:0;display:grid;line-height:1.35}
+.rows .rt b{font-weight:600}
+.rows .rt small{color:var(--muted);font-size:.85rem}
+.acts{list-style:none;display:grid;gap:.1rem}
+.acts li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0}
+.acts .dotc{width:2rem;height:2rem;border-radius:50%;display:grid;place-items:center;flex:none;background:#eef2fa;color:var(--muted)}
+.acts .dotc svg{width:1rem;height:1rem}
+.acts .download{background:#e8efff;color:var(--blue)} .acts .plan{background:#fff3cc;color:#a06b00}
+.acts .security{background:#e3f6ee;color:var(--ok)} .acts .login{background:#efe9ff;color:#6d4bd8}
+.acts .t{flex:1;display:grid;line-height:1.35}
+.acts small{color:var(--muted);font-size:.82rem}
+
+/* Planlar (index.html ile aynı) */
+.plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.plan{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.5rem;display:flex;flex-direction:column;gap:.2rem}
+.plan.pro{background:var(--navy);color:#fff;border:2px solid var(--yellow)}
+.plan h3{font-size:1.25rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.price{font-size:2rem;font-weight:800;margin:.2rem 0 .9rem}
+.price small{font-size:.95rem;font-weight:400;opacity:.75}
+.plan ul{list-style:none;display:grid;gap:.6rem;margin-bottom:1.3rem}
+.plan li{display:flex;gap:.5rem;align-items:center}
+.plan li svg{color:var(--ok)} .pro li svg{color:var(--yellow)}
+.plan .btn{margin-top:auto}
+.compare{width:100%;border-collapse:collapse;font-size:.93rem}
+.compare th,.compare td{padding:.65rem .5rem;border-top:1px solid var(--line);text-align:left}
+.compare th{color:var(--muted);font-weight:600}
+.compare td:not(:first-child),.compare th:not(:first-child){text-align:center}
+
+/* Formlar */
+.field{display:grid;gap:.35rem;margin-bottom:1rem}
+.field>label,.lbl2{font-weight:600;font-size:.92rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.inp{width:100%;border:1.5px solid var(--line);background:#fbfcff;border-radius:12px;padding:.75rem .9rem;font-size:1rem;outline:0;transition:border-color .15s,box-shadow .15s}
+.inp:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(37,99,235,.15);background:#fff}
+.inp.bad{border-color:var(--bad)}
+.inp:disabled,.inp[readonly]{background:#f0f3f9;color:var(--muted)}
+select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 55%,calc(100% - 15px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:2.4rem}
+.err{color:var(--bad);font-size:.88rem;font-weight:600;display:flex;gap:.4rem;align-items:flex-start}
+.err:empty{display:none}
+.err svg{margin-top:.15rem}
+.caps{color:var(--mid);font-size:.86rem;font-weight:700;display:flex;gap:.4rem;align-items:center}
+.pw{position:relative}
+.pw .inp{padding-right:3rem}
+.eye{position:absolute;right:.4rem;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--muted);padding:.45rem;border-radius:8px;display:grid}
+.eye:hover{color:var(--ink);background:#eef2fa}
+.meter{display:flex;align-items:center;gap:.7rem;margin-top:.2rem}
+.meter .bars{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.meter .bars i{height:6px;border-radius:99px;background:#e3e8f2;transition:background .2s}
+.meter b{font-size:.85rem;min-width:4.5em;text-align:right}
+.meter[data-l="1"] .bars i:nth-child(1){background:var(--bad)} .meter[data-l="1"] b{color:var(--bad)}
+.meter[data-l="2"] .bars i:nth-child(-n+2){background:var(--mid)} .meter[data-l="2"] b{color:var(--mid)}
+.meter[data-l="3"] .bars i{background:var(--ok)} .meter[data-l="3"] b{color:var(--ok)}
+.rules{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.45rem .8rem;margin-top:.6rem;font-size:.9rem;color:var(--muted)}
+.rules li{display:flex;align-items:center;gap:.45rem}
+.rules li .y{display:none}
+.rules li.ok{color:var(--ok);font-weight:600}
+.rules li.ok .n{display:none} .rules li.ok .y{display:block}
+.factions{display:flex;gap:8px;flex-wrap:wrap;margin-top:.4rem}
+.info{display:grid;grid-template-columns:auto 1fr;gap:.55rem 1.2rem;font-size:.95rem}
+.info dt{color:var(--muted)} .info dd{font-weight:600;overflow-wrap:anywhere}
+/* Register ile aynı: arama kutusu, öğrenim durumu, ilgi alanları */
+/* Arama ile seçim kutusu */
+.combo{position:relative}
+.combo .inp{padding-right:2.6rem}
+.combo .mag{position:absolute;right:.95rem;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.combo.picked .inp{border-color:var(--ok);background:#f6fcf9}
+.combo.picked .mag{color:var(--ok)}
+.opts{position:absolute;z-index:20;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 16px 40px rgba(11,36,71,.16);max-height:260px;overflow:auto;list-style:none;padding:6px}
+.opts li{padding:.6rem .75rem;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;gap:.8rem;align-items:baseline}
+.opts li small{color:var(--muted);font-size:.78rem;white-space:nowrap}
+.opts li[aria-selected=true]{background:#e8efff}
+.opts li mark{background:#ffe58a;color:inherit;border-radius:3px;padding:0 1px}
+.opts li.none{color:var(--muted);cursor:default;justify-content:center}
+
+/* Öğrenim durumu */
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#eef2fa;border-radius:12px;padding:5px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{text-align:center;padding:.55rem .3rem;border-radius:9px;font-weight:600;font-size:.88rem;cursor:pointer;color:var(--muted);line-height:1.2}
+.seg input:checked+label{background:#fff;color:var(--navy);box-shadow:0 2px 6px rgba(11,36,71,.12)}
+.seg input:focus-visible+label{outline:3px solid var(--yellow)}
+.tnote{font-size:.85rem;color:var(--muted)}
+.check{display:flex;gap:.65rem;align-items:flex-start;font-size:.95rem;cursor:pointer;margin-top:.4rem}
+.check input{width:1.2rem;height:1.2rem;margin-top:.15rem;accent-color:var(--blue);flex:none}
+.linkbtn{background:none;border:0;color:var(--blue);font-weight:700;text-decoration:underline;padding:0}
+
+/* İlgi alanları */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:.45rem .9rem;font-weight:600;font-size:.92rem;display:inline-flex;align-items:center;gap:.35rem;transition:background .15s,border-color .15s}
+.chip:hover{border-color:#b8c6df}
+.chip svg{display:none}
+.chip[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+.chip[aria-pressed=true] svg{display:block;color:var(--yellow)}
+.counter{font-size:.9rem;color:var(--muted);margin:-.4rem 0 1rem;font-weight:600}
+.counter b{color:var(--ink)}
+
+/* Kurtarma kodları */
+.rc-list{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:1rem;letter-spacing:.06em;margin:.9rem 0}
+.rc-list li{background:#f7f9fd;border:1px solid var(--line);border-radius:8px;padding:.5rem .6rem;text-align:center}
+.rc-list li.used{color:#9aa6ba;text-decoration:line-through;background:#f2f4f8}
+.danger{border-color:#f4c3c8}
+.danger h2 svg{color:var(--bad)}
+
+/* Pencere */
+dialog{border:0;border-radius:18px;padding:0;max-width:min(480px,92vw);width:100%;margin:auto;box-shadow:0 30px 80px rgba(0,0,0,.4);color:var(--ink)}
+dialog::backdrop{background:rgba(7,20,45,.65)}
+.dh{display:flex;justify-content:space-between;align-items:start;gap:1rem;padding:1.3rem 1.4rem .5rem}
+.dh h2{font-size:1.25rem;line-height:1.3}
+.x{background:none;border:0;color:var(--muted);padding:.3rem;border-radius:8px;display:grid}
+.db{padding:.3rem 1.4rem 1.4rem}
+.dfoot{display:flex;gap:8px;margin-top:1.1rem} .dfoot .btn{flex:1}
+.paybox{background:var(--navy);color:#fff;border-radius:14px;padding:1rem 1.1rem;margin:.8rem 0;border:2px solid var(--yellow)}
+.paybox ul{list-style:none;display:grid;gap:.4rem;margin-top:.5rem;font-size:.92rem}
+.paybox li{display:flex;gap:.45rem;align-items:center} .paybox li svg{color:var(--yellow)}
+
+footer{background:var(--navy);color:#9fb0d4;padding:1.6rem 0;font-size:.88rem;text-align:center}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);background:var(--navy);color:#fff;padding:.8rem 1.2rem;border-radius:12px;border-left:5px solid var(--yellow);box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:.25s;z-index:200;max-width:92vw}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+@media(max-width:900px){
+  .dash{grid-template-columns:1fr}
+  .sidenav{position:static;display:flex;overflow-x:auto;padding:.5rem;gap:4px;scrollbar-width:none}
+  .sidenav::-webkit-scrollbar{display:none}
+  .me{display:none}
+  .navlink{width:auto}
+  .navlink.out{margin:0;border:0;border-radius:10px;padding-top:.65rem}
+  .stats{grid-template-columns:1fr 1fr}
+  .stats .stat:first-child{grid-column:1/-1}
+}
+@media(max-width:600px){
+  .wrap{padding:0 16px}
+  .logo{font-size:1.1rem}
+  main{padding:1rem 0 2rem}
+  .stats,.plans,.grid2{grid-template-columns:1fr}
+  .panel{padding:1.1rem}
+  .rules{grid-template-columns:1fr}
+  .rc-list{grid-template-columns:1fr 1fr}
+  .hlink span,.tchip .tl{display:none}
+  .info{grid-template-columns:1fr;gap:.1rem}
+  .info dd{margin-bottom:.5rem}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- İkonlar: HTML içine çizilmiş SVG, internet gerekmez -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="book" viewBox="0 0 24 24"><path d="M2 4h7a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H2z"/><path d="M22 4h-7a3 3 0 0 0-3 3v14a2 2 0 0 1 2-2h8z"/></symbol>
+  <symbol id="home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></symbol>
+  <symbol id="dl" viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16"/></symbol>
+  <symbol id="crown" viewBox="0 0 24 24"><path d="m3 7 4 4 5-7 5 7 4-4-2 12H5z"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path d="m12 2 3 7 7 .6-5.3 4.7 1.6 7.2L12 17.8 5.7 21.5l1.6-7.2L2 9.6 9 9z" fill="currentColor"/></symbol>
+  <symbol id="eye" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="eyeoff" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.9 10.9 0 0 1 12 5c7 0 11 7 11 7a18 18 0 0 1-3.2 4M6.6 6.6C3.4 8.6 1 12 1 12s4 7 11 7a10.6 10.6 0 0 0 5.4-1.4"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
+  <symbol id="dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/></symbol>
+  <symbol id="alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.8-9.8M17 6l3 3M14.5 8.5l2 2"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></symbol>
+  <symbol id="trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+  <symbol id="spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></symbol>
+  <symbol id="list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+</svg>
+
+<header>
+  <div class="wrap bar">
+    <a href="index.html" class="logo"><svg class="i"><use href="#book"/></svg> Öğrencinotu101</a>
+    <div class="hright">
+      <a class="hlink" href="index.html"><svg class="i"><use href="#search"/></svg><span>Notlara göz at</span></a>
+      <div class="tchip" title="Kalan token"><span class="coin">T</span><span class="tl">Token:</span> <b id="hTokens">0</b></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap dash">
+    <!-- Sol menü: her bağlantı aynı dosyada başka bir "sayfa" açar -->
+    <nav class="sidenav" aria-label="Panel menüsü">
+      <div class="me"><span class="av" id="meAv">?</span><div><b id="meName"></b><small id="meMail"></small></div></div>
+      <a class="navlink" href="#genel" data-nav="genel"><svg class="i"><use href="#home"/></svg> Genel bakış</a>
+      <a class="navlink" href="#notlarim" data-nav="notlarim"><svg class="i"><use href="#dl"/></svg> Notlarım</a>
+      <a class="navlink" href="#plan" data-nav="plan"><svg class="i"><use href="#crown"/></svg> Plan</a>
+      <a class="navlink" href="#profil" data-nav="profil"><svg class="i"><use href="#user"/></svg> Profil</a>
+      <a class="navlink" href="#guvenlik" data-nav="guvenlik"><svg class="i"><use href="#shield"/></svg> Güvenlik</a>
+      <button class="navlink out" type="button" data-logout><svg class="i"><use href="#logout"/></svg> Çıkış yap</button>
+    </nav>
+
+    <div>
+      <!-- ============ GENEL BAKIŞ ============ -->
+      <section class="view" data-view="genel" aria-labelledby="t-genel">
+        <div class="vh"><h1 id="t-genel">Merhaba, <span id="hello"></span></h1><p id="helloSub"></p></div>
+        <div class="stats">
+          <div class="stat">
+            <span class="lbl"><span class="coin">T</span> Kalan token</span>
+            <span class="big"><span id="sTok">0</span> <small>/ <span id="sTokMax">5</span></small></span>
+            <div class="meterbar"><i id="sTokBar" style="width:0"></i></div>
+            <span class="sub" id="sRenew"></span>
+          </div>
+          <div class="stat" id="sPlanCard">
+            <span class="lbl"><svg class="i"><use href="#crown"/></svg> Planın</span>
+            <span class="big" id="sPlan">Ücretsiz</span>
+            <span class="sub" id="sPlanTxt"></span>
+            <a href="#plan" id="sPlanLink">Planı yönet</a>
+          </div>
+          <div class="stat">
+            <span class="lbl"><svg class="i"><use href="#dl"/></svg> İndirilen not</span>
+            <span class="big" id="sOwned">0</span>
+            <span class="sub">Tekrar indirmek ücretsiz</span>
+            <a href="#notlarim">Notlarıma git</a>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ph"><h2><svg class="i"><use href="#spark"/></svg> Sana önerilen notlar</h2><a href="index.html">Tüm notlar</a></div>
+          <div class="ngrid" id="recList"></div>
+        </div>
+        <div class="panel">
+          <div class="ph"><h2><svg class="i"><use href="#clock"/></svg> Son hareketler</h2><a href="#" id="allActs">Tümünü göster</a></div>
+          <ul class="acts" id="actList"></ul>
+        </div>
+      </section>
+
+      <!-- ============ NOTLARIM ============ -->
+      <section class="view" data-view="notlarim" aria-labelledby="t-notlar" hidden>
+        <div class="vh"><h1 id="t-notlar">Notlarım</h1><p>İndirdiğin notlar burada. Bir notu tekrar indirmek token harcamaz.</p></div>
+        <div class="panel">
+          <ul class="rows" id="ownedList"></ul>
+        </div>
+      </section>
+
+      <!-- ============ PLAN ============ -->
+      <section class="view" data-view="plan" aria-labelledby="t-plan" hidden>
+        <div class="vh"><h1 id="t-plan">Planım</h1><p id="planSub"></p></div>
+        <div class="plans">
+          <div class="plan" id="pFree">
+            <h3>Ücretsiz <span class="badge ok" data-current hidden><svg class="i"><use href="#check"/></svg> Mevcut planın</span></h3>
+            <div class="price">0 TL</div>
+            <ul>
+              <li><svg class="i"><use href="#check"/></svg> Haftada 5 token</li>
+              <li><svg class="i"><use href="#check"/></svg> %5 önizleme</li>
+              <li><svg class="i"><use href="#check"/></svg> Tüm notlara erişim</li>
+            </ul>
+            <button class="btn btn-l" id="toFree" type="button">Ücretsiz plana dön</button>
+          </div>
+          <div class="plan pro" id="pPro">
+            <h3>Premium <span class="badge pro" data-current hidden><svg class="i"><use href="#check"/></svg> Mevcut planın</span></h3>
+            <div class="price">49 TL <small>/ ay</small></div>
+            <ul>
+              <li><svg class="i"><use href="#check"/></svg> Haftada 60 token</li>
+              <li><svg class="i"><use href="#check"/></svg> %15 genişletilmiş önizleme</li>
+              <li><svg class="i"><use href="#check"/></svg> Sınırsız cihazdan erişim</li>
+            </ul>
+            <button class="btn btn-y" id="toPro" type="button"><svg class="i"><use href="#crown"/></svg> Premium'a yükselt</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ph"><h2><svg class="i"><use href="#list"/></svg> Planları karşılaştır</h2></div>
+          <table class="compare">
+            <thead><tr><th>Özellik</th><th>Ücretsiz</th><th>Premium</th></tr></thead>
+            <tbody>
+              <tr><td>Haftalık token</td><td>5</td><td>60</td></tr>
+              <tr><td>Önizleme oranı</td><td>%5</td><td>%15</td></tr>
+              <tr><td>İndirilen notlara tekrar erişim</td><td>Var</td><td>Var</td></tr>
+              <tr><td>Aylık ücret</td><td>0 TL</td><td>49 TL</td></tr>
+            </tbody>
+          </table>
+          <p class="muted small" style="margin-top:.8rem">Bu bir demo sürümdür. Plan değişikliğinde gerçek ödeme alınmaz.</p>
+        </div>
+      </section>
+
+      <!-- ============ PROFİL ============ -->
+      <section class="view" data-view="profil" aria-labelledby="t-profil" hidden>
+        <div class="vh"><h1 id="t-profil">Profil</h1><p>Okul bilgilerini güncel tut, sana uygun notları önerelim.</p></div>
+        <div class="panel" id="profView">
+          <div class="ph"><h2><svg class="i"><use href="#user"/></svg> Profil bilgileri</h2><button class="btn btn-l sm" type="button" id="editProf"><svg class="i"><use href="#edit"/></svg> Düzenle</button></div>
+          <dl class="info" id="profInfo"></dl>
+        </div>
+        <form class="panel" id="profForm" novalidate hidden>
+          <div class="ph"><h2><svg class="i"><use href="#edit"/></svg> Profili düzenle</h2></div>
+          <div class="field">
+            <label for="pName">Ad soyad</label>
+            <input class="inp" id="pName" maxlength="60" autocomplete="name">
+            <p class="err" id="pNameErr"></p>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="uni">Üniversite</label>
+              <div class="combo" id="uniBox">
+                <input class="inp" id="uni" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="uniList" autocomplete="off" placeholder="Yazmaya başla">
+                <svg class="i mag"><use href="#search"/></svg>
+                <ul class="opts" id="uniList" role="listbox" aria-label="Üniversiteler" hidden></ul>
+              </div>
+              <p class="err" id="uniErr"></p>
+            </div>
+            <div class="field">
+              <label for="dept">Bölüm</label>
+              <div class="combo" id="deptBox">
+                <input class="inp" id="dept" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="deptList" autocomplete="off" placeholder="Yazmaya başla">
+                <svg class="i mag"><use href="#search"/></svg>
+                <ul class="opts" id="deptList" role="listbox" aria-label="Bölümler" hidden></ul>
+              </div>
+              <p class="err" id="deptErr"></p>
+            </div>
+          </div>
+          <div class="field">
+            <span class="lbl2" id="lvlLbl">Öğrenim durumu</span>
+            <div class="seg" role="radiogroup" aria-labelledby="lvlLbl">
+              <input type="radio" name="level" id="lv1" value="lisans"><label for="lv1">Lisans</label>
+              <input type="radio" name="level" id="lv2" value="yl"><label for="lv2">Yüksek Lisans</label>
+              <input type="radio" name="level" id="lv3" value="dr"><label for="lv3">Doktora</label>
+              <input type="radio" name="level" id="lv4" value="mezun"><label for="lv4">Mezun</label>
+            </div>
+          </div>
+          <div class="field" id="termField">
+            <label for="term">Dönem</label>
+            <select class="inp" id="term"></select>
+            <p class="tnote" id="termNote" hidden></p>
+            <p class="err" id="termErr"></p>
+          </div>
+          <div class="field">
+            <span class="lbl2">İlgi alanları <span class="muted small">(en fazla 3)</span></span>
+            <div class="chips" id="chips"></div>
+            <p class="err" id="chipErr"></p>
+          </div>
+          <div class="factions">
+            <button class="btn btn-b" type="submit"><svg class="i"><use href="#check"/></svg> Kaydet</button>
+            <button class="btn btn-l" type="button" id="cancelProf">Vazgeç</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ============ GÜVENLİK ============ -->
+      <section class="view" data-view="guvenlik" aria-labelledby="t-guv" hidden>
+        <div class="vh"><h1 id="t-guv">Güvenlik</h1><p>Şifreni, kurtarma kodlarını ve oturumunu buradan yönet.</p></div>
+
+        <!-- Şifre değiştir (e-posta ile kayıt olanlar) -->
+        <form class="panel" id="pwForm" novalidate>
+          <div class="ph"><h2><svg class="i"><use href="#lock"/></svg> Şifre değiştir</h2></div>
+          <div class="field">
+            <label for="curPass">Mevcut şifre</label>
+            <div class="pw"><input class="inp" id="curPass" type="password" autocomplete="current-password" maxlength="64"><button type="button" class="eye" data-eye="curPass" aria-label="Şifreyi göster" title="Şifreyi göster" aria-pressed="false"><svg class="i"><use href="#eye"/></svg></button></div>
+            <p class="caps" data-caps-for="curPass" hidden><svg class="i"><use href="#alert"/></svg> Caps Lock açık</p>
+            <p class="err" id="curPassErr"></p>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="newPass">Yeni şifre</label>
+              <div class="pw"><input class="inp" id="newPass" type="password" autocomplete="new-password" maxlength="64"><button type="button" class="eye" data-eye="newPass" aria-label="Şifreyi göster" title="Şifreyi göster" aria-pressed="false"><svg class="i"><use href="#eye"/></svg></button></div>
+              <p class="caps" data-caps-for="newPass" hidden><svg class="i"><use href="#alert"/></svg> Caps Lock açık</p>
+              <p class="err" id="newPassErr"></p>
+            </div>
+            <div class="field">
+              <label for="newPass2">Yeni şifre tekrar</label>
+              <div class="pw"><input class="inp" id="newPass2" type="password" autocomplete="new-password" maxlength="64"><button type="button" class="eye" data-eye="newPass2" aria-label="Şifreyi göster" title="Şifreyi göster" aria-pressed="false"><svg class="i"><use href="#eye"/></svg></button></div>
+              <p class="caps" data-caps-for="newPass2" hidden><svg class="i"><use href="#alert"/></svg> Caps Lock açık</p>
+              <p class="err" id="newPass2Err"></p>
+            </div>
+          </div>
+          <div class="meter" id="meter" data-l="0"><div class="bars"><i></i><i></i><i></i></div><b id="meterTxt"></b></div>
+          <ul class="rules" id="rules">
+            <li data-r="len"><svg class="i n"><use href="#dot"/></svg><svg class="i y"><use href="#check"/></svg> En az 6 karakter</li>
+            <li data-r="up"><svg class="i n"><use href="#dot"/></svg><svg class="i y"><use href="#check"/></svg> En az 1 büyük harf</li>
+            <li data-r="num"><svg class="i n"><use href="#dot"/></svg><svg class="i y"><use href="#check"/></svg> En az 1 rakam</li>
+            <li data-r="sym"><svg class="i n"><use href="#dot"/></svg><svg class="i y"><use href="#check"/></svg> En az 1 sembol (# % * ! ?)</li>
+          </ul>
+          <div class="factions" style="margin-top:1.1rem"><button class="btn btn-b" type="submit">Şifreyi güncelle</button></div>
+        </form>
+        <div class="panel" id="pwSocial" hidden>
+          <div class="ph"><h2><svg class="i"><use href="#lock"/></svg> Şifre</h2></div>
+          <p class="muted" id="pwSocialTxt"></p>
+        </div>
+
+        <!-- Kurtarma kodları -->
+        <div class="panel" id="rcPanel">
+          <div class="ph"><h2><svg class="i"><use href="#key"/></svg> Kurtarma kodları</h2><span class="badge" id="rcCount"></span></div>
+          <p class="muted">Şifreni unutursan hesabına bu kodlarla girebilirsin. Her kod yalnızca bir kez kullanılabilir. Yeni kod ürettiğinde eski kodların hepsi geçersiz olur.</p>
+          <ul class="rc-list" id="rcList" hidden></ul>
+          <div class="factions" style="margin-top:.9rem">
+            <button class="btn btn-l sm" type="button" id="rcToggle"><svg class="i"><use href="#eye"/></svg> <span>Kodları göster</span></button>
+            <button class="btn btn-l sm" type="button" id="rcDownload"><svg class="i"><use href="#dl"/></svg> İndir (.txt)</button>
+            <button class="btn btn-l sm" type="button" id="rcNew"><svg class="i"><use href="#refresh"/></svg> Yeni kodlar üret</button>
+          </div>
+        </div>
+
+        <!-- Oturum -->
+        <div class="panel">
+          <div class="ph"><h2><svg class="i"><use href="#clock"/></svg> Oturum</h2></div>
+          <ul class="rows">
+            <li><span class="ri"><svg class="i"><use href="#user"/></svg></span><span class="rt"><b>Bu sekme</b><small id="sessInfo"></small></span><button class="btn btn-l sm" type="button" data-logout><svg class="i"><use href="#logout"/></svg> Çıkış yap</button></li>
+          </ul>
+          <p class="muted small" style="margin-top:.8rem">Güvenliğin için oturumun bu sekmeyi kapattığında otomatik olarak kapanır.</p>
+        </div>
+
+        <!-- Hesabı sil -->
+        <div class="panel danger">
+          <div class="ph"><h2><svg class="i"><use href="#trash"/></svg> Hesabı sil</h2></div>
+          <p class="muted">Hesabını silersen profilin, indirdiğin notların listesi ve tokenların kalıcı olarak silinir. Bu işlem geri alınamaz.</p>
+          <div class="factions" style="margin-top:.9rem"><button class="btn btn-do" type="button" id="delAcc"><svg class="i"><use href="#trash"/></svg> Hesabımı sil</button></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer><div class="wrap">Öğrencinotu101 · Bu sayfa bir tanıtım demosudur. Ödeme alınmaz, bilgiler yalnızca bu tarayıcıda saklanır.</div></footer>
+
+<!-- Onay penceresi (plan değişikliği, yeni kod, hesap silme) -->
+<dialog id="cDlg" aria-labelledby="cTitle">
+  <div class="dh"><h2 id="cTitle"></h2><button class="x" type="button" data-close aria-label="Kapat"><svg class="i"><use href="#close"/></svg></button></div>
+  <form class="db" id="cForm" novalidate>
+    <div id="cBody"></div>
+    <div class="field" id="cInputWrap" hidden style="margin-top:.9rem">
+      <label for="cInput" id="cInputLbl"></label>
+      <input class="inp" id="cInput" autocomplete="off" spellcheck="false">
+      <p class="err" id="cInputErr"></p>
+    </div>
+    <div class="dfoot">
+      <button type="submit" class="btn btn-b" id="cOk"></button>
+      <button type="button" class="btn btn-l" data-close>Vazgeç</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =========================================================
+   Öğrencinotu101 · Kullanıcı paneli (demo)
+   Tek dosyada birden fazla "sayfa": adres #genel, #notlarim, #plan,
+   #profil, #guvenlik olarak değişir, ilgili bölüm görünür.
+   Veriler register.html'in kaydettiği kullanıcı kaydından okunur,
+   index.html ile aynı token/plan yapısı kullanılır.
+   ========================================================= */
+
+/* ---------- Ayarlar (index.html ile aynı) ---------- */
+const USERS_KEY = 'ogrencinotu101_users', SESSION_KEY = 'ogrencinotu101_session';
+const WEEK = 7 * 864e5, FREE = 5, PREMIUM = 60;
+const NOTES = [   // index.html'deki notlarla aynı
+  {id:1, uni:'Pamukkale Üni.', dept:'Bilgisayar Müh.', title:'BMG Vize Özet Notları 2026', rate:4.8, votes:62, date:'2026-10-20', ex:['Bölüm 1: Bilgisayar Mühendisliğine Giriş','Algoritma ve program kavramı','Bilgisayarın temel bileşenleri','Sayı sistemleri: ikilik, onluk, onaltılık'] },
+  {id:2, uni:'Pamukkale Üni.', dept:'Fizik', title:'Fizik Lab Raporları ve Formüller', rate:4.0, votes:21, date:'2026-10-12', ex:['Deney 1: Ölçme ve hata analizi','Standart sapma ve belirsizlik hesabı','Temel formül tablosu','Birim dönüşümleri'] },
+  {id:3, uni:'Pamukkale Üni.', dept:'Matematik', title:'Kalkülüs 1 Çıkmış Sorular', rate:5.0, votes:84, date:'2026-10-25', ex:['Limit ve süreklilik soruları','Türev kuralları özeti','Çıkmış soru 1: lim x→0 sin(x)/x','Çıkmış soru 2: zincir kuralı'] },
+  {id:4, uni:'Pamukkale Üni.', dept:'Bilgisayar Müh.', title:'C Programlama Vize Soru Bankası', rate:4.7, votes:48, date:'2026-10-22', ex:['Değişkenler ve veri tipleri','printf ve scanf kullanımı','if / else ve switch yapıları','Döngü soruları ve çözümleri'] },
+  {id:5, uni:'Pamukkale Üni.', dept:'Matematik', title:'Lineer Cebir Formül Kartları', rate:4.4, votes:30, date:'2026-10-02', ex:['Matris işlemleri','Determinant hesaplama yöntemleri','Ters matris adımları','Özdeğer ve özvektör'] },
+  {id:6, uni:'Pamukkale Üni.', dept:'Fizik', title:'Fizik 101 Çıkmış Sorular', rate:4.2, votes:37, date:'2026-09-28', ex:['Vektörler ve hareket','Newton yasaları örnekleri','İş, enerji, güç soruları','Çıkmış soru çözümleri'] },
+  {id:7, uni:'Pamukkale Üni.', dept:'İşletme', title:'Genel Muhasebe Özet Notları', rate:4.5, votes:26, date:'2026-10-15', ex:['Muhasebenin temel kavramları','Hesap planı ve yevmiye kaydı','Bilanço eşitliği','Örnek kayıt soruları'] },
+  {id:8, uni:'Pamukkale Üni.', dept:'Bilgisayar Müh.', title:'Ayrık Matematik Konu Anlatımı', rate:4.6, votes:19, date:'2026-10-18', ex:['Önermeler ve doğruluk tabloları','Kümeler ve bağıntılar','Tümevarım ispatı','Sayma ilkeleri'] }
+];
+// Register'daki tam bölüm adlarını index.html'deki not bölümleriyle eşleştirir
+const DEPT_MAP = {
+  'Bilgisayar Mühendisliği':'Bilgisayar Müh.', 'Yazılım Mühendisliği':'Bilgisayar Müh.', 'Yönetim Bilişim Sistemleri':'Bilgisayar Müh.',
+  'Fizik':'Fizik', 'Elektrik-Elektronik Mühendisliği':'Fizik', 'Matematik':'Matematik', 'İstatistik':'Matematik', 'Matematik Öğretmenliği':'Matematik',
+  'İşletme':'İşletme', 'İktisat':'İşletme', 'Maliye':'İşletme', 'Bankacılık ve Finans':'İşletme', 'Ekonometri':'İşletme'
+};
+const PROVIDER_LABEL = {email:'E-posta ve şifre', google:'Google', apple:'Apple', facebook:'Facebook'};
+const LEVEL_LABEL = {lisans:'Lisans', yl:'Yüksek Lisans', dr:'Doktora', mezun:'Mezun'};
+
+/* Register ile aynı listeler */
+const UNIS = [
+  ['Orta Doğu Teknik Üniversitesi','ODTÜ METU'], ['Boğaziçi Üniversitesi','BOUN'], ['İstanbul Teknik Üniversitesi','İTÜ'],
+  ['Bilkent Üniversitesi',''], ['Koç Üniversitesi',''], ['Sabancı Üniversitesi',''], ['Hacettepe Üniversitesi',''],
+  ['Ankara Üniversitesi',''], ['Gazi Üniversitesi',''], ['İstanbul Üniversitesi',''], ['İstanbul Üniversitesi-Cerrahpaşa','İÜC'],
+  ['Yıldız Teknik Üniversitesi','YTÜ'], ['Marmara Üniversitesi',''], ['Galatasaray Üniversitesi','GSÜ'], ['Ege Üniversitesi',''],
+  ['Dokuz Eylül Üniversitesi','DEÜ'], ['İzmir Yüksek Teknoloji Enstitüsü','İYTE'], ['Pamukkale Üniversitesi','PAÜ'],
+  ['Akdeniz Üniversitesi',''], ['Anadolu Üniversitesi',''], ['Eskişehir Teknik Üniversitesi','ESTÜ'],
+  ['Eskişehir Osmangazi Üniversitesi','ESOGÜ'], ['Bursa Uludağ Üniversitesi','BUÜ'], ['Selçuk Üniversitesi',''],
+  ['Erciyes Üniversitesi','ERÜ'], ['Atatürk Üniversitesi',''], ['Karadeniz Teknik Üniversitesi','KTÜ'],
+  ['Ondokuz Mayıs Üniversitesi','OMÜ'], ['Çukurova Üniversitesi',''], ['Sakarya Üniversitesi','SAÜ'], ['Kocaeli Üniversitesi','KOÜ'],
+  ['Gebze Teknik Üniversitesi','GTÜ'], ['TOBB Ekonomi ve Teknoloji Üniversitesi','TOBB ETÜ'], ['Özyeğin Üniversitesi',''],
+  ['Bahçeşehir Üniversitesi','BAU'], ['Yeditepe Üniversitesi',''], ['Başkent Üniversitesi',''], ['Fırat Üniversitesi',''],
+  ['İnönü Üniversitesi',''], ['Süleyman Demirel Üniversitesi','SDÜ']
+];
+// [bölüm adı, kısaltma, süre]  süre: 4 yıl varsayılan, 5 yıllık bölümler ve Tıp ayrı
+const DEPTS = [
+  ['Bilgisayar Mühendisliği','BM'], ['Yazılım Mühendisliği',''], ['Elektrik-Elektronik Mühendisliği','EEM'], ['Makine Mühendisliği',''],
+  ['İnşaat Mühendisliği',''], ['Endüstri Mühendisliği',''], ['Kimya Mühendisliği',''], ['Mekatronik Mühendisliği',''],
+  ['Biyomedikal Mühendisliği',''], ['Gıda Mühendisliği',''], ['Çevre Mühendisliği',''], ['Mimarlık',''], ['İç Mimarlık',''],
+  ['Şehir ve Bölge Planlama',''], ['Tıp','', 'tip'], ['Diş Hekimliği','', 5], ['Eczacılık','', 5], ['Veteriner Hekimliği','', 5],
+  ['Hemşirelik',''], ['Fizyoterapi ve Rehabilitasyon',''], ['Beslenme ve Diyetetik',''], ['Psikoloji',''], ['Hukuk',''],
+  ['İşletme',''], ['İktisat',''], ['Uluslararası İlişkiler',''], ['Siyaset Bilimi ve Kamu Yönetimi',''], ['Maliye',''],
+  ['Bankacılık ve Finans',''], ['Ekonometri',''], ['Yönetim Bilişim Sistemleri','YBS'], ['Matematik',''], ['Fizik',''],
+  ['Kimya',''], ['Biyoloji',''], ['Moleküler Biyoloji ve Genetik',''], ['İstatistik',''], ['Sosyoloji',''], ['Tarih',''],
+  ['Türk Dili ve Edebiyatı',''], ['İngiliz Dili ve Edebiyatı',''], ['Mütercim-Tercümanlık',''], ['Felsefe',''], ['Coğrafya',''],
+  ['Sınıf Öğretmenliği',''], ['Matematik Öğretmenliği',''], ['İngilizce Öğretmenliği',''], ['Okul Öncesi Öğretmenliği',''],
+  ['Rehberlik ve Psikolojik Danışmanlık','PDR'], ['Gazetecilik',''], ['Halkla İlişkiler ve Tanıtım',''],
+  ['Radyo, Televizyon ve Sinema','RTS'], ['Grafik Tasarım',''], ['Turizm İşletmeciliği',''], ['Antrenörlük Eğitimi','']
+];
+const INTERESTS = ['Uzay & Astronomi','Spor','Haber & Gündem','Askeri & Savunma','Teknoloji','Yazılım','Bilim','Tarih','Sanat','Müzik',
+  'Sinema & Dizi','Oyun','Kitap & Edebiyat','Seyahat','Girişimcilik','Ekonomi','Sağlık','Fotoğrafçılık','Doğa & Çevre','Yemek'];
+
+/* ---------- Yardımcılar ---------- */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm = s => String(s).toLocaleLowerCase('tr').replace(/ı/g,'i').normalize('NFD').replace(/[̀-ͯ]/g,'');
+const ALERT = '<svg class="i"><use href="#alert"/></svg>';
+function setErr(id, msg){ const el = $('#'+id); el.innerHTML = msg ? ALERT + '<span>' + esc(msg) + '</span>' : ''; }
+function shake(el){ el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 3400);
+}
+const fmtDate = iso => new Date(iso).toLocaleDateString('tr-TR', {day:'numeric', month:'long', year:'numeric'});
+const fmtTime = iso => new Date(iso).toLocaleString('tr-TR', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
+function ago(iso){
+  const s = Math.max(0, (Date.now() - new Date(iso)) / 1000);
+  if(s < 60) return 'az önce';
+  if(s < 3600) return Math.floor(s / 60) + ' dk önce';
+  if(s < 86400) return Math.floor(s / 3600) + ' saat önce';
+  if(s < 7 * 86400) return Math.floor(s / 86400) + ' gün önce';
+  return fmtDate(iso);
+}
+function cyrb53(str, seed = 0){   // register/login ile aynı demo şifre özeti
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for(let i = 0, ch; i < str.length; i++){ ch = str.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507); h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507); h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16).padStart(14, '0');
+}
+const hashPass = (email, pass) => cyrb53(email + '|' + pass);
+function passRules(p){ return { len:p.length >= 6, up:/[A-ZÇĞİÖŞÜ]/.test(p), num:/\d/.test(p), sym:/[^A-Za-z0-9ÇĞİÖŞÜçğıöşü\s]/.test(p) }; }
+function nameError(v){
+  if(!v) return 'Adını ve soyadını yazmalısın.';
+  if(/\d/.test(v)) return 'Ad soyad rakam içeremez.';
+  if(!/^[A-Za-zÇĞİÖŞÜçğıöşüÂâÎîÛû'’\- ]+$/.test(v)) return 'Ad soyad yalnızca harflerden oluşmalı.';
+  if(v.split(' ').length < 2) return 'Adınla birlikte soyadını da yaz.';
+  if(v.split(' ').some(w => w.replace(/['’\-]/g,'').length < 2)) return 'Ad ve soyad en az 2 harf olmalı.';
+  return '';
+}
+function makeRecoveryCodes(n = 6){
+  const A = 'abcdefghjkmnpqrstuvwxyz23456789';
+  const rnd = k => { try{ return crypto.getRandomValues(new Uint32Array(1))[0] % k; }catch(e){ return Math.floor(Math.random() * k); } };
+  const part = () => Array.from({length:5}, () => A[rnd(A.length)]).join('');
+  return Array.from({length:n}, () => part() + '-' + part());
+}
+function saveFile(name, text){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], {type:'text/plain;charset=utf-8'}));
+  a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+/* ---------- Kullanıcı ve oturum ---------- */
+function loadUsers(){ try{ const u = JSON.parse(localStorage.getItem(USERS_KEY)); return Array.isArray(u) ? u : []; }catch(e){ return []; } }
+function saveUsers(list){ try{ localStorage.setItem(USERS_KEY, JSON.stringify(list)); }catch(e){} }
+function getSession(){ try{ return JSON.parse(sessionStorage.getItem(SESSION_KEY)); }catch(e){ return null; } }
+function logout(msg){
+  try{ sessionStorage.removeItem(SESSION_KEY); }catch(e){}
+  location.replace('login.html');
+}
+const SESSION = getSession();
+let U = SESSION && loadUsers().find(u => u.email === SESSION.email);
+// Giriş yapılmamışsa panel açılmaz, giriş sayfasına gidilir
+if(!U){ document.documentElement.style.visibility = 'hidden'; logout(); }
+
+// Kullanıcı kaydını değiştirmenin tek yolu: en güncel listeyi oku, değiştir, kaydet
+function mutate(fn){
+  const users = loadUsers(), me = users.find(u => u.email === U.email);
+  if(!me){ logout(); return; }
+  fn(me); saveUsers(users); U = me;
+}
+function logAct(me, type, text){
+  me.activity = me.activity || [];
+  me.activity.unshift({type, text, at:new Date().toISOString()});
+  me.activity = me.activity.slice(0, 50);
+}
+// Eksik alanları tamamla ve haftalık token yenilemesini yap (index.html ile aynı kural)
+if(U) mutate(me => {
+  me.plan = me.plan || {tokens:FREE, premium:false, owned:[], week:Date.now()};
+  me.plan.ownedAt = me.plan.ownedAt || {};
+  me.recovery = me.recovery || [];
+  if(!me.activity || !me.activity.length) me.activity = [{type:'account', text:'Hesap oluşturuldu', at:me.createdAt || new Date().toISOString()}];
+  if(Date.now() - me.plan.week >= WEEK){
+    me.plan.tokens = me.plan.premium ? PREMIUM : FREE; me.plan.week = Date.now();
+    logAct(me, 'plan', `Haftalık token hakkın yenilendi (${me.plan.tokens} token)`);
+  }
+});
+
+/* ---------- Not indirme (index.html ile aynı dosya) ---------- */
+function fileFor(n){
+  saveFile(n.title.replace(/[^\wığüşöçİĞÜŞÖÇ ]/g,'').replace(/\s+/g,'-') + '.txt',
+    `Öğrencinotu101 demo dosyası\n\n${n.title}\n${n.uni} - ${n.dept}\n\n` + n.ex.join('\n'));
+}
+function download(id){
+  const n = NOTES.find(x => x.id === id); if(!n) return;
+  if(U.plan.owned.includes(id)){ fileFor(n); toast('Bu notu daha önce aldın, token harcanmadı.'); return; }
+  if(U.plan.tokens < 1){
+    toast('Token hakkın bitti. Haftalık yenilemeyi bekleyebilir ya da Premium\'a geçebilirsin.');
+    location.hash = '#plan'; return;
+  }
+  mutate(me => {
+    me.plan.tokens--; me.plan.owned.push(id); me.plan.ownedAt[id] = new Date().toISOString();
+    logAct(me, 'download', `"${n.title}" indirildi (1 token)`);
+  });
+  fileFor(n); toast(`"${n.title}" indirildi. Kalan token: ${U.plan.tokens}`);
+  renderAll();
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-download]'); if(b) download(+b.dataset.download); });
+
+/* ---------- Çizim ---------- */
+const firstName = () => U.name.split(' ')[0];
+const maxTok = () => U.plan.premium ? PREMIUM : FREE;
+function renewText(){
+  const left = U.plan.week + WEEK - Date.now(), d = Math.floor(left / 864e5), h = Math.floor(left % 864e5 / 36e5);
+  return left <= 0 ? 'Bugün yenilenir' : `${d ? d + ' gün ' : ''}${h} saat sonra ${maxTok()} tokene yenilenir`;
+}
+function noteCard(n, why){
+  const own = U.plan.owned.includes(n.id);
+  return `<article class="note">
+    <div class="meta"><span>${esc(n.uni)}</span><span class="tag">${esc(n.dept)}</span></div>
+    <h3>${esc(n.title)}</h3>
+    <div class="rate"><svg class="i" aria-hidden="true"><use href="#star"/></svg> ${n.rate.toFixed(1)} <small>(${n.votes} değerlendirme)</small></div>
+    ${why ? `<span class="why">${esc(why)}</span>` : ''}
+    <button class="btn ${own ? 'btn-l' : 'btn-b'} sm" data-download="${n.id}"><svg class="i"><use href="#dl"/></svg> ${own ? 'Tekrar indir' : '1 token ile indir'}</button>
+  </article>`;
+}
+function recommendations(){
+  // Önce kendi bölümün, sonra kendi üniversiten, sonra en yüksek puanlılar (indirdiklerin hariç)
+  const mine = DEPT_MAP[U.dept], uniWord = norm(U.uni.split(' ')[0]);
+  return NOTES.filter(n => !U.plan.owned.includes(n.id))
+    .map(n => ({n, s:(n.dept === mine ? 2 : 0) + (norm(n.uni).startsWith(uniWord) ? 1 : 0), why: n.dept === mine ? 'Bölümüne uygun' : norm(n.uni).startsWith(uniWord) ? 'Üniversitenden' : 'Çok beğenilen'}))
+    .sort((a, b) => b.s - a.s || b.n.rate - a.n.rate).slice(0, 3);
+}
+const ACT_ICON = {download:'dl', plan:'crown', security:'shield', login:'user', account:'spark', profile:'edit'};
+let showAllActs = false;
+function renderHeader(){
+  $('#hTokens').textContent = U.plan.tokens;
+  $('#meAv').textContent = U.name[0].toLocaleUpperCase('tr');
+  $('#meName').textContent = U.name; $('#meMail').textContent = U.email;
+}
+function renderGenel(){
+  $('#hello').textContent = firstName();
+  $('#helloSub').textContent = [U.uni, U.dept, U.level === 'mezun' ? 'Mezun' : U.term].filter(Boolean).join(' · ');
+  $('#sTok').textContent = U.plan.tokens; $('#sTokMax').textContent = maxTok();
+  $('#sTokBar').style.width = Math.min(100, U.plan.tokens / maxTok() * 100) + '%';
+  $('#sRenew').textContent = renewText();
+  $('#sPlanCard').classList.toggle('pro', U.plan.premium);
+  $('#sPlan').textContent = U.plan.premium ? 'Premium' : 'Ücretsiz';
+  $('#sPlanTxt').textContent = U.plan.premium ? 'Haftada 60 token · %15 önizleme' : 'Haftada 5 token · %5 önizleme';
+  $('#sPlanLink').textContent = U.plan.premium ? 'Planı yönet' : "Premium'a yükselt";
+  $('#sOwned').textContent = U.plan.owned.length;
+  const rec = recommendations();
+  $('#recList').innerHTML = rec.length ? rec.map(r => noteCard(r.n, r.why)).join('')
+    : '<div class="empty" style="grid-column:1/-1">Şu an tüm notları indirmişsin. Yeni notlar eklendikçe burada göreceksin.</div>';
+  const acts = U.activity.slice(0, showAllActs ? 50 : 5);
+  $('#actList').innerHTML = acts.map(a => `<li><span class="dotc ${a.type}"><svg class="i"><use href="#${ACT_ICON[a.type] || 'clock'}"/></svg></span>
+    <span class="t"><span>${esc(a.text)}</span><small title="${esc(fmtTime(a.at))}">${esc(ago(a.at))}</small></span></li>`).join('');
+  $('#allActs').hidden = U.activity.length <= 5;
+  $('#allActs').textContent = showAllActs ? 'Daha az göster' : 'Tümünü göster';
+}
+function renderNotlar(){
+  const own = U.plan.owned.map(id => NOTES.find(n => n.id === id)).filter(Boolean)
+    .sort((a, b) => (U.plan.ownedAt[b.id] || '').localeCompare(U.plan.ownedAt[a.id] || ''));
+  $('#ownedList').innerHTML = own.length ? own.map(n => `<li>
+      <span class="ri"><svg class="i"><use href="#book"/></svg></span>
+      <span class="rt"><b>${esc(n.title)}</b><small>${esc(n.uni)} · ${esc(n.dept)}${U.plan.ownedAt[n.id] ? ' · ' + esc(fmtDate(U.plan.ownedAt[n.id])) + ' tarihinde indirildi' : ''}</small></span>
+      <button class="btn btn-l sm" data-download="${n.id}"><svg class="i"><use href="#dl"/></svg> Tekrar indir</button></li>`).join('')
+    : `<li style="display:block;padding:0"><div class="empty">Henüz not indirmedin.<a class="btn btn-b sm" href="index.html"><svg class="i"><use href="#search"/></svg> Notlara göz at</a></div></li>`;
+}
+function renderPlan(){
+  const pro = U.plan.premium;
+  $('#planSub').textContent = pro ? 'Premium plandasın. Haftada 60 token ve %15 önizleme hakkın var.' : 'Ücretsiz plandasın. Daha fazla token için Premium\'a yükseltebilirsin.';
+  $('#pFree [data-current]').hidden = pro; $('#pPro [data-current]').hidden = !pro;
+  $('#toFree').hidden = !pro; $('#toPro').hidden = pro;
+}
+function renderProfil(){
+  const rows = [['Ad soyad', U.name], ['E-posta', U.email], ['Üniversite', U.uni], ['Bölüm', U.dept],
+    ['Öğrenim', LEVEL_LABEL[U.level] || '-'], ['Dönem', U.level === 'mezun' ? '-' : (U.term || '-')],
+    ['İlgi alanları', U.interests && U.interests.length ? U.interests.join(', ') : 'Seçilmedi'],
+    ['Kayıt yöntemi', PROVIDER_LABEL[U.provider] || 'E-posta ve şifre'], ['Üyelik tarihi', U.createdAt ? fmtDate(U.createdAt) : '-']];
+  $('#profInfo').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('');
+}
+function renderGuvenlik(){
+  const social = U.provider && U.provider !== 'email';
+  $('#pwForm').hidden = social; $('#pwSocial').hidden = !social; $('#rcPanel').hidden = social;
+  if(social) $('#pwSocialTxt').textContent = `Hesabın ${PROVIDER_LABEL[U.provider]} ile bağlı olduğu için ayrı bir şifren yok. Giriş yaparken "${PROVIDER_LABEL[U.provider]} ile devam et" butonunu kullan.`;
+  const left = U.recovery.filter(c => !c.used).length;
+  $('#rcCount').textContent = `${U.recovery.length} koddan ${left} tanesi kullanılabilir`;
+  $('#rcCount').className = 'badge' + (left > 1 ? ' ok' : '');
+  $('#rcList').innerHTML = U.recovery.map(c => `<li class="${c.used ? 'used' : ''}" title="${c.used ? 'Kullanıldı' : 'Kullanılabilir'}">${esc(c.code)}</li>`).join('');
+  $('#sessInfo').textContent = `${PROVIDER_LABEL[SESSION.provider] || 'E-posta'} ile giriş yapıldı · ${fmtTime(new Date(SESSION.at).toISOString())}`;
+}
+function renderAll(){ renderHeader(); renderGenel(); renderNotlar(); renderPlan(); renderProfil(); renderGuvenlik(); }
+
+/* ---------- Sayfa geçişleri (tek dosyada çok sayfa) ---------- */
+const VIEWS = ['genel','notlarim','plan','profil','guvenlik'];
+const TITLES = {genel:'Genel bakış', notlarim:'Notlarım', plan:'Planım', profil:'Profil', guvenlik:'Güvenlik'};
+function route(){
+  const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'genel';
+  $$('.view').forEach(s => { const on = s.dataset.view === v; s.hidden = !on; if(on){ s.classList.remove('enter'); void s.offsetWidth; s.classList.add('enter'); } });
+  $$('[data-nav]').forEach(a => a.dataset.nav === v ? a.setAttribute('aria-current','page') : a.removeAttribute('aria-current'));
+  document.title = `${TITLES[v]} | Öğrencinotu101`;
+  if(v !== 'profil') closeProfForm();
+  window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', route);
+$('#allActs').addEventListener('click', e => { e.preventDefault(); showAllActs = !showAllActs; renderGenel(); });
+
+/* ---------- Çıkış ---------- */
+$$('[data-logout]').forEach(b => b.addEventListener('click', () => {
+  mutate(me => logAct(me, 'login', 'Oturum kapatıldı'));
+  logout();
+}));
+
+/* ---------- Onay penceresi ---------- */
+let cAction = null, cExpect = null;
+function confirmBox({title, body, ok, danger = false, expect = null, expectLabel = ''}, action){
+  $('#cTitle').textContent = title; $('#cBody').innerHTML = body;
+  $('#cOk').textContent = ok; $('#cOk').className = 'btn ' + (danger ? 'btn-d' : 'btn-b');
+  cExpect = expect; cAction = action;
+  $('#cInputWrap').hidden = !expect; $('#cInput').value = ''; setErr('cInputErr',''); $('#cInput').classList.remove('bad');
+  $('#cInputLbl').textContent = expectLabel;
+  $('#cDlg').showModal();
+  if(expect) setTimeout(() => $('#cInput').focus(), 30);
+}
+$('#cForm').addEventListener('submit', e => {
+  e.preventDefault();
+  if(cExpect && $('#cInput').value.trim().toLowerCase() !== cExpect.toLowerCase()){
+    setErr('cInputErr', 'Yazdığın metin eşleşmiyor.'); $('#cInput').classList.add('bad'); shake($('#cInput')); return;
+  }
+  $('#cDlg').close(); cAction && cAction();
+});
+$('#cInput').addEventListener('input', () => { setErr('cInputErr',''); $('#cInput').classList.remove('bad'); });
+$$('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+$('#cDlg').addEventListener('click', e => { if(e.target === e.currentTarget) e.currentTarget.close(); });
+
+/* ---------- Plan değişikliği (index.html ile aynı kural) ---------- */
+$('#toPro').addEventListener('click', () => confirmBox({
+  title: "Premium'a yükselt",
+  body: `<div class="paybox"><div class="price" style="margin:0">49 TL <small>/ ay</small></div><ul>
+      <li><svg class="i"><use href="#check"/></svg> Haftada 60 token, hemen 60 token yüklenir</li>
+      <li><svg class="i"><use href="#check"/></svg> %15 genişletilmiş önizleme</li>
+      <li><svg class="i"><use href="#check"/></svg> Sınırsız cihazdan erişim</li></ul></div>
+    <p class="muted small">Demo sürümdür, gerçek ödeme alınmaz.</p>`,
+  ok: "Premium'a yükselt"
+}, () => {
+  mutate(me => { me.plan.premium = true; me.plan.tokens = PREMIUM; me.plan.week = Date.now(); logAct(me, 'plan', "Premium plana geçildi (60 token yüklendi)"); });
+  renderAll(); toast('Premium aktif: 60 token yüklendi, önizleme %15 oldu.');
+}));
+$('#toFree').addEventListener('click', () => confirmBox({
+  title: 'Ücretsiz plana dön',
+  body: `<p>Ücretsiz plana dönersen haftalık hakkın 5 token olur ve önizleme %5'e düşer. Kalan tokenların en fazla 5 olacak şekilde ayarlanır.</p>`,
+  ok: 'Ücretsiz plana dön', danger: true
+}, () => {
+  mutate(me => { me.plan.premium = false; me.plan.tokens = Math.min(me.plan.tokens, FREE); me.plan.week = Date.now(); logAct(me, 'plan', 'Ücretsiz plana dönüldü'); });
+  renderAll(); toast('Ücretsiz plana dönüldü.');
+}));
+
+/* ---------- Profil düzenleme ---------- */
+/* Register ile aynı arama kutusu ve dönem listesi */
+function makeCombo(id, data, onChange){
+  const input = $('#'+id), list = $('#'+id+'List'), box = $('#'+id+'Box');
+  const items = data.map(([name, alias = '', extra]) => ({name, alias, extra, n:norm(name), a:norm(alias).split(' ').filter(Boolean)}));
+  let matches = [], active = -1, value = null;
+
+  // Sıralama: kısaltma tam eşleşme > adı ile başlayan > bir kelimesi ile başlayan > kısaltma ile başlayan > içinde geçen
+  function score(it, q){
+    if(it.a.includes(q)) return 0;
+    if(it.n.startsWith(q)) return 1;
+    if(it.n.split(/[\s\-,]+/).some(w => w.startsWith(q))) return 2;
+    if(it.a.some(a => a.startsWith(q))) return 3;
+    if(it.n.includes(q)) return 4;
+    return -1;
+  }
+  function hl(name, q){
+    const n = norm(name), i = q ? n.indexOf(q) : -1;
+    if(i < 0 || n.length !== name.length) return esc(name);
+    return esc(name.slice(0,i)) + '<mark>' + esc(name.slice(i, i+q.length)) + '</mark>' + esc(name.slice(i+q.length));
+  }
+  function render(){
+    const q = norm(input.value.trim().replace(/\s+/g,' '));
+    matches = q
+      ? items.map(it => ({it, s:score(it,q)})).filter(m => m.s >= 0).sort((a,b) => a.s - b.s || a.it.name.localeCompare(b.it.name,'tr')).map(m => m.it)
+      : [...items].sort((a,b) => a.name.localeCompare(b.name,'tr'));
+    list.innerHTML = matches.length
+      ? matches.map((it,i) => `<li role="option" id="${id}-o${i}" data-i="${i}" aria-selected="false"><span>${hl(it.name,q)}</span>${it.alias ? `<small>${esc(it.alias)}</small>` : ''}</li>`).join('')
+      : '<li class="none">Sonuç bulunamadı</li>';
+    open(); setActive(q && matches.length ? 0 : -1);
+  }
+  function open(){ list.hidden = false; input.setAttribute('aria-expanded','true'); }
+  function close(){ list.hidden = true; input.setAttribute('aria-expanded','false'); input.removeAttribute('aria-activedescendant'); active = -1; }
+  function setActive(i){
+    active = i;
+    list.querySelectorAll('[role=option]').forEach((li,j) => li.setAttribute('aria-selected', j === i));
+    if(i >= 0){ const li = $('#'+id+'-o'+i); input.setAttribute('aria-activedescendant', li.id); li.scrollIntoView({block:'nearest'}); }
+    else input.removeAttribute('aria-activedescendant');
+  }
+  function pick(it){
+    value = it; input.value = it.name; close();
+    box.classList.add('picked'); input.classList.remove('bad'); setErr(id+'Err','');
+    onChange(it);
+  }
+  function unpick(){ if(value){ value = null; box.classList.remove('picked'); onChange(null); } }
+
+  input.addEventListener('input', () => { unpick(); input.classList.remove('bad'); setErr(id+'Err',''); render(); });
+  input.addEventListener('click', () => { if(list.hidden) render(); });
+  input.addEventListener('keydown', e => {
+    if(e.key === 'ArrowDown'){ e.preventDefault(); if(list.hidden) render(); setActive(Math.min(active + 1, matches.length - 1)); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); if(!list.hidden) setActive(Math.max(active - 1, 0)); }
+    else if(e.key === 'Enter' && !list.hidden && active >= 0){ e.preventDefault(); pick(matches[active]); }
+    else if(e.key === 'Escape' && !list.hidden){ e.preventDefault(); e.stopPropagation(); close(); }
+    else if(e.key === 'Tab' && !list.hidden && active >= 0 && input.value.trim()) pick(matches[active]);
+  });
+  input.addEventListener('blur', () => setTimeout(() => {
+    if(!value){ const exact = items.find(it => it.n === norm(input.value.trim()) || it.a.includes(norm(input.value.trim()))); if(exact) pick(exact); }
+    close();
+  }, 120));
+  list.addEventListener('mousedown', e => { const li = e.target.closest('[role=option]'); if(li){ e.preventDefault(); pick(matches[+li.dataset.i]); } });
+
+  return { get value(){ return value; }, clear(){ value = null; input.value = ''; box.classList.remove('picked'); input.classList.remove('bad'); close(); } };
+}
+function markCombo(id, msg){ $('#'+id).classList.add('bad'); setErr(id+'Err', msg); }
+
+function termOptions(lvl, dept){
+  const range = (n, f) => Array.from({length:n}, (_, i) => f(i + 1));
+  if(lvl === 'yl') return ['Bilimsel Hazırlık', ...range(4, i => `${i}. Dönem (${i <= 2 ? 'Ders aşaması' : 'Tez aşaması'})`)];
+  if(lvl === 'dr') return ['Bilimsel Hazırlık', ...range(8, i => `${i}. Dönem (${i <= 4 ? 'Ders aşaması' : i === 5 ? 'Yeterlik' : 'Tez aşaması'})`)];
+  if(dept.extra === 'tip') return ['Hazırlık', 'Dönem 1 (Temel tıp bilimleri)', 'Dönem 2 (Temel tıp bilimleri)', 'Dönem 3 (Klinik öncesi)',
+                                   'Dönem 4 (Klinik stajlar)', 'Dönem 5 (Klinik stajlar)', 'Dönem 6 (İntörnlük)'];
+  const years = typeof dept.extra === 'number' ? dept.extra : 4;
+  return ['Hazırlık', ...range(years * 2, i => `${i}. Dönem`)];
+}
+function termNote(lvl, dept){
+  if(lvl === 'yl') return 'Yüksek lisans genellikle 4 dönemdir: ilk 2 dönem ders, sonraki dönemler tez aşamasıdır.';
+  if(lvl === 'dr') return 'Doktora genellikle 8 dönemdir: ders aşaması, yeterlik sınavı ve tez aşamasından oluşur.';
+  if(dept.extra === 'tip') return 'Tıp fakültesinde her dönem bir eğitim yılıdır. Toplam 6 dönem vardır, son dönem intörnlüktür.';
+  if(typeof dept.extra === 'number') return `${dept.name} ${dept.extra} yıllık (${dept.extra * 2} dönem) bir bölümdür.`;
+  return '';
+}
+const uniCombo = makeCombo('uni', UNIS, () => {});
+const deptCombo = makeCombo('dept', DEPTS, () => updateTerms());
+const level = () => document.querySelector('input[name=level]:checked')?.value || 'lisans';
+function updateTerms(keep){
+  const lvl = level(), dept = deptCombo.value, sel = $('#term');
+  $('#termField').hidden = lvl === 'mezun';
+  sel.classList.remove('bad'); setErr('termErr','');
+  if(!dept){ sel.disabled = true; sel.innerHTML = '<option value="">Önce bölümünü seç</option>'; $('#termNote').hidden = true; return; }
+  sel.disabled = false;
+  sel.innerHTML = '<option value="">Dönemini seç</option>' + termOptions(lvl, dept).map(o => `<option>${esc(o)}</option>`).join('');
+  if(keep) sel.value = keep;
+  const note = termNote(lvl, dept); $('#termNote').textContent = note; $('#termNote').hidden = !note;
+}
+$$('input[name=level]').forEach(r => r.addEventListener('change', () => updateTerms()));
+$('#term').addEventListener('change', () => { $('#term').classList.remove('bad'); setErr('termErr',''); });
+$('#chips').innerHTML = INTERESTS.map(t => `<button type="button" class="chip" aria-pressed="false" data-v="${esc(t)}"><svg class="i"><use href="#check"/></svg>${esc(t)}</button>`).join('');
+const pickedChips = () => $$('.chip[aria-pressed=true]').map(c => c.dataset.v);
+$('#chips').addEventListener('click', e => {
+  const c = e.target.closest('.chip'); if(!c) return;
+  const on = c.getAttribute('aria-pressed') === 'true';
+  if(!on && pickedChips().length >= 3){ setErr('chipErr','En fazla 3 ilgi alanı seçebilirsin.'); shake(c); return; }
+  c.setAttribute('aria-pressed', !on); setErr('chipErr','');
+});
+function openProfForm(){
+  $('#profView').hidden = true; $('#profForm').hidden = false;
+  $('#pName').value = U.name; setErr('pNameErr',''); $('#pName').classList.remove('bad');
+  // Arama kutularını mevcut değerle doldur ve seçili hale getir
+  uniCombo.clear(); deptCombo.clear();
+  $('#uni').value = U.uni; $('#uni').dispatchEvent(new Event('blur'));    // listeden seçilmiş gibi işaretlenir
+  $('#dept').value = U.dept; $('#dept').dispatchEvent(new Event('blur'));
+  $('#lv' + ({lisans:1, yl:2, dr:3, mezun:4}[U.level] || 1)).checked = true;
+  setTimeout(() => { updateTerms(U.term); }, 160);
+  $$('.chip').forEach(c => c.setAttribute('aria-pressed', (U.interests || []).includes(c.dataset.v)));
+  setErr('chipErr',''); setErr('uniErr',''); setErr('deptErr','');
+  setTimeout(() => $('#pName').focus(), 30);
+}
+function closeProfForm(){ $('#profForm').hidden = true; $('#profView').hidden = false; }
+$('#editProf').addEventListener('click', openProfForm);
+$('#cancelProf').addEventListener('click', closeProfForm);
+$('#pName').addEventListener('input', () => { setErr('pNameErr',''); $('#pName').classList.remove('bad'); });
+$('#profForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('#pName').value.trim().replace(/\s+/g,' '), nErr = nameError(name);
+  let ok = true;
+  if(nErr){ ok = false; setErr('pNameErr', nErr); $('#pName').classList.add('bad'); }
+  if(!uniCombo.value){ ok = false; markCombo('uni', 'Listeden bir üniversite seçmelisin.'); }
+  if(!deptCombo.value){ ok = false; markCombo('dept', 'Listeden bir bölüm seçmelisin.'); }
+  if(level() !== 'mezun' && deptCombo.value && !$('#term').value){ ok = false; $('#term').classList.add('bad'); setErr('termErr','Dönemini seçmelisin.'); }
+  if(!ok){ const b = $('#profForm .bad'); if(b){ shake(b); b.focus(); } return; }
+  mutate(me => {
+    me.name = name; me.uni = uniCombo.value.name; me.dept = deptCombo.value.name;
+    me.level = level(); me.term = level() === 'mezun' ? 'Mezun' : $('#term').value; me.interests = pickedChips();
+    logAct(me, 'profile', 'Profil bilgileri güncellendi');
+  });
+  closeProfForm(); renderAll(); toast('Profilin güncellendi.');
+});
+
+/* ---------- Şifre değiştir ---------- */
+$$('[data-eye]').forEach(b => b.addEventListener('click', () => {
+  const inp = $('#' + b.dataset.eye), show = inp.type === 'password', t = show ? 'Şifreyi gizle' : 'Şifreyi göster';
+  inp.type = show ? 'text' : 'password';
+  b.setAttribute('aria-pressed', show); b.setAttribute('aria-label', t); b.title = t;
+  b.querySelector('use').setAttribute('href', show ? '#eyeoff' : '#eye'); inp.focus();
+}));
+$$('[data-caps-for]').forEach(w => {
+  const inp = $('#' + w.dataset.capsFor), check = e => { if(e.getModifierState) w.hidden = !e.getModifierState('CapsLock'); };
+  inp.addEventListener('keydown', check); inp.addEventListener('keyup', check); inp.addEventListener('blur', () => w.hidden = true);
+});
+['curPass','newPass','newPass2'].forEach(id => $('#'+id).addEventListener('input', () => { $('#'+id).classList.remove('bad'); setErr(id+'Err',''); }));
+$('#newPass').addEventListener('input', e => {
+  const p = e.target.value, r = passRules(p), met = Object.values(r).filter(Boolean).length;
+  $$('#rules li').forEach(li => li.classList.toggle('ok', r[li.dataset.r]));
+  const l = !p ? 0 : met < 4 ? 1 : (p.length >= 10 && /[a-zçğıöşü]/.test(p)) ? 3 : 2;
+  $('#meter').dataset.l = l; $('#meterTxt').textContent = ['', 'Zayıf', 'Orta', 'Güçlü'][l];
+});
+$('#pwForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const cur = $('#curPass').value, p = $('#newPass').value, p2 = $('#newPass2').value;
+  const bad = (id, msg) => { setErr(id + 'Err', msg); $('#' + id).classList.add('bad'); shake($('#' + id)); $('#' + id).focus(); };
+  if(!cur) return bad('curPass', 'Mevcut şifreni yazmalısın.');
+  if(hashPass(U.email, cur) !== U.passHash){ $('#curPass').value = ''; return bad('curPass', 'Mevcut şifren hatalı.'); }
+  if(!Object.values(passRules(p)).every(Boolean)) return bad('newPass', 'Yeni şifren işaretli kuralların hepsini karşılamalı.');
+  if(p === cur) return bad('newPass', 'Yeni şifren mevcut şifrenle aynı olamaz.');
+  if(p2 !== p){ $('#newPass2').value = ''; return bad('newPass2', 'Şifreler eşleşmiyor. Tekrar dene.'); }
+  mutate(me => { me.passHash = hashPass(me.email, p); logAct(me, 'security', 'Şifre değiştirildi'); });
+  $('#pwForm').reset(); $$('#rules li').forEach(li => li.classList.remove('ok')); $('#meter').dataset.l = 0; $('#meterTxt').textContent = '';
+  renderAll(); toast('Şifren güncellendi.');
+});
+
+/* ---------- Kurtarma kodları (GitHub tarzı) ---------- */
+$('#rcToggle').addEventListener('click', () => {
+  const show = $('#rcList').hidden; $('#rcList').hidden = !show;
+  $('#rcToggle span').textContent = show ? 'Kodları gizle' : 'Kodları göster';
+  $('#rcToggle use').setAttribute('href', show ? '#eyeoff' : '#eye');
+});
+$('#rcDownload').addEventListener('click', () => {
+  const list = U.recovery.filter(c => !c.used);
+  if(!list.length){ toast('Kullanılabilir kodun yok. Yeni kodlar üretebilirsin.'); return; }
+  saveFile('ogrencinotu101-kurtarma-kodlari.txt', `Öğrencinotu101 kurtarma kodları\nHesap: ${U.email}\nİndirilme: ${new Date().toLocaleString('tr-TR')}\n\n` +
+    `Her kod yalnızca bir kez kullanılabilir. Bu dosyayı güvenli bir yerde sakla.\n\n` + list.map(c => c.code).join('\n') + '\n');
+  toast('Kurtarma kodları indirildi.');
+});
+$('#rcNew').addEventListener('click', () => confirmBox({
+  title: 'Yeni kurtarma kodları üret',
+  body: '<p>Yeni kodlar üretildiğinde <b>eski kodlarının hepsi geçersiz olur</b>. Yeni kodları indirip güvenli bir yere kaydetmeyi unutma.</p>',
+  ok: 'Yeni kodlar üret'
+}, () => {
+  mutate(me => { me.recovery = makeRecoveryCodes().map(code => ({code, used:false})); logAct(me, 'security', 'Yeni kurtarma kodları üretildi'); });
+  renderAll();
+  $('#rcList').hidden = false; $('#rcToggle span').textContent = 'Kodları gizle'; $('#rcToggle use').setAttribute('href', '#eyeoff');
+  toast('Yeni kurtarma kodların hazır. İndirip kaydetmeyi unutma.');
+}));
+
+/* ---------- Hesabı sil ---------- */
+$('#delAcc').addEventListener('click', () => confirmBox({
+  title: 'Hesabını silmek istediğine emin misin?',
+  body: '<p>Bu işlem <b>geri alınamaz</b>. Profilin, indirdiğin notların listesi, tokenların ve kurtarma kodların silinir.</p>',
+  ok: 'Hesabımı kalıcı olarak sil', danger: true,
+  expect: U.email, expectLabel: `Onaylamak için e-posta adresini yaz: ${U.email}`
+}, () => {
+  saveUsers(loadUsers().filter(u => u.email !== U.email));
+  try{ sessionStorage.removeItem(SESSION_KEY); }catch(e){}
+  toast('Hesabın silindi.');
+  setTimeout(() => location.replace('register.html'), 900);
+}));
+
+/* ---------- Başlangıç ---------- */
+if(U){ renderAll(); route(); }
+</script>
+</body>
+</html>
