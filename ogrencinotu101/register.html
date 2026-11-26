@@ -181,6 +181,41 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
 .foot{text-align:center;color:var(--muted);font-size:.92rem;margin-top:1.1rem}
 .foot a{color:var(--blue);font-weight:700}
 
+@keyframes spin{to{transform:rotate(360deg)}}
+/* Robot doğrulaması */
+.captcha{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:#f7f9fd;border:1.5px solid var(--line);border-radius:12px;padding:.7rem .9rem}
+.cap-btn{display:flex;align-items:center;gap:.75rem;background:none;border:0;padding:.2rem;border-radius:8px;font-weight:600;text-align:left}
+.cap-box{width:1.75rem;height:1.75rem;border:2px solid #b8c4d8;border-radius:6px;background:#fff;display:grid;place-items:center;flex:none;transition:border-color .15s}
+.cap-btn:hover .cap-box{border-color:var(--blue)}
+.cap-box .cap-spin{display:none;width:1.4rem;height:1.4rem;border:3px solid #d6e2fb;border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+.cap-box .cap-ok{display:none;color:var(--ok);width:1.3rem;height:1.3rem;stroke-width:3}
+.captcha[data-state=loading] .cap-box{border-color:transparent;background:transparent}
+.captcha[data-state=loading] .cap-spin{display:block}
+.captcha[data-state=ok] .cap-box{border-color:var(--ok);background:#e3f6ee}
+.captcha[data-state=ok] .cap-ok{display:block}
+.captcha[data-state=ok]{border-color:#9ed8bf}
+.cap-brand{display:flex;align-items:center;gap:.4rem;color:var(--muted);font-size:.72rem;line-height:1.2;text-align:right}
+.cap-brand svg{width:1.6rem;height:1.6rem;color:var(--blue)}
+.cap-task{max-width:360px;margin-top:.6rem;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.cap-head{background:var(--blue);color:#fff;padding:.75rem .9rem;font-size:.92rem}
+.cap-head b{display:block;font-size:1.25rem;line-height:1.2}
+.cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px}
+.cap-cell{position:relative;aspect-ratio:1;border:0;border-radius:8px;display:grid;place-items:center;transition:transform .15s}
+.cap-cell svg{width:58%;height:58%;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.cap-cell[aria-pressed=true]{transform:scale(.86)}
+.cap-cell[aria-pressed=true]::after{content:"";position:absolute;top:-4px;left:-4px;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E") center/70% no-repeat;border:2px solid #fff}
+.cap-foot{display:flex;justify-content:space-between;align-items:center;gap:.5rem;padding:.2rem .6rem .6rem}
+.cap-msg{padding:0 .8rem .3rem}
+
+/* Kurtarma kodları */
+.rc{text-align:left;background:#f7f9fd;border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;margin:0 0 1.2rem}
+.rc h3{display:flex;gap:.5rem;align-items:center;font-size:1.05rem}
+.rc h3 svg{color:var(--blue)}
+.rc p{color:var(--muted);font-size:.9rem;margin:.35rem 0 .8rem}
+.rc-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.45rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:1rem;letter-spacing:.06em}
+.rc-list li{background:#fff;border:1px solid var(--line);border-radius:8px;padding:.45rem .6rem;text-align:center}
+.rc-actions{display:flex;gap:8px;margin:.8rem 0 .7rem;flex-wrap:wrap}
+
 /* Başarı ekranı */
 .done{text-align:center;padding:.6rem 0 .4rem}
 .done .big{width:4.2rem;height:4.2rem;border-radius:50%;background:#e3f6ee;color:var(--ok);display:grid;place-items:center;margin:0 auto 1rem}
@@ -257,6 +292,12 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
   <symbol id="b-apple" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></symbol>
   <symbol id="b-facebook" viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></symbol>
   <symbol id="useradd" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M1 21a8 8 0 0 1 16 0M19 8v6M16 11h6"/></symbol>
+  <!-- Robot doğrulaması görselleri -->
+  <symbol id="cap-book" viewBox="0 0 24 24"><path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H19v16H7.5A2.5 2.5 0 0 0 5 20.5z"/><path d="M5 20.5A2.5 2.5 0 0 0 7.5 23H19v-5"/><path d="M9 6.5h6M9 9.5h4"/></symbol>
+  <symbol id="cap-car" viewBox="0 0 24 24"><path d="M3 15.5V12l2.2-4.6A2 2 0 0 1 7 6.3h10a2 2 0 0 1 1.8 1.1L21 12v3.5a1 1 0 0 1-1 1h-.6M4.6 16.5H4a1 1 0 0 1-1-1"/><path d="M9.6 16.5h4.8M3 12h18M8 6.5 7 12M16 6.5l1 5.5"/><circle cx="7.1" cy="16.5" r="2.1"/><circle cx="16.9" cy="16.5" r="2.1"/></symbol>
+  <symbol id="key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.8-9.8M17 6l3 3M14.5 8.5l2 2"/></symbol>
+  <symbol id="copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+  <symbol id="dl" viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16"/></symbol>
   <symbol id="close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
 </svg>
 
@@ -320,7 +361,7 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
             <label for="pass">Şifre</label>
             <div class="pw">
               <input class="inp" id="pass" type="password" autocomplete="new-password" maxlength="64">
-              <button type="button" class="eye" data-eye="pass" aria-label="Şifreyi göster" aria-pressed="false"><svg class="i"><use href="#eye"/></svg></button>
+              <button type="button" class="eye" data-eye="pass" aria-label="Şifreyi göster" title="Şifreyi göster" aria-pressed="false"><svg class="i"><use href="#eye"/></svg></button>
             </div>
             <div class="meter" id="meter" data-l="0" aria-live="polite">
               <div class="bars"><i></i><i></i><i></i></div><b id="meterTxt"></b>
@@ -344,7 +385,7 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
             <label for="pass2">Şifre tekrar</label>
             <div class="pw">
               <input class="inp" id="pass2" type="password" autocomplete="new-password" maxlength="64">
-              <button type="button" class="eye" data-eye="pass2" aria-label="Şifreyi göster" aria-pressed="false"><svg class="i"><use href="#eye"/></svg></button>
+              <button type="button" class="eye" data-eye="pass2" aria-label="Şifreyi göster" title="Şifreyi göster" aria-pressed="false"><svg class="i"><use href="#eye"/></svg></button>
             </div>
             <p class="err" id="pass2Err" aria-live="polite"></p>
           </div>
@@ -438,6 +479,10 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
           <p class="counter" id="counter" aria-live="polite"><b>0</b> / 3 seçildi</p>
           <div class="chips" id="chips"></div>
           <p class="err" id="chipErr" aria-live="polite" style="margin-top:.8rem"></p>
+          <div class="field" style="margin:1.4rem 0 0">
+            <span class="lbl">Güvenlik doğrulaması</span>
+            <div data-captcha id="regCap"></div>
+          </div>
         </fieldset>
 
         <div class="nav" id="nav">
@@ -454,7 +499,17 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
         <h2>Hesabın oluşturuldu!</h2>
         <p class="hint" style="margin-bottom:0">Hoş geldin <b id="doneName"></b>. Hesabına 5 ücretsiz token tanımlandı.</p>
         <dl class="summary" id="summary"></dl>
-        <a class="btn btn-y" id="toLogin" href="login.html"><svg class="i"><use href="#login"/></svg> Giriş yap</a>
+        <div class="rc" id="rcBox" hidden>
+          <h3><svg class="i"><use href="#key"/></svg> Kurtarma kodların</h3>
+          <p>Şifreni unutursan hesabına bu kodlarla girebilirsin. Her kod yalnızca bir kez kullanılabilir. Kodları güvenli bir yere kaydet ve kimseyle paylaşma.</p>
+          <ul class="rc-list" id="rcList"></ul>
+          <div class="rc-actions">
+            <button type="button" class="btn btn-l sm" id="rcCopy"><svg class="i"><use href="#copy"/></svg> Kopyala</button>
+            <button type="button" class="btn btn-l sm" id="rcDownload"><svg class="i"><use href="#dl"/></svg> İndir (.txt)</button>
+          </div>
+          <label class="check"><input type="checkbox" id="rcSaved"> <span>Kurtarma kodlarımı güvenli bir yere kaydettim.</span></label>
+        </div>
+        <button type="button" class="btn btn-y" id="toLogin"><svg class="i"><use href="#login"/></svg> Giriş yap</button>
         <p class="redirect" id="redirect"></p>
       </div>
 
@@ -757,7 +812,7 @@ $$('[data-eye]').forEach(b => b.addEventListener('click', () => {
   const inp = $('#' + b.dataset.eye), show = inp.type === 'password';
   inp.type = show ? 'text' : 'password';
   b.setAttribute('aria-pressed', show);
-  b.setAttribute('aria-label', show ? 'Şifreyi gizle' : 'Şifreyi göster');
+  b.setAttribute('aria-label', show ? 'Şifreyi gizle' : 'Şifreyi göster'); b.title = show ? 'Şifreyi gizle' : 'Şifreyi göster';
   b.querySelector('use').setAttribute('href', show ? '#eyeoff' : '#eye');
   inp.focus();
 }));
@@ -1030,8 +1085,90 @@ function socialDone(name, email){
 }
 $('#oaDlg').addEventListener('click', e => { if(e.target === e.currentTarget) e.currentTarget.close(); });
 
+/* ---------- Robot doğrulaması ----------
+   Kutuya tıklanınca kısa bir kontrol yapılır. Bazen ek görev çıkar:
+   "kitap" ya da "araba" olan tüm kutuları seçmek. */
+function makeCaptcha(root, chance = .5){
+  root.innerHTML = `
+    <div class="captcha" data-state="idle">
+      <button type="button" class="cap-btn" role="checkbox" aria-checked="false">
+        <span class="cap-box"><span class="cap-spin"></span><svg class="i cap-ok"><use href="#check"/></svg></span>
+        <span>Ben robot değilim</span>
+      </button>
+      <span class="cap-brand"><small>Öğrencinotu101<br>güvenlik doğrulaması</small><svg class="i"><use href="#shield"/></svg></span>
+    </div>
+    <div class="cap-task" hidden>
+      <div class="cap-head">Aşağıdakilerden <b></b> olanların hepsini seç</div>
+      <div class="cap-grid"></div>
+      <p class="err cap-msg" aria-live="polite"></p>
+      <div class="cap-foot">
+        <button type="button" class="btn btn-t sm" data-cap="new"><svg class="i"><use href="#refresh"/></svg> Yeni görseller</button>
+        <button type="button" class="btn btn-b sm" data-cap="verify">Doğrula</button>
+      </div>
+    </div>
+    <p class="err cap-need" aria-live="polite"></p>`;
+  const box = root.querySelector('.captcha'), btn = root.querySelector('.cap-btn'), task = root.querySelector('.cap-task'),
+        grid = root.querySelector('.cap-grid'), what = root.querySelector('.cap-head b'),
+        msg = root.querySelector('.cap-msg'), need = root.querySelector('.cap-need');
+  const COLORS = [['#e8efff','#2563eb'], ['#fff1d6','#b7791f'], ['#e3f6ee','#12805c'], ['#fde8ea','#c62f3c'], ['#efe9ff','#6d4bd8'], ['#e6f6fb','#0e7490']];
+  let state = 'idle', target = '', answer = '';
+  const set = s => { state = s; box.dataset.state = s; btn.setAttribute('aria-checked', s === 'ok'); };
+  const say = (el, t) => el.innerHTML = t ? ALERT + '<span>' + esc(t) + '</span>' : '';
+
+  function newTask(){
+    target = Math.random() < .5 ? 'book' : 'car';
+    const other = target === 'book' ? 'car' : 'book', n = 3 + Math.floor(Math.random() * 3);
+    const cells = Array.from({length:9}, (_, i) => i < n ? target : other).sort(() => Math.random() - .5);
+    answer = cells.map((c, i) => c === target ? i : '').filter(x => x !== '').join(',');
+    what.textContent = target === 'book' ? 'kitap' : 'araba';
+    grid.innerHTML = cells.map((c, i) => {
+      const [bg, fg] = COLORS[Math.floor(Math.random() * COLORS.length)], r = Math.round(Math.random() * 30 - 15);
+      return `<button type="button" class="cap-cell" data-i="${i}" aria-pressed="false" aria-label="${c === 'book' ? 'Kitap' : 'Araba'}" style="background:${bg};color:${fg}"><svg style="transform:rotate(${r}deg)"><use href="#cap-${c}" stroke="currentColor"/></svg></button>`;
+    }).join('');
+    task.hidden = false;
+  }
+  btn.addEventListener('click', () => {
+    if(state !== 'idle') return;
+    set('loading'); say(need, '');
+    setTimeout(() => {
+      if(Math.random() < chance){ set('idle'); say(msg, ''); newTask(); grid.querySelector('button').focus(); }
+      else set('ok');
+    }, 900 + Math.random() * 500);
+  });
+  grid.addEventListener('click', e => {
+    const c = e.target.closest('.cap-cell'); if(!c) return;
+    c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') !== 'true'); say(msg, '');
+  });
+  task.addEventListener('click', e => {
+    const b = e.target.closest('[data-cap]'); if(!b) return;
+    if(b.dataset.cap === 'new'){ say(msg, ''); return newTask(); }
+    const picked = [...grid.querySelectorAll('[aria-pressed=true]')].map(x => x.dataset.i).join(',');
+    if(!picked) return say(msg, 'En az bir görsel seç.');
+    if(picked === answer){ task.hidden = true; set('loading'); setTimeout(() => set('ok'), 600); }
+    else { say(msg, 'Seçimin hatalı. Yeni görsellerle tekrar dene.'); shake(task); setTimeout(newTask, 700); }
+  });
+  return {
+    get ok(){ return state === 'ok'; },
+    reset(){ set('idle'); task.hidden = true; say(msg, ''); say(need, ''); },
+    require(){ say(need, 'Devam etmek için robot olmadığını doğrula.'); shake(box); btn.focus(); }
+  };
+}
+const regCap = makeCaptcha($('#regCap'), .5);
+
+/* ---------- Kurtarma kodları (GitHub tarzı) ----------
+   Sadece e-posta + şifre ile kayıt olanlara verilir. Her kod tek kullanımlıktır. */
+function makeRecoveryCodes(n = 6){
+  const A = 'abcdefghjkmnpqrstuvwxyz23456789';
+  const rnd = k => { try{ return crypto.getRandomValues(new Uint32Array(1))[0] % k; }catch(e){ return Math.floor(Math.random() * k); } };
+  const part = () => Array.from({length:5}, () => A[rnd(A.length)]).join('');
+  return Array.from({length:n}, () => part() + '-' + part());
+}
+const rcText = u => `Öğrencinotu101 kurtarma kodları\nHesap: ${u.email}\nOluşturulma: ${new Date(u.createdAt).toLocaleString('tr-TR')}\n\n` +
+  `Her kod yalnızca bir kez kullanılabilir. Bu dosyayı güvenli bir yerde sakla.\n\n` + u.recovery.map(c => c.code).join('\n') + '\n';
+
 /* ---------- Kaydı tamamla ---------- */
 function finish(skipped){
+  if(!regCap.ok){ regCap.require(); return; }                      // robot doğrulaması
   if(emailExists(D.email)){ go(0); $('#email').value = D.email; validate.email(); return; }   // bu arada başka sekmede kaydolduysa
   const user = {
     id: Date.now(),
@@ -1046,7 +1183,9 @@ function finish(skipped){
     interests: skipped ? [] : picked(),
     createdAt: new Date().toISOString(),
     // index.html'deki token sistemiyle aynı yapı; giriş yapınca kullanıcıya bağlanacak
-    plan: { tokens: 5, premium: false, owned: [], week: Date.now() }
+    plan: { tokens: 5, premium: false, owned: [], week: Date.now() },
+    // sosyal hesaplarda şifre olmadığı için kurtarma kodu da yok
+    recovery: D.pass ? makeRecoveryCodes().map(code => ({code, used:false})) : []
   };
   saveUsers([...loadUsers(), user]);
   D.pass = ''; $('#pass').value = $('#pass2').value = '';
@@ -1060,13 +1199,40 @@ function showDone(u){
                 ['Öğrenim', LV[u.level] + (u.level !== 'mezun' ? ' · ' + u.term : '')],
                 ['İlgi alanları', u.interests.length ? u.interests.join(', ') : 'Seçilmedi']];
   $('#summary').innerHTML = rows.map(([k,v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('');
-  const url = 'login.html?email=' + encodeURIComponent(u.email) + '&new=1';
-  $('#toLogin').href = url;
-  let s = 8;
-  const tick = () => { $('#redirect').textContent = `${s} saniye içinde giriş sayfasına yönlendirileceksin.`; };
-  tick();
-  const t = setInterval(() => { s--; if(s <= 0){ clearInterval(t); location.href = url; } else tick(); }, 1000);
-  $('#toLogin').focus();
+  // Giriş sayfası boş açılır: kullanıcı bilgilerini kendisi girer
+  const url = 'login.html';
+  $('#toLogin').onclick = () => { if(!$('#toLogin').disabled) location.href = url; };
+  if(u.recovery.length){
+    // Kurtarma kodları kaydedildi onayı verilmeden devam edilemez
+    $('#rcBox').hidden = false;
+    $('#rcList').innerHTML = u.recovery.map(c => `<li>${esc(c.code)}</li>`).join('');
+    $('#toLogin').disabled = true;
+    $('#redirect').textContent = 'Kodlarını kaydettiğini onayladıktan sonra giriş yapabilirsin.';
+    $('#rcSaved').onchange = e => {
+      $('#toLogin').disabled = !e.target.checked;
+      $('#redirect').textContent = e.target.checked ? '' : 'Kodlarını kaydettiğini onayladıktan sonra giriş yapabilirsin.';
+    };
+    $('#rcCopy').onclick = () => {
+      const txt = u.recovery.map(c => c.code).join('\n');
+      const fallback = () => { const t = document.createElement('textarea'); t.value = txt; document.body.appendChild(t); t.select();
+        try{ document.execCommand('copy'); toast('Kurtarma kodları kopyalandı.'); }catch(e){ toast('Kopyalanamadı, kodları elle not al.'); } t.remove(); };
+      if(navigator.clipboard) navigator.clipboard.writeText(txt).then(() => toast('Kurtarma kodları kopyalandı.'), fallback); else fallback();
+    };
+    $('#rcDownload').onclick = () => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([rcText(u)], {type:'text/plain;charset=utf-8'}));
+      a.download = 'ogrencinotu101-kurtarma-kodlari.txt';
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      toast('Kurtarma kodları indirildi.');
+    };
+    $('#rcCopy').focus();
+  } else {
+    let s = 8;
+    const tick = () => { $('#redirect').textContent = `${s} saniye içinde giriş sayfasına yönlendirileceksin.`; };
+    tick();
+    const t = setInterval(() => { s--; if(s <= 0){ clearInterval(t); location.href = url; } else tick(); }, 1000);
+    $('#toLogin').focus();
+  }
 }
 
 /* ---------- Baştan başla ---------- */
@@ -1082,6 +1248,7 @@ function resetAll(){
   $$('[data-eye]').forEach(b => { $('#'+b.dataset.eye).type = 'password'; b.setAttribute('aria-pressed','false'); b.querySelector('use').setAttribute('href','#eye'); });
   $('#nextBtn').disabled = $('#back').disabled = false;
   if($('#oaDlg').open) $('#oaDlg').close();
+  regCap.reset();
   go(0);
 }
 
