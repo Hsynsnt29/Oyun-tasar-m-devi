@@ -346,10 +346,11 @@ function renderList(){
 function renderAll(){ renderHeader(); renderList(); }
 
 /* ---------- İşlemler ---------- */
+const fileName = t => t.replace(/[çÇğĞıİöÖşŞüÜ]/g, c => ({ç:'c',Ç:'C',ğ:'g',Ğ:'G',ı:'i',İ:'I',ö:'o',Ö:'O',ş:'s',Ş:'S',ü:'u',Ü:'U'}[c])).replace(/[^\w ]/g,'').trim().replace(/\s+/g,'-') + '.txt';   // Türkçe harfli dosya adları bazı tarayıcılarda bozuluyor
 function fileFor(n){
   const blob = new Blob([`Öğrencinotu101 demo dosyası\n\n${n.title}\n${n.uni} - ${n.dept}\n\n` + n.ex.join('\n')], {type:'text/plain;charset=utf-8'});
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = n.title.replace(/[^\wığüşöçİĞÜŞÖÇ ]/g,'').replace(/\s+/g,'-') + '.txt';
+  a.href = URL.createObjectURL(blob); a.download = fileName(n.title);
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 function openAuth(title, text){

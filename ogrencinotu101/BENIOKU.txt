@@ -1,0 +1,29 @@
+ÖĞRENCİNOTU101 - Akademik Not Paylaşım Platformu (Demo)
+=======================================================
+
+NASIL AÇILIR
+------------
+1. Zip dosyasını bir klasöre çıkarın. Dört HTML dosyası aynı klasörde durmalıdır.
+2. index.html dosyasını Google Chrome veya Microsoft Edge ile açın.
+3. Sayfalar arasındaki geçişler linkler üzerinden kendiliğinden çalışır.
+
+SAYFALAR
+--------
+index.html      Ana sayfa: not arama, filtreleme, önizleme, indirme, planlar
+register.html   Kayıt: e-posta veya Google / Apple / Facebook ile, adım adım
+login.html      Giriş ve "Şifremi unuttum" (aynı dosyada iki görünüm)
+dashboard.html  Kullanıcı paneli: genel bakış, notlarım, plan, profil, güvenlik
+
+ÖRNEK KULLANIM SIRASI
+---------------------
+index.html -> "Kayıt ol" -> kayıt adımları -> kurtarma kodlarını kaydet ->
+login.html -> giriş -> dashboard.html -> "Notlara göz at" -> not indir ->
+"Panelim" -> indirilen not "Notlarım" bölümünde görünür.
+
+DEMO HAKKINDA
+-------------
+- Gerçek e-posta gönderilmez; doğrulama kodları ekranda gösterilir.
+- Gerçek ödeme alınmaz; Premium plan geçişi temsilidir.
+- Google / Apple / Facebook pencereleri temsilidir, gerçek hesaplara bağlanmaz.
+- Bilgiler yalnızca tarayıcının hafızasında (localStorage) saklanır.
+- Oturum, sekme kapatıldığında sona erer.
