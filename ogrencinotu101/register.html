@@ -75,6 +75,29 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
 .okmsg{color:var(--ok);font-size:.88rem;font-weight:600;display:flex;gap:.4rem;align-items:center}
 .exists{background:#fff6dd;border:1px solid #f3dc92;border-radius:12px;padding:.85rem 1rem;color:var(--ink);font-weight:600;display:grid;gap:.6rem;justify-items:start}
 
+/* Sosyal hesap butonları */
+.wide{width:100%;margin-top:.2rem}
+.or{display:flex;align-items:center;gap:.8rem;color:var(--muted);font-size:.88rem;margin:1.3rem 0}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.social{display:grid;gap:10px}
+.sbtn{display:flex;align-items:center;justify-content:center;gap:.7rem;border-radius:10px;padding:.72rem 1rem;font-weight:600;font-size:.98rem;border:1.5px solid transparent;transition:background .15s,transform .15s}
+.sbtn:active{transform:scale(.98)}
+.brand{width:20px;height:20px;flex:none}
+.sbtn.google{background:#fff;border-color:#dadce0;color:#1f1f1f} .sbtn.google:hover{background:#f6f8fa}
+.sbtn.apple{background:#000;color:#fff} .sbtn.apple:hover{background:#262626}
+.sbtn.apple .brand{margin-top:-3px}
+.sbtn.facebook{background:#1877f2;color:#fff} .sbtn.facebook:hover{background:#0f66d9}
+.via{display:inline-flex;align-items:center;gap:.45rem;background:#f0f3f9;border-radius:99px;padding:.25rem .75rem .25rem .5rem;font-size:.85rem;font-weight:600;margin-top:.5rem}
+.via .brand{width:16px;height:16px}
+.via.apple .brand{color:#000} .via.facebook .brand{color:#1877f2}
+/* Sosyal hesap penceresi (demo) */
+.oa-head{display:flex;align-items:center;gap:.75rem;padding:1.2rem 1.4rem 1rem;border-bottom:1px solid var(--line)}
+.oa-head .brand{width:28px;height:28px}
+.oa-head.apple .brand{color:#000} .oa-head.facebook .brand{color:#1877f2}
+.oa-head h2{font-size:1.15rem;line-height:1.25;flex:1}
+.oa-head small{display:block;color:var(--muted);font-weight:400;font-size:.85rem}
+.share{font-size:.85rem;color:var(--muted);margin-top:.3rem}
+
 /* Şifre */
 .pw{position:relative}
 .pw .inp{padding-right:3rem}
@@ -218,6 +241,10 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
   <symbol id="refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></symbol>
   <symbol id="login" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5M15 12H3"/></symbol>
   <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+  <!-- Marka logoları (resmi renk ve şekilleriyle) -->
+  <symbol id="b-google" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></symbol>
+  <symbol id="b-apple" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></symbol>
+  <symbol id="b-facebook" viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></symbol>
   <symbol id="close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
 </svg>
 
@@ -244,28 +271,16 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
 
     <section class="card" aria-labelledby="stepTitle">
       <div id="progress">
-        <div class="prog-top"><span>Adım <b id="stepNo">1</b> / 7</span><span id="stepName">Ad soyad</span></div>
+        <div class="prog-top"><span>Adım <b id="stepNo">1</b> / <span id="stepTotal">7</span></span><span id="stepName">E-posta</span></div>
         <div class="track" role="progressbar" aria-label="Kayıt ilerlemesi" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1"><div class="fill" id="fill"></div></div>
       </div>
 
       <form id="reg" novalidate>
-        <!-- 1. Ad soyad -->
-        <fieldset class="step" data-step="1">
-          <div class="ico"><svg class="i"><use href="#user"/></svg></div>
-          <h2 id="stepTitle">Seni tanıyalım. Adın ne?</h2>
-          <p class="hint">Adını ve soyadını yaz. Profilinde bu isim görünecek.</p>
-          <div class="field">
-            <label for="name">Ad soyad</label>
-            <input class="inp" id="name" autocomplete="name" placeholder="Örn. Ayşe Yılmaz" maxlength="60">
-            <p class="err" id="nameErr" aria-live="polite"></p>
-          </div>
-        </fieldset>
-
-        <!-- 2. E-posta -->
-        <fieldset class="step" data-step="2" hidden>
+        <!-- Başlangıç: E-posta veya sosyal hesap -->
+        <fieldset class="step" data-step="email">
           <div class="ico"><svg class="i"><use href="#mail"/></svg></div>
-          <h2>E-posta adresin nedir?</h2>
-          <p class="hint">Giriş yaparken bu adresi kullanacaksın. Bir sonraki adımlarda doğrulama kodu bu adrese gönderilecek.</p>
+          <h2 id="stepTitle">Kayıt ol</h2>
+          <p class="hint">E-posta adresinle hesabını oluştur ya da hesaplarından biriyle hızlıca devam et.</p>
           <div class="field">
             <label for="email">E-posta</label>
             <input class="inp" id="email" type="email" inputmode="email" autocomplete="email" placeholder="ornek@mail.com" maxlength="80">
@@ -275,10 +290,17 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
               <a class="btn btn-y sm" id="existsLink" href="login.html"><svg class="i"><use href="#login"/></svg> Oturum aç</a>
             </div>
           </div>
+          <button type="submit" class="btn btn-b wide">E-posta ile devam et <svg class="i"><use href="#right"/></svg></button>
+          <div class="or"><span>veya</span></div>
+          <div class="social">
+            <button type="button" class="sbtn google" data-provider="google"><svg class="brand" aria-hidden="true"><use href="#b-google"/></svg> Google ile devam et</button>
+            <button type="button" class="sbtn apple" data-provider="apple"><svg class="brand" aria-hidden="true"><use href="#b-apple"/></svg> Apple ile devam et</button>
+            <button type="button" class="sbtn facebook" data-provider="facebook"><svg class="brand" aria-hidden="true"><use href="#b-facebook"/></svg> Facebook ile devam et</button>
+          </div>
         </fieldset>
 
-        <!-- 3. Şifre -->
-        <fieldset class="step" data-step="3" hidden>
+        <!-- Şifre -->
+        <fieldset class="step" data-step="pass" hidden>
           <div class="ico"><svg class="i"><use href="#lock"/></svg></div>
           <h2>Güçlü bir şifre oluştur</h2>
           <p class="hint">Hesabını korumak için şifren aşağıdaki kuralların hepsini karşılamalı.</p>
@@ -301,8 +323,8 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
           </div>
         </fieldset>
 
-        <!-- 4. Şifre tekrar -->
-        <fieldset class="step" data-step="4" hidden>
+        <!-- Şifre tekrar -->
+        <fieldset class="step" data-step="pass2" hidden>
           <div class="ico"><svg class="i"><use href="#shield"/></svg></div>
           <h2>Şifreni tekrar yaz</h2>
           <p class="hint">Yanlış yazmadığından emin olalım.</p>
@@ -317,10 +339,23 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
           </div>
         </fieldset>
 
-        <!-- 5. Doğrulama kodu (sembolik) -->
-        <fieldset class="step" data-step="5" hidden>
+        <!-- Ad soyad -->
+        <fieldset class="step" data-step="name" hidden>
+          <div class="ico"><svg class="i"><use href="#user"/></svg></div>
+          <h2>Seni tanıyalım. Adın ne?</h2>
+          <p class="hint">Adını ve soyadını yaz. Profilinde bu isim görünecek.</p>
+          <div class="field">
+            <label for="name">Ad soyad</label>
+            <input class="inp" id="name" autocomplete="name" placeholder="Örn. Ayşe Yılmaz" maxlength="60">
+            <p class="err" id="nameErr" aria-live="polite"></p>
+          </div>
+        </fieldset>
+
+        <!-- Doğrulama kodu (sembolik) -->
+        <fieldset class="step" data-step="code" hidden>
           <div class="ico"><svg class="i"><use href="#msg"/></svg></div>
           <h2>E-postanı doğrula</h2>
+          <p class="via" id="via" hidden></p>
           <p class="hint"><b id="codeMail"></b> adresine 6 haneli bir doğrulama kodu gönderdik.</p>
           <div class="democode"><span class="tag">DEMO</span><span style="flex:1;min-width:12em">Gerçek e-posta gönderilmez. Kodun:</span><b id="demoCode">------</b></div>
           <div class="field">
@@ -342,8 +377,8 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
           </div>
         </fieldset>
 
-        <!-- 6. Üniversite, bölüm, dönem, koşullar -->
-        <fieldset class="step" data-step="6" hidden>
+        <!-- Üniversite, bölüm, dönem, koşullar -->
+        <fieldset class="step" data-step="school" hidden>
           <div class="ico"><svg class="i"><use href="#cap"/></svg></div>
           <h2>Okul bilgilerin</h2>
           <p class="hint">Sana uygun notları önerebilmemiz için üniversiteni ve bölümünü seç.</p>
@@ -384,8 +419,8 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
           <p class="err" id="agreeErr" aria-live="polite" style="margin-top:.4rem"></p>
         </fieldset>
 
-        <!-- 7. İlgi alanları -->
-        <fieldset class="step" data-step="7" hidden>
+        <!-- İlgi alanları -->
+        <fieldset class="step" data-step="interests" hidden>
           <div class="ico"><svg class="i"><use href="#heart"/></svg></div>
           <h2>Nelerle ilgileniyorsun?</h2>
           <p class="hint">En fazla 3 ilgi alanı seç. Bu adım isteğe bağlı, istersen atlayabilirsin.</p>
@@ -438,6 +473,33 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
   </div>
 </dialog>
 
+<!-- Sosyal hesapla kayıt penceresi (demo) -->
+<dialog id="oaDlg" aria-labelledby="oaTitle">
+  <div class="oa-head" id="oaHead"><svg class="brand" aria-hidden="true"><use id="oaLogo" href="#b-google"/></svg><h2 id="oaTitle">Google ile kaydol<small>Öğrencinotu101'e devam et</small></h2><button class="x" type="button" data-close aria-label="Kapat"><svg class="i"><use href="#close"/></svg></button></div>
+  <form class="db" id="oaForm" novalidate style="padding-top:1rem">
+    <div class="democode" style="margin-bottom:1rem"><span class="tag">DEMO</span><span style="flex:1;min-width:12em" id="oaNote"></span></div>
+    <div class="field">
+      <label for="oaName">Ad soyad</label>
+      <input class="inp" id="oaName" maxlength="60">
+      <p class="err" id="oaNameErr" aria-live="polite"></p>
+    </div>
+    <div class="field">
+      <label for="oaEmail">E-posta</label>
+      <input class="inp" id="oaEmail" type="email" maxlength="80">
+      <p class="err" id="oaEmailErr" aria-live="polite"></p>
+      <div class="exists" id="oaExists" hidden>
+        <span>Bu e-postaya ait bir hesabımız zaten mevcut.</span>
+        <a class="btn btn-y sm" id="oaExistsLink" href="login.html"><svg class="i"><use href="#login"/></svg> Oturum aç</a>
+      </div>
+    </div>
+    <p class="share" id="oaShare"></p>
+    <div class="dfoot">
+      <button type="submit" class="btn btn-b">Devam et <svg class="i"><use href="#right"/></svg></button>
+      <button type="button" class="btn btn-l" data-close>Vazgeç</button>
+    </div>
+  </form>
+</dialog>
+
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -450,8 +512,16 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
 
 /* ---------- Veriler ---------- */
 const USERS_KEY = 'ogrencinotu101_users';
-const STEPS = 7;
-const STEP_NAMES = ['Ad soyad','E-posta','Şifre','Şifre tekrar','Doğrulama','Okul bilgileri','İlgi alanları'];
+// Kayıt akışları: e-posta ile kayıtta tüm adımlar, sosyal hesapla kayıtta e-posta/şifre/ad soyad atlanır
+const FLOW_EMAIL  = ['email','pass','pass2','name','code','school','interests'];
+const FLOW_SOCIAL = ['email','code','school','interests'];
+const STEP_NAMES = {email:'E-posta', pass:'Şifre', pass2:'Şifre tekrar', name:'Ad soyad', code:'Doğrulama', school:'Okul bilgileri', interests:'İlgi alanları'};
+// Demo: sosyal hesap penceresinde örnek olarak dolu gelen bilgiler
+const PROVIDERS = {
+  google:   {label:'Google',   demo:['Ayşe Yılmaz', 'ayse.yilmaz@gmail.com']},
+  apple:    {label:'Apple',    demo:['Mehmet Kaya', 'mehmet.kaya@icloud.com']},
+  facebook: {label:'Facebook', demo:['Zeynep Demir','zeynep.demir@hotmail.com']}
+};
 const MAX_TRIES = 3, RESEND_SEC = 30, MAX_INTERESTS = 3;
 // Demo için önceden kayıtlı sayılan hesap ("zaten kayıtlı" uyarısını denemek için)
 const DEMO_EMAILS = ['demo@ogrencinotu101.com'];
@@ -522,96 +592,105 @@ function saveUsers(list){ memUsers = list; try{ localStorage.setItem(USERS_KEY, 
 const emailExists = e => DEMO_EMAILS.includes(e) || loadUsers().some(u => u.email === e);
 
 /* ---------- Form durumu ---------- */
-let step = 1, busy = false;
+let flow = FLOW_EMAIL, idx = 0, busy = false;
+const cur = () => flow[idx];
 let D = {};                          // formdaki bilgiler
 let code = null, codeEmail = null, verifiedEmail = null, tries = MAX_TRIES, resendTimer = null;
 
 /* ---------- Adım geçişleri ---------- */
-function go(n){
-  step = n;
-  $$('.step').forEach(f => { const on = +f.dataset.step === n; f.hidden = !on; if(on){ f.classList.remove('enter'); void f.offsetWidth; f.classList.add('enter'); } });
+function go(i){
+  idx = i;
+  if(i === 0){ flow = FLOW_EMAIL; D.provider = null; }       // başa dönünce varsayılan akış
+  const s = cur(), n = i + 1;
+  $$('.step').forEach(f => { const on = f.dataset.step === s; f.hidden = !on; if(on){ f.classList.remove('enter'); void f.offsetWidth; f.classList.add('enter'); } });
   $('#stepNo').textContent = n;
-  $('#stepName').textContent = STEP_NAMES[n-1];
-  $('#fill').style.width = (n / STEPS * 100) + '%';
-  $('.track').setAttribute('aria-valuenow', n);
-  $('#back').style.visibility = n === 1 ? 'hidden' : 'visible';
-  $('#skip').hidden = n !== 7;
+  $('#stepTotal').textContent = flow.length;
+  $('#stepName').textContent = STEP_NAMES[s];
+  $('#fill').style.width = (n / flow.length * 100) + '%';
+  $('.track').setAttribute('aria-valuenow', n); $('.track').setAttribute('aria-valuemax', flow.length);
+  $('#nav').hidden = s === 'email';                          // ilk ekranın kendi butonları var
+  $('#skip').hidden = s !== 'interests';
   updateNext();
-  if(n === 5) enterCodeStep();
-  if(n === 4) checkMatch();
+  if(s === 'code') enterCodeStep();
+  if(s === 'pass2') checkMatch();
   // İlk alana odaklan
-  const first = $(`.step[data-step="${n}"]`).querySelector('input:not([disabled]):not([type=radio]):not([type=checkbox]), .chip');
+  const first = $(`.step[data-step="${s}"]`).querySelector('input:not([disabled]):not([type=radio]):not([type=checkbox]), .chip');
   if(first) setTimeout(() => first.focus({preventScroll:true}), 30);
   window.scrollTo({top:0, behavior:'smooth'});
 }
 function updateNext(){
   let txt = 'Devam';
-  if(step === 5 && verifiedEmail !== D.email) txt = 'Doğrula';
-  if(step === 7) txt = 'Kaydı tamamla';
+  if(cur() === 'code' && verifiedEmail !== D.email) txt = 'Doğrula';
+  if(cur() === 'interests') txt = 'Kaydı tamamla';
   $('#nextTxt').textContent = txt;
 }
 function next(){
   if(busy) return;
-  if(!validate[step]()) return;
-  if(step === STEPS) return finish(false);
-  go(step + 1);
+  if(!validate[cur()]()) return;
+  if(idx === flow.length - 1) return finish(false);
+  go(idx + 1);
 }
+
+/* ---------- Ortak kontroller ---------- */
+function nameError(v){
+  if(!v) return 'Adını ve soyadını yazmalısın.';
+  if(/\d/.test(v)) return 'Ad soyad rakam içeremez.';
+  if(!/^[A-Za-zÇĞİÖŞÜçğıöşüÂâÎîÛû'’\- ]+$/.test(v)) return 'Ad soyad yalnızca harflerden oluşmalı.';
+  if(v.split(' ').length < 2) return 'Adınla birlikte soyadını da yaz.';
+  if(v.split(' ').some(w => w.replace(/['’\-]/g,'').length < 2)) return 'Ad ve soyad en az 2 harf olmalı.';
+  return '';
+}
+function emailError(v){
+  if(!v) return 'E-posta adresini yazmalısın.';
+  if(!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v)) return 'Geçerli bir e-posta adresi yaz. Örn. ornek@mail.com';
+  return '';
+}
+const cleanName = v => v.trim().replace(/\s+/g,' ');
 
 /* ---------- Adım kontrolleri ---------- */
 const validate = {
-  1(){
-    const el = $('#name'), v = el.value.trim().replace(/\s+/g,' ');
-    let msg = '';
-    if(!v) msg = 'Adını ve soyadını yazmalısın.';
-    else if(/\d/.test(v)) msg = 'Ad soyad rakam içeremez.';
-    else if(!/^[A-Za-zÇĞİÖŞÜçğıöşüÂâÎîÛû'’\- ]+$/.test(v)) msg = 'Ad soyad yalnızca harflerden oluşmalı.';
-    else if(v.split(' ').length < 2) msg = 'Adınla birlikte soyadını da yaz.';
-    else if(v.split(' ').some(w => w.replace(/['’\-]/g,'').length < 2)) msg = 'Ad ve soyad en az 2 harf olmalı.';
-    return fieldResult(el, 'nameErr', msg, () => { D.name = v; el.value = v; });
-  },
-  2(){
+  email(){
     const el = $('#email'), v = el.value.trim().toLowerCase();
     $('#exists').hidden = true;
-    let msg = '';
-    if(!v) msg = 'E-posta adresini yazmalısın.';
-    else if(!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v)) msg = 'Geçerli bir e-posta adresi yaz. Örn. ornek@mail.com';
+    const msg = emailError(v);
     if(!msg && emailExists(v)){
       el.classList.add('bad'); setErr('emailErr', '');
       $('#existsLink').href = 'login.html?email=' + encodeURIComponent(v);
       $('#exists').hidden = false; shake($('#exists'));
       return false;
     }
-    return fieldResult(el, 'emailErr', msg, () => {
-      if(D.email !== v){ verifiedEmail = null; }   // e-posta değişirse yeniden doğrulama gerekir
-      D.email = v; el.value = v;
-    });
+    return fieldResult(el, 'emailErr', msg, () => { D.email = v; el.value = v; D.provider = null; flow = FLOW_EMAIL; });
   },
-  3(){
+  pass(){
     const r = passRules($('#pass').value);
     const msg = Object.values(r).every(Boolean) ? '' : 'Şifren işaretli kuralların hepsini karşılamalı.';
     return fieldResult($('#pass'), 'passErr', msg, () => { D.pass = $('#pass').value; });
   },
-  4(){
+  pass2(){
     const v = $('#pass2').value;
     const msg = !v ? 'Şifreni tekrar yazmalısın.' : v !== D.pass ? 'Şifreler eşleşmiyor.' : '';
     return fieldResult($('#pass2'), 'pass2Err', msg);
   },
-  5(){
+  name(){
+    const el = $('#name'), v = cleanName(el.value);
+    return fieldResult(el, 'nameErr', nameError(v), () => { D.name = v; el.value = v; });
+  },
+  code(){
     if(verifiedEmail === D.email) return true;
     if(otpValue().length === 6) checkCode();
     else { setErr('codeErr', '6 haneli kodun tamamını gir.'); shake($('#otp')); otpInputs.find(i => !i.value)?.focus(); }
     return false;
   },
-  6(){
+  school(){
     let ok = true;
     if(!uniCombo.value){ ok = false; markCombo('uni', $('#uni').value.trim() ? 'Listeden bir üniversite seçmelisin.' : 'Üniversiteni seçmelisin.'); }
     if(!deptCombo.value){ ok = false; markCombo('dept', $('#dept').value.trim() ? 'Listeden bir bölüm seçmelisin.' : 'Bölümünü seçmelisin.'); }
     if(level() !== 'mezun' && deptCombo.value && !$('#term').value){ ok = false; $('#term').classList.add('bad'); setErr('termErr', 'Dönemini seçmelisin.'); }
     if(!$('#agree').checked){ ok = false; setErr('agreeErr', 'Devam etmek için kullanım koşullarını kabul etmelisin.'); }
-    if(!ok){ shake($('.step[data-step="6"]')); const bad = $('.step[data-step="6"] .bad'); if(bad) bad.focus(); }
+    if(!ok){ shake($('.step[data-step="school"]')); const bad = $('.step[data-step="school"] .bad'); if(bad) bad.focus(); }
     return ok;
   },
-  7(){ return true; }
+  interests(){ return true; }
 };
 function fieldResult(el, errId, msg, onOk){
   setErr(errId, msg);
@@ -677,6 +756,9 @@ const otpInputs = $$('#otp input');
 const otpValue = () => otpInputs.map(i => i.value).join('');
 function enterCodeStep(){
   $('#codeMail').textContent = D.email;
+  const via = $('#via'), pr = PROVIDERS[D.provider];
+  via.hidden = !pr;
+  if(pr){ via.className = 'via ' + D.provider; via.innerHTML = `<svg class="brand" aria-hidden="true"><use href="#b-${D.provider}"/></svg> ${pr.label} hesabınla devam ediyorsun`; }
   if(verifiedEmail === D.email){ showVerified(); return; }
   if(codeEmail !== D.email){ tries = MAX_TRIES; newCode(); }
   setOtpState('');
@@ -717,7 +799,7 @@ function checkCode(){
   if(busy || verifiedEmail === D.email) return;
   if(otpValue() === code){
     verifiedEmail = D.email; showVerified();
-    busy = true; setTimeout(() => { busy = false; if(step === 5) go(6); }, 900);
+    busy = true; setTimeout(() => { busy = false; if(cur() === 'code') go(idx + 1); }, 900);
     return;
   }
   tries--; updateTries(); setOtpState('bad'); shake($('#otp'));
@@ -872,14 +954,58 @@ $('#chips').addEventListener('click', e => {
   $('#counter b').textContent = picked().length;
 });
 
+/* ---------- Google / Apple / Facebook ile kayıt (demo) ----------
+   Gerçekte sağlayıcının kendi penceresi açılır, kullanıcı hesabını seçer ve
+   ad soyad + e-posta siteye otomatik gelir. Şifre oluşturulmaz. */
+let oaProvider = null;
+$$('[data-provider]').forEach(b => b.addEventListener('click', () => {
+  oaProvider = b.dataset.provider;
+  const pr = PROVIDERS[oaProvider];
+  $('#oaHead').className = 'oa-head ' + oaProvider;
+  $('#oaLogo').setAttribute('href', '#b-' + oaProvider);
+  $('#oaTitle').firstChild.nodeValue = pr.label + ' ile kaydol';
+  $('#oaNote').textContent = `Gerçekte ${pr.label}'ın kendi giriş penceresi açılır ve bilgilerin otomatik gelir. Burada örnek bilgiler dolu geliyor, istersen değiştirebilirsin.`;
+  $('#oaShare').textContent = `Devam ettiğinde ${pr.label}, adını ve e-posta adresini Öğrencinotu101 ile paylaşır. Şifre oluşturman gerekmez.`;
+  $('#oaName').value = pr.demo[0]; $('#oaEmail').value = pr.demo[1];
+  ['oaName','oaEmail'].forEach(id => { $('#'+id).classList.remove('bad'); setErr(id+'Err',''); });
+  $('#oaExists').hidden = true;
+  $('#oaDlg').showModal();
+}));
+['oaName','oaEmail'].forEach(id => $('#'+id).addEventListener('input', () => {
+  $('#'+id).classList.remove('bad'); setErr(id+'Err',''); if(id === 'oaEmail') $('#oaExists').hidden = true;
+}));
+$('#oaForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const n = cleanName($('#oaName').value), m = $('#oaEmail').value.trim().toLowerCase();
+  const nErr = nameError(n), mErr = emailError(m);
+  setErr('oaNameErr', nErr); $('#oaName').classList.toggle('bad', !!nErr);
+  setErr('oaEmailErr', mErr); $('#oaEmail').classList.toggle('bad', !!mErr);
+  $('#oaExists').hidden = true;
+  if(nErr || mErr){ shake($('#oaForm')); ($('#oaForm .bad')).focus(); return; }
+  if(emailExists(m)){
+    $('#oaEmail').classList.add('bad');
+    $('#oaExistsLink').href = 'login.html?email=' + encodeURIComponent(m);
+    $('#oaExists').hidden = false; shake($('#oaExists')); return;
+  }
+  // Bilgiler sağlayıcıdan geldi: e-posta, şifre ve ad soyad adımları atlanır
+  D.name = n; D.email = m; D.pass = null; D.provider = oaProvider;
+  $('#email').value = m; $('#name').value = n;
+  $('#oaDlg').close();
+  flow = FLOW_SOCIAL; idx = 0;
+  toast(`${PROVIDERS[oaProvider].label} hesabından bilgilerin alındı.`);
+  go(1);
+});
+$('#oaDlg').addEventListener('click', e => { if(e.target === e.currentTarget) e.currentTarget.close(); });
+
 /* ---------- Kaydı tamamla ---------- */
 function finish(skipped){
-  if(emailExists(D.email)){ go(2); validate[2](); return; }   // bu arada başka sekmede kaydolduysa
+  if(emailExists(D.email)){ go(0); $('#email').value = D.email; validate.email(); return; }   // bu arada başka sekmede kaydolduysa
   const user = {
     id: Date.now(),
     name: D.name,
     email: D.email,
-    passHash: hashPass(D.email, D.pass),
+    provider: D.provider || 'email',                 // email | google | apple | facebook
+    passHash: D.pass ? hashPass(D.email, D.pass) : null,   // sosyal hesapta şifre yok
     uni: uniCombo.value.name,
     dept: deptCombo.value.name,
     level: level(),
@@ -897,7 +1023,7 @@ function showDone(u){
   const LV = {lisans:'Lisans', yl:'Yüksek Lisans', dr:'Doktora', mezun:'Mezun'};
   $('#reg').hidden = true; $('#progress').hidden = true; $('#foot').hidden = true; $('#done').hidden = false;
   $('#doneName').textContent = u.name.split(' ')[0];
-  const rows = [['Ad soyad', u.name], ['E-posta', u.email], ['Üniversite', u.uni], ['Bölüm', u.dept],
+  const rows = [['Kayıt yöntemi', u.provider === 'email' ? 'E-posta ve şifre' : PROVIDERS[u.provider].label], ['Ad soyad', u.name], ['E-posta', u.email], ['Üniversite', u.uni], ['Bölüm', u.dept],
                 ['Öğrenim', LV[u.level] + (u.level !== 'mezun' ? ' · ' + u.term : '')],
                 ['İlgi alanları', u.interests.length ? u.interests.join(', ') : 'Seçilmedi']];
   $('#summary').innerHTML = rows.map(([k,v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('');
@@ -922,15 +1048,16 @@ function resetAll(){
   otpInputs.forEach(i => { i.value = ''; i.disabled = false; }); setOtpState('');
   $$('[data-eye]').forEach(b => { $('#'+b.dataset.eye).type = 'password'; b.setAttribute('aria-pressed','false'); b.querySelector('use').setAttribute('href','#eye'); });
   $('#nextBtn').disabled = $('#back').disabled = false;
-  go(1);
+  if($('#oaDlg').open) $('#oaDlg').close();
+  go(0);
 }
 
 /* ---------- Olaylar ---------- */
 $('#reg').addEventListener('submit', e => { e.preventDefault(); next(); });   // Enter = Devam
-$('#back').addEventListener('click', () => { if(!busy && step > 1) go(step - 1); });
+$('#back').addEventListener('click', () => { if(!busy && idx > 0) go(idx - 1); });
 $('#skip').addEventListener('click', () => finish(true));
 
-go(1);
+go(0);
 </script>
 </body>
 </html>
