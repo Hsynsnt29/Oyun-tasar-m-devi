@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Öğrencinotu101 | Akademik Not Paylaşım Platformu</title>
+<meta name="description" content="Üniversite ders notlarını ve çıkmış soruları bul, %5 önizle, 1 token ile indir. Her hafta 5 ücretsiz token.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0b2447; --navy-2:#15366d; --blue:#2563eb; --yellow:#ffc914; --yellow-d:#e5b000;
+  --ink:#16233b; --muted:#566782; --paper:#f4f6fb; --card:#fff; --line:#dde4f0; --ok:#12805c;
+  --font:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--paper);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+svg.i{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+button{font:inherit;cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 5%}
+
+/* Üst menü */
+header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:50}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:.8rem 0}
+.logo{display:flex;align-items:center;gap:.5rem;color:#fff;text-decoration:none;font-weight:800;font-size:1.3rem}
+.logo svg{width:1.6em;height:1.6em}
+.panel{display:flex;align-items:center;gap:10px}
+.chip{display:flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;padding:.45rem .9rem;border-radius:99px;font-weight:600;font-size:.92rem}
+.chip b{color:var(--yellow);font-size:1.05rem}
+.coin{width:1.1em;height:1.1em;border-radius:50%;background:var(--yellow);color:var(--navy);display:inline-grid;place-items:center;font-size:.7em;font-weight:800}
+.btn{border:0;border-radius:10px;padding:.65rem 1.1rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:background .15s,transform .15s}
+.btn:active{transform:scale(.97)}
+.btn-y{background:var(--yellow);color:var(--navy)} .btn-y:hover{background:var(--yellow-d)}
+.btn-b{background:var(--blue);color:#fff} .btn-b:hover{background:#1d4fc4}
+.btn-l{background:#eef2fa;color:var(--ink)} .btn-l:hover{background:#e1e8f6}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+
+/* Hero */
+.hero{background:var(--navy);color:#fff;padding:3.5rem 0 4.5rem;border-bottom:6px solid var(--yellow)}
+.hero h1{font-size:clamp(2rem,5.5vw,3.6rem);line-height:1.08;font-weight:800;max-width:15ch;letter-spacing:-.02em}
+.hero p{color:#c6d3ee;margin:1rem 0 1.8rem;max-width:52ch;font-size:1.1rem}
+.search{display:flex;background:#fff;border-radius:14px;padding:6px;max-width:640px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.search input{flex:1;min-width:0;border:0;outline:0;padding:.8rem 1rem;font:inherit;font-size:1rem;color:var(--ink);background:transparent}
+.search button{padding:.7rem 1.4rem}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:1rem}
+.filters button{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:.35rem .9rem;font-size:.9rem;font-weight:600}
+.filters button[aria-pressed=true]{background:var(--yellow);border-color:var(--yellow);color:var(--navy)}
+
+/* Nasıl çalışır */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:-2rem;position:relative;background:var(--card);border-radius:16px;box-shadow:0 12px 30px rgba(11,36,71,.12);overflow:hidden}
+.step{padding:1.3rem 1.5rem;display:flex;gap:.9rem;align-items:flex-start}
+.step+.step{border-left:1px solid var(--line)}
+.step .n{flex:none;width:2rem;height:2rem;border-radius:50%;background:var(--navy);color:var(--yellow);display:grid;place-items:center;font-weight:800}
+.step h3{font-size:1.05rem} .step p{color:var(--muted);font-size:.92rem}
+
+/* Liste */
+.list-head{display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap;margin:3rem 0 1.2rem}
+.list-head h2{font-size:1.7rem;letter-spacing:-.01em}
+.list-head span{color:var(--muted);font-size:.95rem}
+select{font:inherit;border:1px solid var(--line);background:#fff;padding:.5rem .8rem;border-radius:10px;color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.note{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.2rem;display:flex;flex-direction:column;gap:.7rem}
+.meta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:.85rem}
+.tag{background:#e8efff;color:var(--blue);border-radius:6px;padding:.1rem .5rem;font-weight:600;font-size:.78rem;align-self:flex-start}
+.note h3{font-size:1.15rem;line-height:1.3}
+.rate{display:flex;align-items:center;gap:.4rem;color:#b07d00;font-weight:700;font-size:.92rem}
+.rate small{color:var(--muted);font-weight:400}
+.acts{display:flex;gap:8px;margin-top:auto;padding-top:.4rem}
+.acts .btn{flex:1;padding:.6rem .5rem;font-size:.92rem}
+.owned{color:var(--ok);font-weight:700;font-size:.85rem;display:flex;align-items:center;gap:.3rem}
+.empty{grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:14px}
+
+/* Planlar */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin:4rem 0}
+.plan{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.6rem}
+.plan.pro{background:var(--navy);color:#fff;border:2px solid var(--yellow)}
+.plan h3{font-size:1.3rem} .price{font-size:2rem;font-weight:800;margin:.3rem 0 1rem}
+.price small{font-size:.95rem;font-weight:400;opacity:.75}
+.plan ul{list-style:none;display:grid;gap:.6rem;margin-bottom:1.4rem}
+.plan li{display:flex;gap:.5rem;align-items:center}
+.plan li svg{color:var(--ok)} .pro li svg{color:var(--yellow)}
+
+footer{background:var(--navy);color:#9fb0d4;padding:2rem 0;font-size:.9rem;text-align:center}
+
+/* Modal */
+dialog{border:0;border-radius:18px;padding:0;max-width:min(520px,92vw);width:100%;margin:auto;box-shadow:0 30px 80px rgba(0,0,0,.4);color:var(--ink)}
+dialog::backdrop{background:rgba(7,20,45,.65)}
+.dh{display:flex;justify-content:space-between;align-items:start;gap:1rem;padding:1.3rem 1.4rem .6rem}
+.dh h2{font-size:1.25rem;line-height:1.3}
+.x{background:none;border:0;color:var(--muted);padding:.2rem;border-radius:8px}
+.db{padding:.4rem 1.4rem 1.4rem}
+.paper{background:#fbfcff;border:1px solid var(--line);border-radius:10px;padding:1rem 1.1rem;position:relative;overflow:hidden;font-size:.92rem;display:grid;gap:.5rem}
+.paper .lock{height:90px;position:relative}
+.paper .lock i{display:block;height:9px;border-radius:5px;background:#d5dcea;margin:.55rem 0}
+.paper .lock::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent,#fbfcff 90%)}
+.dfoot{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap} .dfoot .btn{flex:1}
+.pct{display:inline-block;background:var(--yellow);color:var(--navy);font-weight:800;border-radius:6px;padding:0 .45rem;font-size:.85rem}
+
+/* Bildirim */
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);background:var(--navy);color:#fff;padding:.8rem 1.2rem;border-radius:12px;border-left:5px solid var(--yellow);box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:.25s;z-index:200;max-width:92vw}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:720px){
+  .steps{grid-template-columns:1fr} .step+.step{border-left:0;border-top:1px solid var(--line)}
+  .panel .btn span{display:none}
+  .hero{padding:2.2rem 0 3.5rem}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="book" viewBox="0 0 24 24"><path d="M2 4h7a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H2z"/><path d="M22 4h-7a3 3 0 0 0-3 3v14a2 2 0 0 1 2-2h8z"/></symbol>
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="eye" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="dl" viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16"/></symbol>
+  <symbol id="crown" viewBox="0 0 24 24"><path d="m3 7 4 4 5-7 5 7 4-4-2 12H5z"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path d="m12 2 3 7 7 .6-5.3 4.7 1.6 7.2L12 17.8 5.7 21.5l1.6-7.2L2 9.6 9 9z" fill="currentColor"/></symbol>
+  <symbol id="close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+</svg>
+
+<header>
+  <div class="wrap bar">
+    <a href="#" class="logo"><svg class="i"><use href="#book"/></svg> Öğrencinotu101</a>
+    <div class="panel">
+      <div class="chip" title="Kalan token"><span class="coin">T</span> Token: <b id="tokenCount">5</b></div>
+      <button class="btn btn-y" id="premiumBtn"><svg class="i"><use href="#crown"/></svg><span id="premiumLabel">Premium'a geç</span></button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Vize ve final notları tek yerde.</h1>
+    <p>Ders notları, özetler ve çıkmış sorular bir arama uzağında. Önizle, beğendiysen 1 token ile indir.</p>
+    <form class="search" id="searchForm" role="search">
+      <input id="q" type="search" placeholder="Ders adı, bölüm veya üniversite ara" aria-label="Not ara" autocomplete="off">
+      <button class="btn btn-y" type="submit"><svg class="i"><use href="#search"/></svg> Ara</button>
+    </form>
+    <div class="filters" id="filters" aria-label="Bölüm filtresi"></div>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="steps">
+    <div class="step"><div class="n">1</div><div><h3>Üni veya ders ara</h3><p>Üniversiteni ve dersini yaz, notlar listelensin.</p></div></div>
+    <div class="step"><div class="n">2</div><div><h3>Önizle</h3><p>Notun ilk %5'ini token harcamadan incele.</p></div></div>
+    <div class="step"><div class="n">3</div><div><h3>1 tokenla indir</h3><p>1 token = 1 ders notu. Haftada 5 token ücretsiz.</p></div></div>
+  </div>
+
+  <div class="list-head">
+    <div><h2>Notlar</h2><span id="count" aria-live="polite"></span></div>
+    <label>Sırala:
+      <select id="sort">
+        <option value="rate">En yüksek puan</option>
+        <option value="new">En yeni</option>
+        <option value="title">Ada göre (A-Z)</option>
+      </select>
+    </label>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <section class="plans" id="plans" aria-label="Planlar">
+    <div class="plan">
+      <h3>Ücretsiz</h3><div class="price">0 TL</div>
+      <ul>
+        <li><svg class="i"><use href="#check"/></svg> Haftada 5 token</li>
+        <li><svg class="i"><use href="#check"/></svg> %5 önizleme</li>
+        <li><svg class="i"><use href="#check"/></svg> Tüm notlara erişim</li>
+      </ul>
+    </div>
+    <div class="plan pro">
+      <h3>Premium</h3><div class="price">49 TL <small>/ ay</small></div>
+      <ul>
+        <li><svg class="i"><use href="#check"/></svg> Haftada 60 token</li>
+        <li><svg class="i"><use href="#check"/></svg> %15 genişletilmiş önizleme</li>
+        <li><svg class="i"><use href="#check"/></svg> Sınırsız cihazdan erişim</li>
+      </ul>
+      <button class="btn btn-y" style="width:100%" data-open-premium>Premium'a yüksel</button>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">Öğrencinotu101 · Akademik not paylaşım platformu · Bu sayfa bir tanıtım demosudur, ödeme ve dosyalar örnektir.</div></footer>
+
+<!-- Önizleme penceresi -->
+<dialog id="previewDlg" aria-labelledby="pvTitle">
+  <div class="dh"><h2 id="pvTitle"></h2><button class="x" data-close aria-label="Kapat"><svg class="i"><use href="#close"/></svg></button></div>
+  <div class="db">
+    <p style="color:var(--muted);margin-bottom:.7rem">Notun ilk <span class="pct" id="pvPct">%5</span> kısmı</p>
+    <div class="paper"><div id="pvText"></div><div class="lock" aria-hidden="true"><i></i><i style="width:92%"></i><i style="width:80%"></i><i style="width:88%"></i></div></div>
+    <div class="dfoot">
+      <button class="btn btn-b" id="pvDownload"><svg class="i"><use href="#dl"/></svg> 1 token ile indir</button>
+      <button class="btn btn-l" data-open-premium id="pvPremium">%15 önizleme için Premium</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Premium penceresi -->
+<dialog id="premiumDlg" aria-labelledby="prTitle">
+  <div class="dh"><h2 id="prTitle">Sınırları kaldır, sınavlara hazırlan</h2><button class="x" data-close aria-label="Kapat"><svg class="i"><use href="#close"/></svg></button></div>
+  <div class="db">
+    <div class="plan pro" style="padding:1.2rem">
+      <div class="price" style="margin:0 0 .8rem">49 TL <small>/ ay</small></div>
+      <ul style="margin:0">
+        <li><svg class="i"><use href="#check"/></svg> Haftada 60 token</li>
+        <li><svg class="i"><use href="#check"/></svg> %15 genişletilmiş önizleme</li>
+        <li><svg class="i"><use href="#check"/></svg> Sınırsız cihazdan erişim</li>
+      </ul>
+    </div>
+    <p id="prNote" style="color:var(--muted);font-size:.85rem;margin-top:.8rem">Demo sürümdür, gerçek ödeme alınmaz.</p>
+    <div class="dfoot">
+      <button class="btn btn-y" id="prAction">Premium'a yüksel</button>
+      <button class="btn btn-l" data-close>Vazgeç</button>
+    </div>
+  </div>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ---------- Ayarlar ve örnek veri ---------- */
+const WEEK = 7 * 864e5, FREE = 5, PREMIUM = 60, KEY = 'ogrencinotu101';
+const NOTES = [
+  {id:1, uni:'Pamukkale Üni.', dept:'Bilgisayar Müh.', title:'BMG Vize Özet Notları 2026', rate:4.8, votes:62, date:'2026-10-20', ex:['Bölüm 1: Bilgisayar Mühendisliğine Giriş','Algoritma ve program kavramı','Bilgisayarın temel bileşenleri','Sayı sistemleri: ikilik, onluk, onaltılık'] },
+  {id:2, uni:'Pamukkale Üni.', dept:'Fizik', title:'Fizik Lab Raporları ve Formüller', rate:4.0, votes:21, date:'2026-10-12', ex:['Deney 1: Ölçme ve hata analizi','Standart sapma ve belirsizlik hesabı','Temel formül tablosu','Birim dönüşümleri'] },
+  {id:3, uni:'Pamukkale Üni.', dept:'Matematik', title:'Kalkülüs 1 Çıkmış Sorular', rate:5.0, votes:84, date:'2026-10-25', ex:['Limit ve süreklilik soruları','Türev kuralları özeti','Çıkmış soru 1: lim x→0 sin(x)/x','Çıkmış soru 2: zincir kuralı'] },
+  {id:4, uni:'Pamukkale Üni.', dept:'Bilgisayar Müh.', title:'C Programlama Vize Soru Bankası', rate:4.7, votes:48, date:'2026-10-22', ex:['Değişkenler ve veri tipleri','printf ve scanf kullanımı','if / else ve switch yapıları','Döngü soruları ve çözümleri'] },
+  {id:5, uni:'Pamukkale Üni.', dept:'Matematik', title:'Lineer Cebir Formül Kartları', rate:4.4, votes:30, date:'2026-10-02', ex:['Matris işlemleri','Determinant hesaplama yöntemleri','Ters matris adımları','Özdeğer ve özvektör'] },
+  {id:6, uni:'Pamukkale Üni.', dept:'Fizik', title:'Fizik 101 Çıkmış Sorular', rate:4.2, votes:37, date:'2026-09-28', ex:['Vektörler ve hareket','Newton yasaları örnekleri','İş, enerji, güç soruları','Çıkmış soru çözümleri'] },
+  {id:7, uni:'Pamukkale Üni.', dept:'İşletme', title:'Genel Muhasebe Özet Notları', rate:4.5, votes:26, date:'2026-10-15', ex:['Muhasebenin temel kavramları','Hesap planı ve yevmiye kaydı','Bilanço eşitliği','Örnek kayıt soruları'] },
+  {id:8, uni:'Pamukkale Üni.', dept:'Bilgisayar Müh.', title:'Ayrık Matematik Konu Anlatımı', rate:4.6, votes:19, date:'2026-10-18', ex:['Önermeler ve doğruluk tabloları','Kümeler ve bağıntılar','Tümevarım ispatı','Sayma ilkeleri'] }
+];
+
+/* ---------- Durum (localStorage hata verirse bile çalışır) ---------- */
+function load(){
+  try{ const s = JSON.parse(localStorage.getItem(KEY)); if(s && typeof s.tokens === 'number') return s; }catch(e){}
+  return {tokens:FREE, premium:false, owned:[], week:Date.now()};
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+let S = load();
+// Haftalık yenileme: 7 gün geçtiyse token hakkı sıfırdan verilir
+if(Date.now() - S.week >= WEEK){ S.tokens = S.premium ? PREMIUM : FREE; S.week = Date.now(); save(); }
+
+const $ = s => document.querySelector(s);
+const pct = () => S.premium ? 15 : 5;
+let dept = 'Tümü', query = '', current = null;
+
+/* ---------- Yardımcılar ---------- */
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 3200);
+}
+const norm = s => s.toLocaleLowerCase('tr').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const stars = r => `<svg class="i" aria-hidden="true"><use href="#star"/></svg>`;
+
+/* ---------- Çizim ---------- */
+function renderHeader(){
+  $('#tokenCount').textContent = S.tokens;
+  $('#premiumLabel').textContent = S.premium ? 'Premium aktif' : "Premium'a geç";
+}
+function renderFilters(){
+  const depts = ['Tümü', ...new Set(NOTES.map(n => n.dept))];
+  $('#filters').innerHTML = depts.map(d => `<button type="button" aria-pressed="${d===dept}" data-dept="${d}">${d}</button>`).join('');
+}
+function renderList(){
+  const sort = $('#sort').value, q = norm(query.trim());
+  let list = NOTES.filter(n => (dept==='Tümü' || n.dept===dept) && (!q || norm(n.uni+' '+n.dept+' '+n.title).includes(q)));
+  list.sort((a,b) => sort==='rate' ? b.rate-a.rate : sort==='new' ? b.date.localeCompare(a.date) : a.title.localeCompare(b.title,'tr'));
+  $('#count').textContent = list.length + ' not bulundu';
+  $('#grid').innerHTML = list.length ? list.map(n => {
+    const own = S.owned.includes(n.id);
+    return `<article class="note">
+      <div class="meta"><span>${n.uni}</span><span class="tag">${n.dept}</span></div>
+      <h3>${n.title}</h3>
+      <div class="rate">${stars()} ${n.rate.toFixed(1)} <small>(${n.votes} değerlendirme)</small></div>
+      ${own ? '<div class="owned"><svg class="i"><use href="#check"/></svg> İndirildi</div>' : ''}
+      <div class="acts">
+        <button class="btn btn-l" data-preview="${n.id}"><svg class="i"><use href="#eye"/></svg> %${pct()} Önizle</button>
+        <button class="btn btn-b" data-download="${n.id}"><svg class="i"><use href="#dl"/></svg> ${own ? 'Tekrar indir' : '1 token'}</button>
+      </div>
+    </article>`;
+  }).join('') : '<div class="empty">Aramana uygun not bulunamadı. Başka bir ders adı veya bölüm dene.</div>';
+}
+function renderAll(){ renderHeader(); renderList(); }
+
+/* ---------- İşlemler ---------- */
+function fileFor(n){
+  const blob = new Blob([`Öğrencinotu101 demo dosyası\n\n${n.title}\n${n.uni} - ${n.dept}\n\n` + n.ex.join('\n')], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = n.title.replace(/[^\wığüşöçİĞÜŞÖÇ ]/g,'').replace(/\s+/g,'-') + '.txt';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+function download(id){
+  const n = NOTES.find(x => x.id === id), own = S.owned.includes(id);
+  if(!own){
+    if(S.tokens < 1){
+      toast('Token hakkın bitti. Haftalık hakkın yenilenene kadar bekleyebilir veya Premium\'a geçebilirsin.');
+      openPremium(); return;
+    }
+    S.tokens--; S.owned.push(id); save();
+    toast(`"${n.title}" indirildi. 1 token harcandı, kalan: ${S.tokens}`);
+  } else toast('Bu notu daha önce aldın, token harcanmadı.');
+  fileFor(n); renderAll();
+}
+function preview(id){
+  current = NOTES.find(x => x.id === id);
+  const lines = S.premium ? current.ex : current.ex.slice(0, 2);
+  $('#pvTitle').textContent = current.title;
+  $('#pvPct').textContent = '%' + pct();
+  $('#pvText').innerHTML = lines.map(l => `<p>${l}</p>`).join('');
+  $('#pvDownload').innerHTML = `<svg class="i"><use href="#dl"/></svg> ${S.owned.includes(id) ? 'Tekrar indir' : '1 token ile indir'}`;
+  $('#pvPremium').hidden = S.premium;
+  $('#previewDlg').showModal();
+}
+function openPremium(){
+  $('#previewDlg').close();
+  $('#prAction').textContent = S.premium ? 'Ücretsiz plana dön (demo)' : "Premium'a yüksel";
+  $('#premiumDlg').showModal();
+}
+function togglePremium(){
+  S.premium = !S.premium;
+  S.tokens = S.premium ? PREMIUM : Math.min(S.tokens, FREE); S.week = Date.now(); save();
+  $('#premiumDlg').close(); renderAll();
+  toast(S.premium ? 'Premium aktif: 60 token yüklendi, önizleme %15 oldu.' : 'Ücretsiz plana dönüldü.');
+}
+
+/* ---------- Olaylar ---------- */
+document.addEventListener('click', e => {
+  const t = e.target.closest('button'); if(!t) return;
+  if(t.dataset.preview) preview(+t.dataset.preview);
+  else if(t.dataset.download) download(+t.dataset.download);
+  else if(t.dataset.dept){ dept = t.dataset.dept; renderFilters(); renderList(); }
+  else if(t.hasAttribute('data-open-premium')) openPremium();
+  else if(t.hasAttribute('data-close')) t.closest('dialog').close();
+});
+$('#premiumBtn').onclick = openPremium;
+$('#prAction').onclick = togglePremium;
+$('#pvDownload').onclick = () => { download(current.id); $('#previewDlg').close(); };
+$('#searchForm').addEventListener('submit', e => { e.preventDefault(); query = $('#q').value; renderList(); });
+$('#q').addEventListener('input', e => { query = e.target.value; renderList(); });
+$('#sort').addEventListener('change', renderList);
+document.querySelectorAll('dialog').forEach(d => d.addEventListener('click', e => { if(e.target === d) d.close(); }));
+
+renderFilters(); renderAll();
+</script>
+</body>
+</html>
