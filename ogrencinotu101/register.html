@@ -96,7 +96,18 @@ select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50
 .oa-head.apple .brand{color:#000} .oa-head.facebook .brand{color:#1877f2}
 .oa-head h2{font-size:1.15rem;line-height:1.25;flex:1}
 .oa-head small{display:block;color:var(--muted);font-weight:400;font-size:.85rem}
-.share{font-size:.85rem;color:var(--muted);margin-top:.3rem}
+.share{font-size:.85rem;color:var(--muted);margin-top:.9rem}
+.accts{list-style:none;display:grid;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.accts li+li{border-top:1px solid var(--line)}
+.acct{width:100%;display:flex;align-items:center;gap:.8rem;background:#fff;border:0;padding:.8rem 1rem;text-align:left;transition:background .15s}
+.acct:hover{background:#f4f7fc}
+.acct .av{width:2.3rem;height:2.3rem;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;flex:none}
+.acct .av.add{background:#eef2fa;color:var(--muted)}
+.acct .who{flex:1;min-width:0;display:grid;line-height:1.3}
+.acct .who b{font-weight:600}
+.acct .who small{color:var(--muted);font-size:.86rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acct .chev{color:var(--muted)}
+.oa-ex{margin:1rem 1.4rem 0}
 
 /* Şifre */
 .pw{position:relative}
@@ -245,6 +256,7 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
   <symbol id="b-google" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></symbol>
   <symbol id="b-apple" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></symbol>
   <symbol id="b-facebook" viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></symbol>
+  <symbol id="useradd" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M1 21a8 8 0 0 1 16 0M19 8v6M16 11h6"/></symbol>
   <symbol id="close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
 </svg>
 
@@ -475,27 +487,31 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
 
 <!-- Sosyal hesapla kayıt penceresi (demo) -->
 <dialog id="oaDlg" aria-labelledby="oaTitle">
-  <div class="oa-head" id="oaHead"><svg class="brand" aria-hidden="true"><use id="oaLogo" href="#b-google"/></svg><h2 id="oaTitle">Google ile kaydol<small>Öğrencinotu101'e devam et</small></h2><button class="x" type="button" data-close aria-label="Kapat"><svg class="i"><use href="#close"/></svg></button></div>
-  <form class="db" id="oaForm" novalidate style="padding-top:1rem">
-    <div class="democode" style="margin-bottom:1rem"><span class="tag">DEMO</span><span style="flex:1;min-width:12em" id="oaNote"></span></div>
+  <div class="oa-head" id="oaHead"><svg class="brand" aria-hidden="true"><use id="oaLogo" href="#b-google"/></svg><h2 id="oaTitle">Bir hesap seçin<small id="oaSub">Öğrencinotu101'e devam etmek için</small></h2><button class="x" type="button" data-close aria-label="Kapat"><svg class="i"><use href="#close"/></svg></button></div>
+  <div class="exists oa-ex" id="oaExists" hidden>
+    <span>Bu e-postaya ait bir hesabımız zaten mevcut.</span>
+    <a class="btn btn-y sm" id="oaExistsLink" href="login.html"><svg class="i"><use href="#login"/></svg> Oturum aç</a>
+  </div>
+  <!-- Hesap seçme -->
+  <div class="db" id="oaPick" style="padding-top:1rem">
+    <ul class="accts" id="oaList"></ul>
+    <p class="share" id="oaShare"></p>
+  </div>
+  <!-- Başka bir hesap kullan -->
+  <form class="db" id="oaForm" novalidate hidden style="padding-top:1rem">
     <div class="field">
       <label for="oaName">Ad soyad</label>
-      <input class="inp" id="oaName" maxlength="60">
+      <input class="inp" id="oaName" autocomplete="name" placeholder="Örn. Ayşe Yılmaz" maxlength="60">
       <p class="err" id="oaNameErr" aria-live="polite"></p>
     </div>
     <div class="field">
       <label for="oaEmail">E-posta</label>
-      <input class="inp" id="oaEmail" type="email" maxlength="80">
+      <input class="inp" id="oaEmail" type="email" inputmode="email" autocomplete="email" maxlength="80">
       <p class="err" id="oaEmailErr" aria-live="polite"></p>
-      <div class="exists" id="oaExists" hidden>
-        <span>Bu e-postaya ait bir hesabımız zaten mevcut.</span>
-        <a class="btn btn-y sm" id="oaExistsLink" href="login.html"><svg class="i"><use href="#login"/></svg> Oturum aç</a>
-      </div>
     </div>
-    <p class="share" id="oaShare"></p>
     <div class="dfoot">
       <button type="submit" class="btn btn-b">Devam et <svg class="i"><use href="#right"/></svg></button>
-      <button type="button" class="btn btn-l" data-close>Vazgeç</button>
+      <button type="button" class="btn btn-l" id="oaBack"><svg class="i"><use href="#left"/></svg> Hesaplara dön</button>
     </div>
   </form>
 </dialog>
@@ -516,12 +532,14 @@ const USERS_KEY = 'ogrencinotu101_users';
 const FLOW_EMAIL  = ['email','pass','pass2','name','code','school','interests'];
 const FLOW_SOCIAL = ['email','code','school','interests'];
 const STEP_NAMES = {email:'E-posta', pass:'Şifre', pass2:'Şifre tekrar', name:'Ad soyad', code:'Doğrulama', school:'Okul bilgileri', interests:'İlgi alanları'};
-// Demo: sosyal hesap penceresinde örnek olarak dolu gelen bilgiler
+// Demo: her sağlayıcıda bu tarayıcıda oturum açık gibi görünen 3 hesap
+const DEMO_PEOPLE = [['Ayşe Yılmaz','#1a73e8'], ['Mehmet Kaya','#e8710a'], ['Zeynep Demir','#188038']];
 const PROVIDERS = {
-  google:   {label:'Google',   demo:['Ayşe Yılmaz', 'ayse.yilmaz@gmail.com']},
-  apple:    {label:'Apple',    demo:['Mehmet Kaya', 'mehmet.kaya@icloud.com']},
-  facebook: {label:'Facebook', demo:['Zeynep Demir','zeynep.demir@hotmail.com']}
+  google:   {label:'Google',   domain:'gmail.com'},
+  apple:    {label:'Apple',    domain:'icloud.com'},
+  facebook: {label:'Facebook', domain:'hotmail.com'}
 };
+const demoAccounts = p => DEMO_PEOPLE.map(([name, color], i) => ({name, color, email:`demo${i+1}@${PROVIDERS[p].domain}`}));
 const MAX_TRIES = 3, RESEND_SEC = 30, MAX_INTERESTS = 3;
 // Demo için önceden kayıtlı sayılan hesap ("zaten kayıtlı" uyarısını denemek için)
 const DEMO_EMAILS = ['demo@ogrencinotu101.com'];
@@ -958,43 +976,65 @@ $('#chips').addEventListener('click', e => {
    Gerçekte sağlayıcının kendi penceresi açılır, kullanıcı hesabını seçer ve
    ad soyad + e-posta siteye otomatik gelir. Şifre oluşturulmaz. */
 let oaProvider = null;
+function oaView(form){
+  $('#oaPick').hidden = form; $('#oaForm').hidden = !form; $('#oaExists').hidden = true;
+  $('#oaTitle').firstChild.nodeValue = form ? 'Başka bir hesap kullan' : 'Bir hesap seçin';
+  if(form){
+    ['oaName','oaEmail'].forEach(id => { $('#'+id).value = ''; $('#'+id).classList.remove('bad'); setErr(id+'Err',''); });
+    $('#oaEmail').placeholder = 'ornek@' + PROVIDERS[oaProvider].domain;
+    setTimeout(() => $('#oaName').focus(), 30);
+  } else setTimeout(() => $('#oaList .acct')?.focus(), 30);
+}
 $$('[data-provider]').forEach(b => b.addEventListener('click', () => {
   oaProvider = b.dataset.provider;
   const pr = PROVIDERS[oaProvider];
   $('#oaHead').className = 'oa-head ' + oaProvider;
   $('#oaLogo').setAttribute('href', '#b-' + oaProvider);
-  $('#oaTitle').firstChild.nodeValue = pr.label + ' ile kaydol';
-  $('#oaNote').textContent = `Gerçekte ${pr.label}'ın kendi giriş penceresi açılır ve bilgilerin otomatik gelir. Burada örnek bilgiler dolu geliyor, istersen değiştirebilirsin.`;
+  $('#oaSub').textContent = `${pr.label} ile Öğrencinotu101'e devam et`;
   $('#oaShare').textContent = `Devam ettiğinde ${pr.label}, adını ve e-posta adresini Öğrencinotu101 ile paylaşır. Şifre oluşturman gerekmez.`;
-  $('#oaName').value = pr.demo[0]; $('#oaEmail').value = pr.demo[1];
-  ['oaName','oaEmail'].forEach(id => { $('#'+id).classList.remove('bad'); setErr(id+'Err',''); });
-  $('#oaExists').hidden = true;
+  $('#oaList').innerHTML = demoAccounts(oaProvider).map((a, i) => `<li><button type="button" class="acct" data-acct="${i}">
+      <span class="av" style="background:${a.color}">${esc(a.name[0])}</span>
+      <span class="who"><b>${esc(a.name)}</b><small>${esc(a.email)}</small></span>
+      <svg class="i chev"><use href="#right"/></svg></button></li>`).join('') +
+    `<li><button type="button" class="acct" data-acct="other"><span class="av add"><svg class="i"><use href="#useradd"/></svg></span>
+      <span class="who"><b>Başka bir hesap kullan</b></span><svg class="i chev"><use href="#right"/></svg></button></li>`;
+  oaView(false);
   $('#oaDlg').showModal();
 }));
+$('#oaList').addEventListener('click', e => {
+  const b = e.target.closest('[data-acct]'); if(!b) return;
+  if(b.dataset.acct === 'other') return oaView(true);
+  const a = demoAccounts(oaProvider)[+b.dataset.acct];
+  socialDone(a.name, a.email);
+});
+$('#oaBack').addEventListener('click', () => oaView(false));
 ['oaName','oaEmail'].forEach(id => $('#'+id).addEventListener('input', () => {
-  $('#'+id).classList.remove('bad'); setErr(id+'Err',''); if(id === 'oaEmail') $('#oaExists').hidden = true;
+  $('#'+id).classList.remove('bad'); setErr(id+'Err',''); $('#oaExists').hidden = true;
 }));
 $('#oaForm').addEventListener('submit', e => {
   e.preventDefault();
   const n = cleanName($('#oaName').value), m = $('#oaEmail').value.trim().toLowerCase();
-  const nErr = nameError(n), mErr = emailError(m);
+  const nErr = nameError(n), mErr = emailError(m);   // sadece kalıp kontrolü: ornek@alanadi.com
   setErr('oaNameErr', nErr); $('#oaName').classList.toggle('bad', !!nErr);
   setErr('oaEmailErr', mErr); $('#oaEmail').classList.toggle('bad', !!mErr);
+  if(nErr || mErr){ shake($('#oaForm')); $('#oaForm .bad').focus(); return; }
+  socialDone(n, m);
+});
+// Bilgiler sağlayıcıdan geldi: e-posta, şifre ve ad soyad adımları atlanır
+function socialDone(name, email){
   $('#oaExists').hidden = true;
-  if(nErr || mErr){ shake($('#oaForm')); ($('#oaForm .bad')).focus(); return; }
-  if(emailExists(m)){
-    $('#oaEmail').classList.add('bad');
-    $('#oaExistsLink').href = 'login.html?email=' + encodeURIComponent(m);
+  if(emailExists(email)){
+    $('#oaExistsLink').href = 'login.html?email=' + encodeURIComponent(email);
+    $('#oaExists').firstElementChild.textContent = `${email} adresine ait bir hesabımız zaten mevcut.`;
     $('#oaExists').hidden = false; shake($('#oaExists')); return;
   }
-  // Bilgiler sağlayıcıdan geldi: e-posta, şifre ve ad soyad adımları atlanır
-  D.name = n; D.email = m; D.pass = null; D.provider = oaProvider;
-  $('#email').value = m; $('#name').value = n;
+  D.name = name; D.email = email; D.pass = null; D.provider = oaProvider;
+  $('#email').value = email; $('#name').value = name;
   $('#oaDlg').close();
   flow = FLOW_SOCIAL; idx = 0;
   toast(`${PROVIDERS[oaProvider].label} hesabından bilgilerin alındı.`);
   go(1);
-});
+}
 $('#oaDlg').addEventListener('click', e => { if(e.target === e.currentTarget) e.currentTarget.close(); });
 
 /* ---------- Kaydı tamamla ---------- */
