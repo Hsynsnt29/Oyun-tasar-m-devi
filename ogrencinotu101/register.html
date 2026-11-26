@@ -346,7 +346,6 @@ dialog::backdrop{background:rgba(7,20,45,.65)}
               <input class="inp" id="pass2" type="password" autocomplete="new-password" maxlength="64">
               <button type="button" class="eye" data-eye="pass2" aria-label="Şifreyi göster" aria-pressed="false"><svg class="i"><use href="#eye"/></svg></button>
             </div>
-            <p class="okmsg" id="matchOk" hidden><svg class="i"><use href="#check"/></svg> Şifreler eşleşiyor</p>
             <p class="err" id="pass2Err" aria-live="polite"></p>
           </div>
         </fieldset>
@@ -630,7 +629,6 @@ function go(i){
   $('#skip').hidden = s !== 'interests';
   updateNext();
   if(s === 'code') enterCodeStep();
-  if(s === 'pass2') checkMatch();
   // İlk alana odaklan
   const first = $(`.step[data-step="${s}"]`).querySelector('input:not([disabled]):not([type=radio]):not([type=checkbox]), .chip');
   if(first) setTimeout(() => first.focus({preventScroll:true}), 30);
@@ -686,7 +684,8 @@ const validate = {
   },
   pass2(){
     const v = $('#pass2').value;
-    const msg = !v ? 'Şifreni tekrar yazmalısın.' : v !== D.pass ? 'Şifreler eşleşmiyor.' : '';
+    const msg = !v ? 'Şifreni tekrar yazmalısın.' : v !== D.pass ? 'Şifreler eşleşmiyor. Tekrar dene.' : '';
+    if(msg && v) $('#pass2').value = '';   // yanlışsa alan temizlenir, baştan yazılır
     return fieldResult($('#pass2'), 'pass2Err', msg);
   },
   name(){
@@ -749,15 +748,9 @@ $('#pass').addEventListener('input', e => {
   if(D.pass && p !== D.pass){ $('#pass2').value = ''; }    // şifre değişirse tekrarını sıfırla
 });
 
-/* ---------- 4: şifre eşleşmesi ---------- */
-function checkMatch(){
-  const v = $('#pass2').value, same = v && v === D.pass;
-  $('#matchOk').hidden = !same;
-  if(same){ setErr('pass2Err',''); $('#pass2').classList.remove('bad'); }
-  else if(v && D.pass && !D.pass.startsWith(v)) setErr('pass2Err', 'Şifreler eşleşmiyor.');
-  else setErr('pass2Err', '');
-}
-$('#pass2').addEventListener('input', () => { $('#pass2').classList.remove('bad'); checkMatch(); });
+/* ---------- Şifre tekrar ----------
+   Güvenlik için yazarken eşleşme bilgisi verilmez; kontrol sadece Devam'a basınca yapılır. */
+$('#pass2').addEventListener('input', () => { $('#pass2').classList.remove('bad'); setErr('pass2Err',''); });
 
 /* Şifreyi göster / gizle */
 $$('[data-eye]').forEach(b => b.addEventListener('click', () => {
@@ -1084,7 +1077,7 @@ function resetAll(){
   $$('.chip').forEach(c => c.setAttribute('aria-pressed','false')); $('#counter b').textContent = 0;
   $$('.err').forEach(e => e.innerHTML = ''); $$('.bad').forEach(e => e.classList.remove('bad'));
   $$('#rules li').forEach(li => li.classList.remove('ok')); $('#meter').dataset.l = 0; $('#meterTxt').textContent = '';
-  $('#exists').hidden = true; $('#matchOk').hidden = true; $('#codeOk').hidden = true;
+  $('#exists').hidden = true; $('#codeOk').hidden = true;
   otpInputs.forEach(i => { i.value = ''; i.disabled = false; }); setOtpState('');
   $$('[data-eye]').forEach(b => { $('#'+b.dataset.eye).type = 'password'; b.setAttribute('aria-pressed','false'); b.querySelector('use').setAttribute('href','#eye'); });
   $('#nextBtn').disabled = $('#back').disabled = false;
