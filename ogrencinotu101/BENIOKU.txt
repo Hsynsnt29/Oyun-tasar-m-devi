@@ -13,6 +13,7 @@ index.html      Ana sayfa: not arama, filtreleme, önizleme, indirme, planlar
 register.html   Kayıt: e-posta veya Google / Apple / Facebook ile, adım adım
 login.html      Giriş ve "Şifremi unuttum" (aynı dosyada iki görünüm)
 dashboard.html  Kullanıcı paneli: genel bakış, notlarım, plan, profil, güvenlik
+Sohbet linki.txt  Projenin geliştirildiği sohbetin linki
 
 ÖRNEK KULLANIM SIRASI
 ---------------------
