@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Giriş yap — LevelUp English</title>
+<style>
+:root{
+  --bg:#0a0f1e;--card:#121a2f;--card2:#172139;--line:#243150;--line2:#33436a;
+  --text:#e8ecf6;--muted:#9aa6c2;--dim:#6c7997;
+  --gold:#d8b25e;--gold2:#f2d68f;--goldInk:#1d1607;
+  --ok:#45c48a;--bad:#f07272;--warn:#f0b34a;--info:#74b6ff;
+  --r:16px;--shadow:0 14px 40px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--text);font:15px/1.6 "Segoe UI",Inter,system-ui,-apple-system,Roboto,Arial,sans-serif;
+  background:radial-gradient(1000px 560px at 50% -15%,rgba(216,178,94,.12),transparent 60%),
+             radial-gradient(800px 500px at 0% 100%,rgba(116,182,255,.07),transparent 60%),var(--bg);
+  display:flex;flex-direction:column;align-items:center;padding:28px 16px 40px}
+a{color:var(--gold2);text-decoration:none}
+a:hover{text-decoration:underline}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+svg.i{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+[hidden]{display:none!important}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:1px solid transparent;border-radius:12px;padding:.72rem 1.15rem;font-weight:650;transition:transform .12s,filter .15s,background .15s,border-color .15s;text-decoration:none!important;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--goldInk);box-shadow:0 6px 20px rgba(216,178,94,.22)}
+.btn-gold:hover{filter:brightness(1.06)}
+.btn-line{background:transparent;border-color:var(--line2);color:var(--text)}
+.btn-line:hover{border-color:var(--gold);color:var(--gold2)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--text)}
+.btn-ghost:hover{background:rgba(255,255,255,.08)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;filter:none}
+.btn.sm{padding:.45rem .8rem;font-size:.88rem;border-radius:10px}
+.btn.full{width:100%}
+
+.top{width:100%;max-width:460px;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.logo{display:flex;align-items:center;gap:.6rem;white-space:nowrap;font-weight:800;font-size:1.12rem;color:var(--text)!important;text-decoration:none!important}
+.logo b{color:var(--gold2)}
+.top .back{font-size:.9rem;color:var(--muted)}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.box{width:100%;max-width:460px;padding:28px}
+.view{animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.head{text-align:center;margin-bottom:1.1rem}
+.head .em{display:flex;justify-content:center;gap:4px;align-items:flex-end;margin-bottom:.6rem}
+.head h1{font-size:1.5rem;margin:0 0 .2rem}
+.head p{color:var(--muted);margin:0;font-size:.93rem}
+.ico{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:rgba(216,178,94,.1);border:1px solid rgba(216,178,94,.28);color:var(--gold2);margin:0 auto .8rem}
+.ico svg{width:22px;height:22px}
+label.lbl{display:block;font-size:.86rem;font-weight:600;margin:.85rem 0 .35rem;color:#cfd6e6}
+.inp{position:relative}
+.inp input{width:100%;background:#0b1224;border:1.5px solid var(--line);border-radius:12px;padding:.75rem .9rem;outline:none;transition:border-color .15s,box-shadow .15s}
+.inp input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(216,178,94,.13)}
+.inp input.bad{border-color:var(--bad)}
+.inp .eye{position:absolute;right:.45rem;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--muted);padding:.35rem;border-radius:8px;display:grid;place-items:center}
+.inp .eye:hover{color:var(--text)}
+.inp.has-eye input{padding-right:2.7rem}
+.err{color:var(--bad);font-size:.85rem;margin:.45rem 0 0;display:flex;gap:.4rem;align-items:flex-start}
+.err:empty{display:none}
+.hint{color:var(--dim);font-size:.82rem;margin:.35rem 0 0}
+.warn-line{color:var(--warn);font-size:.82rem;margin:.35rem 0 0;display:flex;gap:.35rem;align-items:center}
+.row-between{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin:.75rem 0 1rem;font-size:.87rem}
+.linkbtn{background:none;border:0;padding:0;color:var(--gold2);font-weight:600}
+.linkbtn:hover{text-decoration:underline}
+.linkbtn[disabled]{color:var(--dim);cursor:default;text-decoration:none}
+.or{display:flex;align-items:center;gap:.7rem;color:var(--dim);font-size:.8rem;margin:1.1rem 0}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.social{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}
+.soc{display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.65rem;border-radius:12px;border:1px solid var(--line2);background:rgba(255,255,255,.03);font-weight:600;font-size:.88rem}
+.soc:hover{border-color:var(--gold)}
+.soc svg{width:20px;height:20px}
+@media(max-width:420px){.soc span{display:none}}
+.foot{text-align:center;color:var(--muted);font-size:.9rem;margin-top:1.2rem}
+.banner{display:flex;gap:.7rem;align-items:center;padding:.7rem .85rem;border-radius:12px;background:rgba(116,182,255,.08);border:1px solid rgba(116,182,255,.28);font-size:.88rem;margin-bottom:1rem}
+.banner svg.av{flex:none}
+.banner .bt{flex:1;color:var(--muted)}
+.banner .bt b{color:var(--text)}
+.banner .ba{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:flex-end}
+.success{display:flex;gap:.55rem;align-items:center;padding:.7rem .85rem;border-radius:12px;background:rgba(69,196,138,.1);border:1px solid rgba(69,196,138,.35);color:#9ae6c2;font-size:.9rem;margin-bottom:1rem}
+
+.steps{display:flex;gap:6px;margin:0 0 1.2rem}
+.steps i{flex:1;height:5px;border-radius:9px;background:#0b1224}
+.steps i.on{background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.methods{display:grid;gap:.55rem;margin-top:.4rem}
+.method{display:flex;gap:.8rem;align-items:center;padding:.85rem .9rem;border:1.5px solid var(--line);border-radius:12px;background:#0b1224;text-align:left;width:100%}
+.method:hover{border-color:var(--gold)}
+.method .mi{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:rgba(216,178,94,.1);color:var(--gold2);flex:none}
+.method small{display:block;color:var(--dim)}
+.method[disabled]{opacity:.45;cursor:not-allowed}
+.demo{border:1px dashed rgba(216,178,94,.5);background:rgba(216,178,94,.07);border-radius:12px;padding:.75rem .9rem;margin:0 0 .4rem;font-size:.88rem;color:var(--muted)}
+.demo b{display:block;color:var(--gold2);font-size:1.5rem;letter-spacing:.35em;font-family:Consolas,monospace}
+.otp{letter-spacing:.6em;font-size:1.35rem;text-align:center;font-family:Consolas,monospace}
+.rc{letter-spacing:.15em;font-family:Consolas,monospace;text-align:center;font-size:1.1rem}
+.code-row{display:flex;justify-content:space-between;align-items:center;margin-top:.6rem;font-size:.85rem;color:var(--dim)}
+.rules{list-style:none;padding:0;margin:.7rem 0 0;display:grid;grid-template-columns:1fr 1fr;gap:.3rem .8rem;font-size:.83rem;color:var(--dim)}
+.rules li{display:flex;align-items:center;gap:.4rem}
+.rules li.ok{color:var(--ok)}
+.rules li svg{width:14px;height:14px}
+.actions{display:flex;gap:.6rem;margin-top:1.2rem}
+.actions .btn-gold{flex:1}
+
+/* Robot doğrulaması */
+.captcha{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:#0b1224;border:1.5px solid var(--line);border-radius:12px;padding:.65rem .85rem;margin-top:.9rem}
+.cap-btn{display:flex;align-items:center;gap:.7rem;background:none;border:0;padding:.2rem;border-radius:8px;font-weight:600;text-align:left}
+.cap-box{width:1.7rem;height:1.7rem;border:2px solid var(--line2);border-radius:6px;display:grid;place-items:center;flex:none;transition:border-color .15s}
+.cap-btn:hover .cap-box{border-color:var(--gold)}
+.cap-spin{display:none;width:1.4rem;height:1.4rem;border:3px solid rgba(216,178,94,.25);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+.cap-ok{display:none;color:var(--ok);width:1.2rem;height:1.2rem;stroke-width:3}
+.captcha[data-state=loading] .cap-box{border-color:transparent}
+.captcha[data-state=loading] .cap-spin{display:block}
+.captcha[data-state=ok] .cap-box{border-color:var(--ok);background:rgba(69,196,138,.12)}
+.captcha[data-state=ok] .cap-ok{display:block}
+.cap-brand{display:flex;align-items:center;gap:.35rem;color:var(--dim);font-size:.68rem;line-height:1.2;text-align:right}
+.cap-brand svg{width:1.5rem;height:1.5rem;color:var(--gold)}
+.cap-task{margin-top:.6rem;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:#0b1224}
+.cap-head{background:linear-gradient(90deg,#2a2210,#3a2e12);color:var(--gold2);padding:.65rem .85rem;font-size:.9rem}
+.cap-head b{display:block;font-size:1.2rem;color:#fff}
+.cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px}
+.cap-cell{position:relative;aspect-ratio:1;border:0;border-radius:8px;display:grid;place-items:center;transition:transform .15s}
+.cap-cell svg{width:56%;height:56%;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.cap-cell[aria-pressed=true]{transform:scale(.85);outline:3px solid var(--gold);outline-offset:-3px}
+.cap-foot{display:flex;justify-content:space-between;gap:.5rem;padding:.2rem .6rem .6rem}
+.cap-msg{padding:0 .8rem .3rem}
+
+/* Hesap seçme penceresi */
+.modal-bg{position:fixed;inset:0;background:rgba(3,6,14,.72);backdrop-filter:blur(3px);display:grid;place-items:center;z-index:60;padding:16px}
+.modal{width:100%;max-width:400px;padding:22px;background:#f8f9fb;color:#1d2433;border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.modal .mh{display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem}
+.modal .mh svg{width:24px;height:24px}
+.modal h3{margin:0;font-size:1.1rem}
+.modal p{margin:.1rem 0 1rem;color:#5b6477;font-size:.9rem}
+.acc{display:flex;align-items:center;gap:.75rem;width:100%;padding:.7rem;border:0;border-top:1px solid #e3e7ef;background:none;text-align:left;color:#1d2433}
+.acc:hover{background:#eef1f7}
+.acc .ph{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;flex:none}
+.acc small{display:block;color:#6b7385}
+.modal .inp input{background:#fff;color:#1d2433;border-color:#cfd6e3}
+.modal label.lbl{color:#39425a}
+.modal .err{color:#c62f3c}
+.modal .err a{color:#1d4ed8;font-weight:600}
+.modal .row{display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem}
+.modal .btn-line{color:#1d2433;border-color:#cfd6e3}
+
+.enter{position:fixed;inset:0;background:rgba(10,15,30,.94);display:grid;place-items:center;z-index:90;opacity:0;pointer-events:none;transition:opacity .25s}
+.enter.show{opacity:1;pointer-events:auto}
+.enter .in{text-align:center;transform:scale(.9);transition:transform .35s}
+.enter.show .in{transform:scale(1)}
+.enter .in p{color:var(--muted);margin:.4rem 0 0}
+.enter .in h3{margin:.8rem 0 0;font-size:1.4rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#1b2541;border:1px solid var(--line2);color:var(--text);padding:.7rem 1rem;border-radius:12px;box-shadow:var(--shadow);opacity:0;transition:.25s;z-index:100;display:flex;gap:.5rem;align-items:center;max-width:92vw}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok svg{color:var(--ok)}.toast.bad svg{color:var(--bad)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 32 32"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2d68f"/><stop offset="1" stop-color="#b98b35"/></linearGradient></defs><path d="M16 2 28 7v9c0 7-5 12-12 14C9 28 4 23 4 16V7z" fill="url(#lg)"/><path d="M11 21V11h3v7.4h6V21z" fill="#1d1607"/><path d="m18 13 3-3 3 3" stroke="#1d1607" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="eye-off" viewBox="0 0 24 24"><path d="M9.9 4.2A10 10 0 0 1 12 4c6.4 0 10 8 10 8a17 17 0 0 1-2.2 3.2M6.6 6.6C3.9 8.4 2 12 2 12s3.6 8 10 8a9.7 9.7 0 0 0 5.4-1.6M3 3l18 18M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
+  <symbol id="alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+  <symbol id="dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="M12 2 20 5v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></symbol>
+  <symbol id="back" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+  <symbol id="key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3M15 8l2 2"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="logout" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l-5-5 5-5M5 12h12"/></symbol>
+  <symbol id="cap-book" viewBox="0 0 24 24"><path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H19v16H7.5A2.5 2.5 0 0 0 5 20.5z"/><path d="M5 20.5A2.5 2.5 0 0 0 7.5 23H19v-5"/><path d="M9 6.5h6M9 9.5h4"/></symbol>
+  <symbol id="cap-car" viewBox="0 0 24 24"><path d="M3 15.5V12l2.2-4.6A2 2 0 0 1 7 6.3h10a2 2 0 0 1 1.8 1.1L21 12v3.5a1 1 0 0 1-1 1h-.6M4.6 16.5H4a1 1 0 0 1-1-1"/><path d="M9.6 16.5h4.8M3 12h18M8 6.5 7 12M16 6.5l1 5.5"/><circle cx="7.1" cy="16.5" r="2.1"/><circle cx="16.9" cy="16.5" r="2.1"/></symbol>
+  <symbol id="g-google" viewBox="0 0 24 24"><path fill="#4285F4" stroke="none" d="M22 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.6a4.8 4.8 0 0 1-2.1 3.2v2.6h3.4c2-1.8 3.1-4.5 3.1-7.6z"/><path fill="#34A853" stroke="none" d="M12 22c2.8 0 5.2-.9 6.9-2.5l-3.4-2.6c-.9.6-2.1 1-3.5 1-2.7 0-5-1.8-5.8-4.3H2.7v2.7A10 10 0 0 0 12 22z"/><path fill="#FBBC05" stroke="none" d="M6.2 13.6a6 6 0 0 1 0-3.8V7.1H2.7a10 10 0 0 0 0 9.2z"/><path fill="#EA4335" stroke="none" d="M12 6c1.5 0 2.9.5 4 1.5l3-3A10 10 0 0 0 2.7 7.1l3.5 2.7C7 7.6 9.3 6 12 6z"/></symbol>
+  <symbol id="g-apple" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9a4.8 4.8 0 0 0-3.8-2c-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9A5 5 0 0 0 3.3 9.3c-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.5 1.3 0 1.8-.8 3.3-.8s2 .8 3.4.8 2.2-1.3 3-2.5a11 11 0 0 0 1.4-2.8 4.4 4.4 0 0 1-2.5-4.1zM13.9 5c.7-.9 1.2-2 1-3.2a4.6 4.6 0 0 0-3 1.6 4.3 4.3 0 0 0-1.1 3.1c1.2.1 2.3-.6 3.1-1.5z"/></symbol>
+  <symbol id="g-facebook" viewBox="0 0 24 24"><path fill="#1877F2" stroke="none" d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></symbol>
+</svg>
+
+<div class="top">
+  <a class="logo" href="index.html"><svg width="30" height="30"><use href="#logo"/></svg><span>LevelUp <b>English</b></span></a>
+  <a class="back" href="index.html"><svg class="i"><use href="#back"/></svg> Ana sayfa</a>
+</div>
+
+<main class="card box">
+  <!-- ============ GİRİŞ ============ -->
+  <section class="view" id="viewLogin">
+    <div class="head">
+      <div class="em" id="headRanks"></div>
+      <h1>Tekrar hoş geldin</h1>
+      <p>Kaldığın yerden devam etmek için giriş yap.</p>
+    </div>
+    <div id="activeBanner"></div>
+    <div id="doneBanner"></div>
+    <form id="loginForm" novalidate>
+      <label class="lbl" for="lgId">E-posta veya kullanıcı adı</label>
+      <div class="inp"><input id="lgId" autocomplete="username" spellcheck="false"></div>
+      <label class="lbl" for="lgPw">Şifre</label>
+      <div class="inp has-eye"><input id="lgPw" type="password" autocomplete="current-password">
+        <button type="button" class="eye" data-eye="lgPw" aria-label="Şifreyi göster"><svg class="i"><use href="#eye"/></svg></button></div>
+      <p class="warn-line caps" hidden><svg class="i"><use href="#alert"/></svg> Caps Lock açık</p>
+      <div id="lgCap" hidden></div>
+      <p class="err" id="lgErr" aria-live="polite"></p>
+      <div class="row-between"><span></span><button type="button" class="linkbtn" id="toForgot">Şifremi unuttum</button></div>
+      <button class="btn btn-gold full" type="submit" id="lgBtn">Giriş yap</button>
+    </form>
+    <div class="or">veya şununla devam et</div>
+    <div class="social">
+      <button type="button" class="soc" data-social="google"><svg><use href="#g-google"/></svg><span>Google</span></button>
+      <button type="button" class="soc" data-social="apple"><svg><use href="#g-apple"/></svg><span>Apple</span></button>
+      <button type="button" class="soc" data-social="facebook"><svg><use href="#g-facebook"/></svg><span>Facebook</span></button>
+    </div>
+    <p class="foot">Hesabın yok mu? <a href="register.html">Kayıt ol</a></p>
+  </section>
+
+  <!-- ============ ŞİFREMİ UNUTTUM ============ -->
+  <section class="view" id="viewForgot" hidden>
+    <div class="steps" id="fSteps"><i></i><i></i><i></i><i></i></div>
+
+    <div data-f="1">
+      <div class="ico"><svg class="i"><use href="#mail"/></svg></div>
+      <div class="head"><h1>Şifremi unuttum</h1><p>Hesabına bağlı e-posta adresini yaz.</p></div>
+      <label class="lbl" for="fMail">E-posta adresi</label>
+      <div class="inp"><input id="fMail" type="email" spellcheck="false" autocomplete="email"></div>
+      <div id="fCap"></div>
+      <p class="err" id="fMailErr"></p>
+      <div class="actions"><button class="btn btn-line" type="button" data-tologin><svg class="i"><use href="#back"/></svg></button><button class="btn btn-gold" type="button" id="fMailNext">Devam et</button></div>
+    </div>
+
+    <div data-f="2" hidden>
+      <div class="ico"><svg class="i"><use href="#shield"/></svg></div>
+      <div class="head"><h1>Kimliğini doğrula</h1><p id="fWho"></p></div>
+      <div class="methods">
+        <button type="button" class="method" id="mCode"><span class="mi"><svg class="i"><use href="#mail"/></svg></span><span><b>E-postama kod gönder</b><small>6 haneli doğrulama kodu</small></span></button>
+        <button type="button" class="method" id="mRec"><span class="mi"><svg class="i"><use href="#key"/></svg></span><span><b>Kurtarma kodu kullan</b><small id="recLeft">Kayıtta verilen tek kullanımlık kodlar</small></span></button>
+      </div>
+      <div class="actions"><button class="btn btn-line" type="button" data-fback="1"><svg class="i"><use href="#back"/></svg> Geri</button></div>
+    </div>
+
+    <div data-f="3a" hidden>
+      <div class="ico"><svg class="i"><use href="#key"/></svg></div>
+      <div class="head"><h1>Kodu gir</h1><p>E-postana gelen 6 haneli kodu yaz.</p></div>
+      <div class="demo">DEMO · Gerçek e-posta gönderilmez. Gelen kod:<b id="fDemo">------</b></div>
+      <label class="lbl" for="fOtp">Doğrulama kodu</label>
+      <div class="inp"><input id="fOtp" class="otp" inputmode="numeric" maxlength="6" autocomplete="one-time-code"></div>
+      <div class="code-row"><span id="fTries"></span><button type="button" class="linkbtn" id="fResend">Kodu tekrar gönder</button></div>
+      <p class="err" id="fOtpErr"></p>
+      <div class="actions"><button class="btn btn-line" type="button" data-fback="2"><svg class="i"><use href="#back"/></svg></button><button class="btn btn-gold" type="button" id="fOtpNext">Doğrula</button></div>
+    </div>
+
+    <div data-f="3b" hidden>
+      <div class="ico"><svg class="i"><use href="#key"/></svg></div>
+      <div class="head"><h1>Kurtarma kodu</h1><p>Kayıt olurken kaydettiğin kodlardan birini yaz.</p></div>
+      <label class="lbl" for="fRec">Kurtarma kodu</label>
+      <div class="inp"><input id="fRec" class="rc" maxlength="11" spellcheck="false" placeholder="xxxxx-xxxxx"></div>
+      <p class="hint">Kullanılan kod bir daha kullanılamaz.</p>
+      <p class="err" id="fRecErr"></p>
+      <div class="actions"><button class="btn btn-line" type="button" data-fback="2"><svg class="i"><use href="#back"/></svg></button><button class="btn btn-gold" type="button" id="fRecNext">Doğrula</button></div>
+    </div>
+
+    <div data-f="4" hidden>
+      <div class="ico"><svg class="i"><use href="#lock"/></svg></div>
+      <div class="head"><h1>Yeni şifre belirle</h1><p>Bu şifreyle giriş yapacaksın.</p></div>
+      <label class="lbl" for="fP1">Yeni şifre</label>
+      <div class="inp has-eye"><input id="fP1" type="password" autocomplete="new-password">
+        <button type="button" class="eye" data-eye="fP1" aria-label="Şifreyi göster"><svg class="i"><use href="#eye"/></svg></button></div>
+      <ul class="rules" id="fRules">
+        <li data-r="len"><svg class="i"><use href="#dot"/></svg> En az 8 karakter</li>
+        <li data-r="up"><svg class="i"><use href="#dot"/></svg> Büyük harf</li>
+        <li data-r="low"><svg class="i"><use href="#dot"/></svg> Küçük harf</li>
+        <li data-r="num"><svg class="i"><use href="#dot"/></svg> Rakam</li>
+      </ul>
+      <label class="lbl" for="fP2">Yeni şifre (tekrar)</label>
+      <div class="inp has-eye"><input id="fP2" type="password" autocomplete="new-password">
+        <button type="button" class="eye" data-eye="fP2" aria-label="Şifreyi göster"><svg class="i"><use href="#eye"/></svg></button></div>
+      <p class="err" id="fPErr"></p>
+      <div class="actions"><button class="btn btn-gold" type="button" id="fSave">Şifremi güncelle</button></div>
+    </div>
+  </section>
+</main>
+
+<div class="modal-bg" id="accModal" hidden></div>
+<div class="enter" id="enter" aria-hidden="true"><div class="in"><div id="enterEm"></div><h3 id="enterName"></h3><p>Panele yönlendiriliyorsun…</p></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ================= Ortak yardımcılar ================= */
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const K = { users:'lue_users', active:'lue_aktif', fail:'lue_giris_hata' };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ALERT = '<svg class="i"><use href="#alert"/></svg>';
+function loadUsers(){ try{ const v = JSON.parse(localStorage.getItem(K.users)); return Array.isArray(v) ? v : []; }catch(e){ return []; } }
+function saveUsers(l){ localStorage.setItem(K.users, JSON.stringify(l)); }
+function loadProg(id){ try{ return JSON.parse(localStorage.getItem('lue_ilerleme_' + id)) || null; }catch(e){ return null; } }
+function cyrb53(str, seed = 0){
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for(let i = 0, ch; i < str.length; i++){ ch = str.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507); h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507); h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16);
+}
+const hashPass = (p, salt) => cyrb53(salt + '|' + p, 7) + cyrb53(p + '|' + salt, 13);
+function setErr(id, msg){ const el = $('#' + id); el.innerHTML = msg ? ALERT + '<span>' + esc(msg) + '</span>' : ''; }
+function shake(el){ el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+function toast(msg, type = 'ok'){
+  const t = $('#toast');
+  t.className = 'toast ' + type;
+  t.innerHTML = `<svg class="i"><use href="#${type === 'ok' ? 'check' : 'alert'}"/></svg><span>${esc(msg)}</span>`;
+  requestAnimationFrame(() => t.classList.add('show'));
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ================= Rütbeler ve avatarlar ================= */
+const RANKS = [
+  { ad:'Bakır',  cefr:'A1',    c1:'#f0a06a', c2:'#8a4a22' },
+  { ad:'Bronz',  cefr:'A1–A2', c1:'#e2b27a', c2:'#7a5230' },
+  { ad:'Gümüş',  cefr:'A2–B1', c1:'#f1f4f9', c2:'#7d8798' },
+  { ad:'Altın',  cefr:'B1',    c1:'#ffe08a', c2:'#b8862b' },
+  { ad:'Platin', cefr:'B1–B2', c1:'#d3fff5', c2:'#4f9c94' },
+  { ad:'Elmas',  cefr:'B2',    c1:'#cde9ff', c2:'#3d7fd6' },
+  { ad:'Mitril', cefr:'B2–C1', c1:'#d6fbff', c2:'#6d5cff' }
+];
+const ROMAN = ['', 'I', 'II', 'III'];
+let svgSeq = 0;
+function emblem(i, size = 56, tier = 0){
+  const r = RANKS[i], id = 'em' + (svgSeq++);
+  const wings = i >= 5 ? `<path d="M10 20 2 14l3 14 7 4M54 20l8-6-3 14-7 4" fill="url(#${id})" opacity=".75"/>` : '';
+  const crown = i === 6 ? `<path d="M22 6l4 5 6-7 6 7 4-5v6H22z" fill="url(#${id})" stroke="rgba(255,255,255,.6)" stroke-width="1"/>` : '';
+  const center = tier
+    ? `<text x="32" y="39" text-anchor="middle" font-size="15" font-weight="800" fill="#fff" font-family="Georgia,serif" stroke="rgba(0,0,0,.35)" stroke-width=".6">${ROMAN[tier]}</text>`
+    : `<path d="M32 21 38 31 32 43 26 31Z" fill="${r.c1}" stroke="rgba(255,255,255,.7)" stroke-width="1"/>`;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true">
+    <defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${r.c1}"/><stop offset="1" stop-color="${r.c2}"/></linearGradient></defs>
+    ${wings}<path d="M32 8 52 15v15c0 13-9 22-20 27C21 52 12 43 12 30V15Z" fill="url(#${id})" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/>
+    <path d="M32 14 46 19v11c0 9-6 16-14 20-8-4-14-11-14-20V19Z" fill="rgba(8,12,26,.42)"/>${crown}${center}</svg>`;
+}
+const AVATARS = [
+  { id:'kalkan', a:'#3b5bdb', b:'#1c2f7a', d:'M12 3 19 6v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z' },
+  { id:'yildiz', a:'#f08c00', b:'#8a4b00', d:'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6-4.5-4.1 6-.7z' },
+  { id:'simsek', a:'#7048e8', b:'#3b1f8f', d:'M13 2 4 14h7l-1 8 9-12h-7z' },
+  { id:'ay',     a:'#1c7ed6', b:'#0b3d6e', d:'M20 13.5A8 8 0 1 1 10.5 4a6.3 6.3 0 0 0 9.5 9.5z' },
+  { id:'yaprak', a:'#2f9e44', b:'#14532d', d:'M5 20c0-8 5-14 15-15-1 9-6 15-15 15zM5 20l8-8' },
+  { id:'alev',   a:'#e8590c', b:'#7c2d12', d:'M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-5 3-7 0 2 1 3 2 3 0-3 0-6 1-8z' },
+  { id:'tac',    a:'#c99a2e', b:'#6b4d10', d:'M3 18h18l-2-10-4 4-3-7-3 7-4-4z' },
+  { id:'kitap',  a:'#0c8599', b:'#0b4752', d:'M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z' }
+];
+function avatarSvg(avId, size = 40){
+  const a = AVATARS.find(x => x.id === avId) || AVATARS[0], id = 'av' + (svgSeq++);
+  return `<svg class="av" width="${size}" height="${size}" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a.a}"/><stop offset="1" stop-color="${a.b}"/></linearGradient></defs><circle cx="20" cy="20" r="19" fill="url(#${id})" stroke="rgba(255,255,255,.25)"/><g transform="translate(8 8)"><path d="${a.d}" fill="rgba(255,255,255,.92)" stroke="rgba(255,255,255,.92)" stroke-width="1" stroke-linejoin="round"/></g></svg>`;
+}
+
+/* ================= Robot doğrulaması ================= */
+function makeCaptcha(root, chance = .5){
+  root.innerHTML = `
+    <div class="captcha" data-state="idle">
+      <button type="button" class="cap-btn" role="checkbox" aria-checked="false">
+        <span class="cap-box"><span class="cap-spin"></span><svg class="i cap-ok"><use href="#check"/></svg></span>
+        <span>Ben robot değilim</span>
+      </button>
+      <span class="cap-brand"><small>LevelUp<br>güvenlik</small><svg class="i"><use href="#shield"/></svg></span>
+    </div>
+    <div class="cap-task" hidden>
+      <div class="cap-head">Aşağıdakilerden <b></b> olanların hepsini seç</div>
+      <div class="cap-grid"></div>
+      <p class="err cap-msg" aria-live="polite"></p>
+      <div class="cap-foot">
+        <button type="button" class="btn btn-ghost sm" data-cap="new"><svg class="i"><use href="#refresh"/></svg> Yeni görseller</button>
+        <button type="button" class="btn btn-gold sm" data-cap="verify">Doğrula</button>
+      </div>
+    </div>
+    <p class="err cap-need" aria-live="polite"></p>`;
+  const box = root.querySelector('.captcha'), btn = root.querySelector('.cap-btn'), task = root.querySelector('.cap-task'),
+        grid = root.querySelector('.cap-grid'), what = root.querySelector('.cap-head b'),
+        msg = root.querySelector('.cap-msg'), need = root.querySelector('.cap-need');
+  const COLORS = [['#1d2a4d','#8fb8ff'], ['#2e2410','#f2d68f'], ['#13322a','#6fe0aa'], ['#3a1a20','#ff9aa5'], ['#261d45','#b9a6ff'], ['#12323a','#7fdcf0']];
+  let state = 'idle', answer = '';
+  const set = s => { state = s; box.dataset.state = s; btn.setAttribute('aria-checked', s === 'ok'); };
+  const say = (el, t) => el.innerHTML = t ? ALERT + '<span>' + esc(t) + '</span>' : '';
+  function newTask(){
+    const target = Math.random() < .5 ? 'book' : 'car', other = target === 'book' ? 'car' : 'book', n = 3 + Math.floor(Math.random() * 3);
+    const cells = Array.from({length:9}, (_, i) => i < n ? target : other).sort(() => Math.random() - .5);
+    answer = cells.map((c, i) => c === target ? i : '').filter(x => x !== '').join(',');
+    what.textContent = target === 'book' ? 'kitap' : 'araba';
+    grid.innerHTML = cells.map((c, i) => {
+      const [bg, fg] = COLORS[Math.floor(Math.random() * COLORS.length)], r = Math.round(Math.random() * 30 - 15);
+      return `<button type="button" class="cap-cell" data-i="${i}" aria-pressed="false" aria-label="${c === 'book' ? 'Kitap' : 'Araba'}" style="background:${bg};color:${fg}"><svg style="transform:rotate(${r}deg)"><use href="#cap-${c}" stroke="currentColor"/></svg></button>`;
+    }).join('');
+    task.hidden = false;
+  }
+  btn.addEventListener('click', () => {
+    if(state !== 'idle') return;
+    set('loading'); say(need, '');
+    setTimeout(() => {
+      if(Math.random() < chance){ set('idle'); say(msg, ''); newTask(); grid.querySelector('button').focus(); }
+      else set('ok');
+    }, 900 + Math.random() * 500);
+  });
+  grid.addEventListener('click', e => {
+    const c = e.target.closest('.cap-cell'); if(!c) return;
+    c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') !== 'true'); say(msg, '');
+  });
+  task.addEventListener('click', e => {
+    const b = e.target.closest('[data-cap]'); if(!b) return;
+    if(b.dataset.cap === 'new'){ say(msg, ''); return newTask(); }
+    const picked = [...grid.querySelectorAll('[aria-pressed=true]')].map(x => x.dataset.i).join(',');
+    if(!picked) return say(msg, 'En az bir görsel seç.');
+    if(picked === answer){ task.hidden = true; set('loading'); setTimeout(() => set('ok'), 600); }
+    else { say(msg, 'Seçimin hatalı. Yeni görsellerle tekrar dene.'); shake(task); setTimeout(newTask, 700); }
+  });
+  return {
+    get ok(){ return state === 'ok'; },
+    reset(){ set('idle'); task.hidden = true; say(msg, ''); say(need, ''); },
+    require(){ say(need, 'Devam etmek için robot olmadığını doğrula.'); shake(box); btn.focus(); }
+  };
+}
+
+/* ================= Görünümler ================= */
+$('#headRanks').innerHTML = [0, 2, 3, 6].map((r, i) => emblem(r, [30, 38, 46, 38][i])).join('');
+function showView(name){
+  $('#viewLogin').hidden = name !== 'login';
+  $('#viewForgot').hidden = name !== 'forgot';
+  if(name === 'forgot'){ fGo('1'); setTimeout(() => $('#fMail').focus(), 40); }
+  else setTimeout(() => $('#lgId').focus(), 40);
+}
+$('#toForgot').addEventListener('click', () => { history.replaceState(null, '', '#unuttum'); showView('forgot'); });
+$$('[data-tologin]').forEach(b => b.addEventListener('click', () => { history.replaceState(null, '', location.pathname); showView('login'); }));
+window.addEventListener('hashchange', () => showView(location.hash === '#unuttum' ? 'forgot' : 'login'));
+
+$$('[data-eye]').forEach(b => b.addEventListener('click', () => {
+  const inp = $('#' + b.dataset.eye), show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  b.innerHTML = `<svg class="i"><use href="#${show ? 'eye-off' : 'eye'}"/></svg>`;
+  b.setAttribute('aria-label', show ? 'Şifreyi gizle' : 'Şifreyi göster');
+}));
+
+/* Şu an giriş yapmış biri varsa */
+function renderActive(){
+  const id = localStorage.getItem(K.active), u = id && loadUsers().find(x => x.id === id);
+  $('#activeBanner').innerHTML = u ? `<div class="banner">${avatarSvg(u.avatar, 34)}<span class="bt"><b>${esc(u.kullaniciAdi)}</b> şu an giriş yapmış durumda. Başka bir hesapla da giriş yapabilirsin.</span><span class="ba"><a class="btn btn-gold sm" href="dashboard.html">Panele dön</a></span></div>` : '';
+}
+
+/* ================= Giriş ================= */
+const lgCap = makeCaptcha($('#lgCap'), .45);
+let lockTimer = null;
+function getFail(){ try{ return JSON.parse(sessionStorage.getItem(K.fail)) || { n:0, until:0 }; }catch(e){ return { n:0, until:0 }; } }
+function setFail(f){ sessionStorage.setItem(K.fail, JSON.stringify(f)); }
+function checkLock(){
+  const f = getFail(), btn = $('#lgBtn');
+  clearInterval(lockTimer);
+  const tick = () => {
+    const left = Math.ceil((f.until - Date.now()) / 1000);
+    if(left > 0){ btn.disabled = true; btn.textContent = `Çok fazla deneme · ${left} sn bekle`; }
+    else { btn.disabled = false; btn.textContent = 'Giriş yap'; clearInterval(lockTimer); }
+  };
+  tick(); if(f.until > Date.now()) lockTimer = setInterval(tick, 1000);
+}
+$('#lgPw').addEventListener('keyup', e => { $('#viewLogin .caps').hidden = !(e.getModifierState && e.getModifierState('CapsLock')); });
+['lgId','lgPw'].forEach(id => $('#' + id).addEventListener('input', () => setErr('lgErr', '')));
+$('#loginForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const idv = $('#lgId').value.trim().toLowerCase(), pw = $('#lgPw').value;
+  if(!idv || !pw){ setErr('lgErr', 'E-posta/kullanıcı adı ve şifreni gir.'); shake($('#loginForm')); return; }
+  const f = getFail();
+  if(f.until > Date.now()) return;
+  if(f.n >= 3 && !lgCap.ok){ $('#lgCap').hidden = false; lgCap.require(); return; }
+  const u = loadUsers().find(x => (x.eposta === idv || x.kullaniciAdi === idv) && x.sifre);
+  if(u && hashPass(pw, u.tuz) === u.sifre) return loginSuccess(u);
+  f.n++;
+  if(f.n >= 5){ f.until = Date.now() + 30000; f.n = 3; }
+  setFail(f);
+  setErr('lgErr', 'E-posta/kullanıcı adı veya şifre hatalı.');
+  shake($('#loginForm')); $('#lgPw').value = ''; $('#lgPw').focus();
+  if(f.n >= 3){ $('#lgCap').hidden = false; lgCap.reset(); }
+  checkLock();
+});
+function loginSuccess(u){
+  const users = loadUsers(), x = users.find(z => z.id === u.id);
+  x.sonGiris = Date.now(); saveUsers(users);
+  localStorage.setItem(K.active, u.id);
+  sessionStorage.removeItem(K.fail);
+  const p = loadProg(u.id);
+  $('#enterEm').innerHTML = p ? emblem(p.rank, 96, p.tier) : emblem(0, 96, 3);
+  $('#enterName').textContent = 'Hoş geldin, ' + u.ad + '!';
+  $('#enter').classList.add('show');
+  setTimeout(() => location.href = 'dashboard.html', 1100);
+}
+
+/* ================= Google / Apple / Facebook (temsilî) ================= */
+const PROVIDERS = {
+  google:   { ad:'Google',   color:'#4285F4', hesaplar:[{ e:'demo1@gmail.com',   ad:'Deniz', soyad:'Yılmaz' }] },
+  apple:    { ad:'Apple',    color:'#111111', hesaplar:[{ e:'demo2@icloud.com',  ad:'Ece',   soyad:'Kaya' }] },
+  facebook: { ad:'Facebook', color:'#1877F2', hesaplar:[{ e:'demo3@hotmail.com', ad:'Mert',  soyad:'Demir' }] }
+};
+function openAccounts(p){
+  const P = PROVIDERS[p], m = $('#accModal');
+  // Bu sağlayıcıyla kayıtlı hesaplar da listede görünsün
+  const known = loadUsers().filter(u => u.saglayici === p && !P.hesaplar.some(h => h.e === u.eposta)).map(u => ({ e:u.eposta, ad:u.ad, soyad:u.soyad }));
+  const list = [...P.hesaplar, ...known];
+  m.innerHTML = `<div class="modal" role="dialog" aria-modal="true" aria-labelledby="accT">
+    <div class="mh"><svg><use href="#g-${p}"/></svg><h3 id="accT">${P.ad} ile giriş yap</h3></div>
+    <p>LevelUp English'e devam etmek için bir hesap seç.</p>
+    <div id="accList">
+      ${list.map((h, i) => `<button class="acc" type="button" data-i="${i}"><span class="ph" style="background:${P.color}">${esc(h.ad[0])}</span><span>${esc(h.ad + ' ' + h.soyad)}<small>${esc(h.e)}</small></span></button>`).join('')}
+      <button class="acc" type="button" data-other><span class="ph" style="background:#8a93a6">+</span><span>Başka bir hesap kullan</span></button>
+    </div>
+    <form id="otherForm" hidden novalidate>
+      <label class="lbl" for="oMail">E-posta</label><div class="inp"><input id="oMail" type="email"></div>
+      <div class="row"><button class="btn btn-line sm" type="button" data-cancel>Vazgeç</button><button class="btn btn-gold sm" type="submit">Devam et</button></div>
+    </form>
+    <p class="err" id="accErr"></p>
+    <div class="row" id="accFoot"><button class="btn btn-line sm" type="button" data-cancel>Kapat</button></div>
+  </div>`;
+  m.hidden = false;
+  const close = () => { m.hidden = true; m.innerHTML = ''; };
+  m.onclick = e => { if(e.target === m || e.target.closest('[data-cancel]')) close(); };
+  m.onkeydown = e => { if(e.key === 'Escape') close(); };
+  $('#accList').addEventListener('click', e => {
+    const b = e.target.closest('.acc'); if(!b) return;
+    if(b.hasAttribute('data-other')){ $('#accList').hidden = true; $('#accFoot').hidden = true; $('#otherForm').hidden = false; $('#oMail').focus(); return; }
+    trySocial(p, list[+b.dataset.i].e, close);
+  });
+  $('#otherForm').addEventListener('submit', e => { e.preventDefault(); trySocial(p, $('#oMail').value.trim().toLowerCase(), close); });
+  m.querySelector('.acc').focus();
+}
+function trySocial(p, mail, close){
+  const u = loadUsers().find(x => x.eposta === mail && x.saglayici === p);
+  if(!u){ $('#accErr').innerHTML = ALERT + '<span>Kullanıcı bulunamadı. <a href="register.html">Kayıt ol</a></span>'; return; }
+  close(); loginSuccess(u);
+}
+$$('[data-social]').forEach(b => b.addEventListener('click', () => openAccounts(b.dataset.social)));
+
+/* ================= Şifremi unuttum ================= */
+const F = { user:null, code:'', tries:5, ok:false };
+const fCap = makeCaptcha($('#fCap'), .5);
+let fTimer = null;
+function fGo(step){
+  $$('#viewForgot [data-f]').forEach(d => d.hidden = d.dataset.f !== step);
+  const n = { '1':1, '2':2, '3a':3, '3b':3, '4':4 }[step];
+  $$('#fSteps i').forEach((x, i) => x.classList.toggle('on', i < n));
+  if(step === '1'){ F.user = null; F.ok = false; fCap.reset(); setErr('fMailErr', ''); }
+}
+$$('[data-fback]').forEach(b => b.addEventListener('click', () => fGo(b.dataset.fback)));
+$('#fMail').addEventListener('input', () => setErr('fMailErr', ''));
+$('#fMailNext').addEventListener('click', () => {
+  const mail = $('#fMail').value.trim().toLowerCase();
+  if(!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(mail)) return setErr('fMailErr', 'Geçerli bir e-posta adresi yaz.');
+  if(!fCap.ok) return fCap.require();
+  const u = loadUsers().find(x => x.eposta === mail);
+  if(!u) return setErr('fMailErr', 'Bu e-posta ile kayıtlı bir hesap bulunamadı.');
+  if(!u.sifre) return setErr('fMailErr', `Bu hesap ${u.saglayici[0].toUpperCase() + u.saglayici.slice(1)} ile bağlı; şifresi yok. Giriş ekranından ${u.saglayici[0].toUpperCase() + u.saglayici.slice(1)} ile devam et.`);
+  F.user = u;
+  const left = (u.kurtarma || []).filter(c => !c.kullanildi).length;
+  $('#fWho').textContent = u.eposta + ' için bir yöntem seç.';
+  $('#recLeft').textContent = left ? `Kullanılmamış ${left} kodun var` : 'Kullanılmamış kodun kalmadı';
+  $('#mRec').disabled = !left;
+  fGo('2');
+});
+$('#mCode').addEventListener('click', () => { fNewCode(); fGo('3a'); setTimeout(() => $('#fOtp').focus(), 40); });
+$('#mRec').addEventListener('click', () => { $('#fRec').value = ''; setErr('fRecErr', ''); fGo('3b'); setTimeout(() => $('#fRec').focus(), 40); });
+
+function fNewCode(){
+  F.code = String(Math.floor(100000 + Math.random() * 900000)); F.tries = 5;
+  $('#fDemo').textContent = F.code; $('#fOtp').value = ''; setErr('fOtpErr', '');
+  $('#fTries').textContent = 'Kalan deneme: 5';
+  let left = 30; const b = $('#fResend'); clearInterval(fTimer);
+  const tick = () => { b.textContent = left > 0 ? `Tekrar gönder (${left} sn)` : 'Kodu tekrar gönder'; b.disabled = left > 0; left--; if(left < -1) clearInterval(fTimer); };
+  tick(); fTimer = setInterval(tick, 1000);
+}
+$('#fResend').addEventListener('click', () => { fNewCode(); toast('Yeni kod gönderildi'); });
+$('#fOtp').addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6); setErr('fOtpErr', ''); if(e.target.value.length === 6) fCheckCode(); });
+$('#fOtpNext').addEventListener('click', fCheckCode);
+function fCheckCode(){
+  const v = $('#fOtp').value;
+  if(F.tries <= 0) return setErr('fOtpErr', 'Deneme hakkın bitti. Yeni kod iste.');
+  if(v.length !== 6) return setErr('fOtpErr', '6 haneli kodu gir.');
+  if(v !== F.code){
+    F.tries--; $('#fTries').textContent = 'Kalan deneme: ' + F.tries; shake($('#fOtp'));
+    setErr('fOtpErr', F.tries > 0 ? 'Kod hatalı.' : 'Deneme hakkın bitti. Yeni kod iste.');
+    if(F.tries <= 0){ clearInterval(fTimer); $('#fResend').disabled = false; $('#fResend').textContent = 'Kodu tekrar gönder'; }
+    return;
+  }
+  clearInterval(fTimer); F.ok = true; toPass();
+}
+$('#fRec').addEventListener('input', e => {
+  let v = e.target.value.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 10);
+  if(v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5);
+  e.target.value = v; setErr('fRecErr', '');
+});
+$('#fRecNext').addEventListener('click', () => {
+  const v = $('#fRec').value.trim();
+  const users = loadUsers(), u = users.find(x => x.id === F.user.id);
+  const c = (u.kurtarma || []).find(k => k.kod === v && !k.kullanildi);
+  if(!c){ setErr('fRecErr', 'Kod geçersiz ya da daha önce kullanılmış.'); shake($('#fRec')); return; }
+  c.kullanildi = true; saveUsers(users); F.ok = true;
+  toast('Kurtarma kodu kullanıldı'); toPass();
+});
+function toPass(){ $('#fP1').value = $('#fP2').value = ''; setErr('fPErr', ''); refreshRules(); fGo('4'); setTimeout(() => $('#fP1').focus(), 40); }
+function passRules(p){ return { len: p.length >= 8, up: /[A-ZÇĞİÖŞÜ]/.test(p), low: /[a-zçğıöşü]/.test(p), num: /\d/.test(p) }; }
+function refreshRules(){
+  const r = passRules($('#fP1').value);
+  $$('#fRules li').forEach(li => { const ok = r[li.dataset.r]; li.classList.toggle('ok', ok); li.querySelector('use').setAttribute('href', ok ? '#check' : '#dot'); });
+}
+$('#fP1').addEventListener('input', () => { refreshRules(); setErr('fPErr', ''); });
+$('#fP2').addEventListener('input', () => setErr('fPErr', ''));
+$('#fSave').addEventListener('click', () => {
+  if(!F.ok) return fGo('1');
+  const p1 = $('#fP1').value, p2 = $('#fP2').value;
+  if(!Object.values(passRules(p1)).every(Boolean)) return setErr('fPErr', 'Yeni şifren tüm kuralları karşılamalı.');
+  if(p1 !== p2) return setErr('fPErr', 'Şifreler eşleşmiyor.');
+  const users = loadUsers(), u = users.find(x => x.id === F.user.id);
+  if(hashPass(p1, u.tuz) === u.sifre) return setErr('fPErr', 'Yeni şifren eskisiyle aynı olamaz.');
+  u.tuz = Math.random().toString(36).slice(2, 12); u.sifre = hashPass(p1, u.tuz);
+  saveUsers(users); sessionStorage.removeItem(K.fail);
+  F.ok = false;
+  history.replaceState(null, '', location.pathname);
+  showView('login');
+  $('#lgId').value = ''; $('#lgPw').value = '';
+  $('#doneBanner').innerHTML = `<div class="success"><svg class="i"><use href="#check"/></svg> Şifren güncellendi. Yeni şifrenle giriş yapabilirsin.</div>`;
+  $('#lgCap').hidden = true; lgCap.reset(); checkLock();
+});
+
+/* Başlangıç */
+renderActive();
+if(getFail().n >= 3) $('#lgCap').hidden = false;
+checkLock();
+showView(location.hash === '#unuttum' ? 'forgot' : 'login');
+</script>
+</body>
+</html>

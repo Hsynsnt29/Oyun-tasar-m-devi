@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panelim — LevelUp English</title>
+<style>
+:root{
+  --bg:#0a0f1e;--bg2:#0d1426;--card:#121a2f;--card2:#172139;--line:#243150;--line2:#33436a;
+  --text:#e8ecf6;--muted:#9aa6c2;--dim:#6c7997;
+  --gold:#d8b25e;--gold2:#f2d68f;--goldInk:#1d1607;
+  --ok:#45c48a;--bad:#f07272;--warn:#f0b34a;--info:#74b6ff;
+  --r:16px;--shadow:0 14px 40px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--text);font:15px/1.55 "Segoe UI",Inter,system-ui,-apple-system,Roboto,Arial,sans-serif;
+  background:radial-gradient(1100px 600px at 90% -10%,rgba(216,178,94,.08),transparent 60%),var(--bg)}
+a{color:var(--gold2);text-decoration:none}
+a:hover{text-decoration:underline}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+svg.i{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+[hidden]{display:none!important}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:1px solid transparent;border-radius:12px;padding:.65rem 1.05rem;font-weight:650;transition:transform .12s,filter .15s,background .15s,border-color .15s;text-decoration:none!important;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--goldInk);box-shadow:0 6px 18px rgba(216,178,94,.2)}
+.btn-gold:hover{filter:brightness(1.06)}
+.btn-line{background:transparent;border-color:var(--line2);color:var(--text)}
+.btn-line:hover{border-color:var(--gold);color:var(--gold2)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--text)}
+.btn-ghost:hover{background:rgba(255,255,255,.08)}
+.btn-danger{background:rgba(240,114,114,.12);border-color:rgba(240,114,114,.4);color:#ffb3b3}
+.btn-danger:hover{background:rgba(240,114,114,.2)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;filter:none}
+.btn.sm{padding:.42rem .75rem;font-size:.86rem;border-radius:10px}
+.btn.xs{padding:.28rem .55rem;font-size:.8rem;border-radius:8px}
+
+/* ---------- Yerleşim ---------- */
+.app{display:grid;grid-template-columns:252px 1fr;min-height:100vh}
+.sb{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px;padding:20px 14px;border-right:1px solid rgba(255,255,255,.05);background:linear-gradient(180deg,#0e1529,#0a0f1e)}
+.logo{display:flex;align-items:center;gap:.6rem;white-space:nowrap;font-weight:800;font-size:1.08rem;color:var(--text)!important;text-decoration:none!important;padding:0 8px 14px}
+.logo b{color:var(--gold2)}
+.sb-user{display:flex;gap:.65rem;align-items:center;padding:10px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line);margin-bottom:10px}
+.sb-user .nm{font-weight:700;font-size:.92rem;line-height:1.2}
+.sb-user .rk{font-size:.78rem;color:var(--gold2)}
+.sb nav{display:grid;gap:2px}
+.sb nav a{display:flex;align-items:center;gap:.7rem;padding:.62rem .75rem;border-radius:10px;color:var(--muted);font-weight:550;font-size:.93rem;text-decoration:none}
+.sb nav a:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.sb nav a[aria-current=page]{background:rgba(216,178,94,.1);color:var(--gold2);box-shadow:inset 3px 0 0 var(--gold)}
+.sb nav a .cnt{margin-left:auto;font-size:.72rem;padding:.05rem .45rem;border-radius:99px;background:rgba(255,255,255,.07);color:var(--muted)}
+.sb-foot{margin-top:auto;display:grid;gap:6px}
+.sb-foot a,.sb-foot button{display:flex;align-items:center;gap:.6rem;padding:.55rem .75rem;border-radius:10px;color:var(--muted);font-size:.88rem;background:none;border:0;text-align:left;width:100%;text-decoration:none}
+.sb-foot a:hover,.sb-foot button:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.mtop{display:none}
+@media(max-width:900px){
+  .app{grid-template-columns:1fr}
+  .sb{position:fixed;left:0;top:0;bottom:0;width:270px;z-index:50;transform:translateX(-100%);transition:transform .25s;box-shadow:var(--shadow)}
+  .sb.open{transform:none}
+  .mtop{display:flex;align-items:center;gap:.7rem;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.05);position:sticky;top:0;background:rgba(10,15,30,.9);backdrop-filter:blur(8px);z-index:30}
+  .mtop .logo{padding:0}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40}
+}
+.menu-btn{background:none;border:1px solid var(--line2);border-radius:10px;padding:.4rem;display:grid;place-items:center}
+.content{padding:26px 28px 60px;max-width:1220px;width:100%}
+@media(max-width:600px){.content{padding:18px 14px 50px}}
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap;margin-bottom:20px}
+.page-head h1{margin:0;font-size:1.6rem;letter-spacing:-.3px}
+.page-head p{margin:.2rem 0 0;color:var(--muted)}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:var(--r)}
+.pad{padding:20px}
+.card h2{font-size:1.02rem;margin:0;display:flex;align-items:center;gap:.5rem}
+.card h2 svg{color:var(--gold2)}
+.ch{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-bottom:14px}
+.ch .more{font-size:.85rem}
+.muted{color:var(--muted)}
+.dim{color:var(--dim)}
+.pill{display:inline-flex;align-items:center;gap:.3rem;font-size:.74rem;font-weight:650;padding:.15rem .55rem;border-radius:99px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+.pill.gold{color:var(--gold2);border-color:rgba(216,178,94,.45);background:rgba(216,178,94,.08)}
+.pill.ok{color:#8fe3bb;border-color:rgba(69,196,138,.45);background:rgba(69,196,138,.08)}
+.pill.bad{color:#ffb0b0;border-color:rgba(240,114,114,.45);background:rgba(240,114,114,.08)}
+.pill.info{color:#a9d1ff;border-color:rgba(116,182,255,.45);background:rgba(116,182,255,.08)}
+.empty{padding:22px;text-align:center;color:var(--dim);border:1px dashed var(--line2);border-radius:12px;font-size:.92rem}
+
+/* ---------- Genel bakış ---------- */
+.grid{display:grid;gap:16px}
+.g-top{grid-template-columns:1.35fr 1fr}
+.g-mid{grid-template-columns:repeat(4,1fr)}
+.g-bot{grid-template-columns:1.2fr 1fr}
+.g-two{grid-template-columns:1fr 1fr}
+@media(max-width:1100px){.g-top,.g-bot{grid-template-columns:1fr}}
+@media(max-width:800px){.g-mid{grid-template-columns:1fr 1fr}.g-two{grid-template-columns:1fr}}
+.rank-card{padding:22px;position:relative;overflow:hidden}
+.rank-card::before{content:"";position:absolute;right:-80px;top:-80px;width:280px;height:280px;background:radial-gradient(closest-side,var(--glow,rgba(216,178,94,.35)),transparent);opacity:.35;pointer-events:none}
+.rk-row{display:flex;gap:18px;align-items:center;position:relative}
+.rk-row .em svg{filter:drop-shadow(0 8px 18px rgba(0,0,0,.5))}
+.rk-label{font-size:.74rem;letter-spacing:.6px;text-transform:uppercase;color:var(--gold);font-weight:700}
+.rk-name{font-size:2rem;font-weight:800;line-height:1.1;margin:.1rem 0 .2rem;background:linear-gradient(90deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.xp-top{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin:16px 0 6px;position:relative}
+.xp-top b{color:var(--gold2)}
+.xpbar{height:10px;border-radius:99px;background:#0b1224;overflow:hidden;border:1px solid var(--line);position:relative}
+.xpbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#b98b35,var(--gold),var(--gold2));transition:width .6s}
+.tiers{display:flex;gap:6px;margin-top:10px;position:relative}
+.tiers span{flex:1;text-align:center;font-size:.75rem;padding:.25rem;border-radius:8px;background:#0b1224;color:var(--dim);border:1px solid var(--line)}
+.tiers span.done{color:var(--gold2);border-color:rgba(216,178,94,.4)}
+.tiers span.now{color:var(--goldInk);background:linear-gradient(180deg,var(--gold2),var(--gold));border-color:transparent;font-weight:700}
+.exam{margin-top:16px;padding:14px;border-radius:12px;background:#0b1224;border:1px solid var(--line);display:flex;gap:12px;align-items:center;position:relative}
+.exam.ready{border-color:rgba(216,178,94,.55);box-shadow:0 0 0 3px rgba(216,178,94,.08)}
+.exam .ei{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:rgba(216,178,94,.12);color:var(--gold2);flex:none}
+.exam .et{flex:1;font-size:.88rem;color:var(--muted)}
+.exam .et b{display:block;color:var(--text);font-size:.95rem}
+.task{display:flex;gap:.75rem;align-items:center;padding:.7rem 0;border-top:1px solid rgba(255,255,255,.05)}
+.task:first-child{border-top:0}
+.task .tc{width:24px;height:24px;border-radius:50%;border:2px solid var(--line2);display:grid;place-items:center;flex:none}
+.task.done .tc{border-color:var(--ok);background:rgba(69,196,138,.15);color:var(--ok)}
+.task .tt{flex:1;font-size:.92rem}
+.task.done .tt{color:var(--muted);text-decoration:line-through}
+.task .mini{height:5px;border-radius:9px;background:#0b1224;margin-top:.35rem;overflow:hidden}
+.task .mini i{display:block;height:100%;background:var(--info);border-radius:9px}
+.task .tx{font-size:.8rem;color:var(--gold2);font-weight:700;white-space:nowrap}
+.task .tn{font-size:.8rem;color:var(--dim);white-space:nowrap}
+.tasks-foot{display:flex;justify-content:space-between;font-size:.82rem;color:var(--dim);margin-top:.6rem;padding-top:.6rem;border-top:1px solid rgba(255,255,255,.05)}
+.stat{padding:16px 18px}
+.stat .v{font-size:1.75rem;font-weight:800;color:var(--gold2);line-height:1.1}
+.stat .v small{font-size:.9rem;color:var(--muted);font-weight:600}
+.stat .l{color:var(--muted);font-size:.86rem;margin-top:.2rem}
+.stat .s{color:var(--dim);font-size:.76rem;margin-top:.1rem}
+.skill{margin-bottom:14px}
+.skill .sk-top{display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:.35rem}
+.skill .sk-top b{font-weight:650}
+.skill .sk-top span{color:var(--gold2);font-weight:700}
+.skill .sk-top span.na{color:var(--dim);font-weight:500;font-size:.82rem}
+.skbar{height:8px;border-radius:99px;background:#0b1224;overflow:hidden}
+.skbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#b98b35,var(--gold2))}
+.skbar.na{background:repeating-linear-gradient(45deg,#0b1224,#0b1224 6px,#111a30 6px,#111a30 12px)}
+.tip{display:flex;gap:.6rem;align-items:flex-start;padding:.8rem;border-radius:12px;background:rgba(216,178,94,.07);border:1px solid rgba(216,178,94,.25);font-size:.88rem;color:var(--muted)}
+.tip svg{color:var(--gold2);margin-top:.15rem}
+.tip b{color:var(--text)}
+.lib-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lib{display:block;padding:16px;border-radius:12px;background:#0b1224;border:1px solid var(--line);color:var(--text)!important;text-decoration:none!important;transition:border-color .15s,transform .15s}
+.lib:hover{border-color:var(--gold);transform:translateY(-2px)}
+.lib svg{color:var(--gold2);width:22px;height:22px}
+.lib b{display:block;margin-top:.5rem}
+.lib span{font-size:.82rem;color:var(--muted)}
+.lib .n{float:right;font-size:1.3rem;font-weight:800;color:var(--gold2)}
+.ach-mini{display:flex;gap:.7rem;align-items:center;padding:.65rem .75rem;border-radius:12px;background:#0b1224;border:1px solid var(--line);margin-top:.5rem}
+.invite{display:flex;gap:.75rem;align-items:center;padding:.8rem;border-radius:12px;background:#0b1224;border:1px solid var(--line);margin-top:.55rem;color:var(--text)!important;text-decoration:none!important}
+.invite:first-of-type{margin-top:0}
+.invite:hover{border-color:var(--info)}
+.invite .ii{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(116,182,255,.12);color:var(--info);flex:none}
+.invite .it{flex:1;font-size:.9rem}
+.invite .it small{display:block;color:var(--dim);font-size:.78rem}
+.invite > svg:last-child{color:var(--dim)}
+.act{display:flex;gap:.6rem;font-size:.87rem;padding:.45rem 0;border-top:1px solid rgba(255,255,255,.04)}
+.act:first-child{border-top:0}
+.act time{color:var(--dim);white-space:nowrap;font-size:.8rem;min-width:88px}
+
+/* ---------- Öğrenme yolu ---------- */
+.ladder{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+@media(max-width:900px){.ladder{grid-template-columns:repeat(4,1fr)}}
+.rung{text-align:center;padding:14px 8px;border-radius:12px;background:#0b1224;border:1px solid var(--line);opacity:.5}
+.rung.past{opacity:.85}
+.rung.now{opacity:1;border-color:rgba(216,178,94,.6);box-shadow:0 0 0 3px rgba(216,178,94,.08)}
+.rung b{display:block;font-size:.9rem;margin-top:.3rem}
+.rung small{color:var(--dim);font-size:.74rem}
+.lvtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.lvtab{padding:.45rem .9rem;border-radius:10px;border:1px solid var(--line2);background:none;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:.4rem}
+.lvtab[aria-selected=true]{background:rgba(216,178,94,.1);border-color:rgba(216,178,94,.5);color:var(--gold2)}
+.lvtab[disabled]{opacity:.45;cursor:not-allowed}
+.topics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:900px){.topics{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.topics{grid-template-columns:1fr}}
+.topic{padding:16px;border-radius:12px;background:#0b1224;border:1px solid var(--line);display:flex;flex-direction:column;gap:.35rem}
+.topic .tt{display:flex;justify-content:space-between;gap:.4rem;align-items:flex-start}
+.topic b{font-size:.98rem}
+.topic span.d{font-size:.84rem;color:var(--muted)}
+.topic .parts{display:flex;flex-wrap:wrap;gap:4px;margin-top:.3rem}
+.topic .parts i{font-style:normal;font-size:.7rem;padding:.08rem .4rem;border-radius:6px;background:rgba(255,255,255,.04);color:var(--dim)}
+
+/* ---------- Kütüphaneler ---------- */
+.tabs{display:flex;gap:4px;padding:4px;border-radius:12px;background:#0b1224;border:1px solid var(--line);width:max-content;max-width:100%;margin-bottom:16px}
+.tab{padding:.5rem .95rem;border-radius:9px;border:0;background:none;color:var(--muted);font-weight:600;display:flex;gap:.45rem;align-items:center}
+.tab[aria-selected=true]{background:var(--card2);color:var(--gold2);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.tab .cnt{font-size:.72rem;padding:0 .4rem;border-radius:99px;background:rgba(255,255,255,.07)}
+.addform{display:grid;grid-template-columns:1fr 1fr 1.4fr auto;gap:10px;align-items:end}
+@media(max-width:900px){.addform{grid-template-columns:1fr 1fr}}
+label.lbl{display:block;font-size:.8rem;font-weight:600;margin:0 0 .3rem;color:#cfd6e6}
+.inp input,.inp select,.inp textarea{width:100%;background:#0b1224;border:1.5px solid var(--line);border-radius:11px;padding:.62rem .8rem;outline:none;transition:border-color .15s,box-shadow .15s}
+.inp input:focus,.inp select:focus,.inp textarea:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(216,178,94,.12)}
+.inp input[readonly]{color:var(--muted);background:#0d1428}
+.err{color:var(--bad);font-size:.84rem;margin:.45rem 0 0;display:flex;gap:.4rem;align-items:flex-start}
+.err:empty{display:none}
+.hint{color:var(--dim);font-size:.8rem;margin:.35rem 0 0}
+.toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:18px 0 10px}
+.search{position:relative;flex:1;max-width:320px}
+.search svg{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:var(--dim)}
+.search input{padding-left:2.2rem}
+.filters{display:flex;gap:4px;flex-wrap:wrap}
+.filt{padding:.32rem .7rem;border-radius:99px;border:1px solid var(--line2);background:none;color:var(--muted);font-size:.82rem;font-weight:600}
+.filt[aria-pressed=true]{background:rgba(216,178,94,.1);border-color:rgba(216,178,94,.5);color:var(--gold2)}
+.words{display:grid;gap:8px}
+.word{display:grid;grid-template-columns:1.1fr 1fr 2fr auto;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;background:#0b1224;border:1px solid var(--line)}
+@media(max-width:800px){.word{grid-template-columns:1fr 1fr}.word .ex{grid-column:1/-1}.word .wa{grid-column:1/-1;justify-content:flex-start}}
+.word .en{font-weight:700}
+.word .tr{color:var(--muted)}
+.word .ex{color:var(--dim);font-size:.85rem;font-style:italic}
+.word .wa{display:flex;gap:6px;align-items:center;justify-content:flex-end}
+.state{border:0;cursor:pointer}
+.iconbtn{background:none;border:1px solid transparent;border-radius:8px;padding:.3rem;color:var(--dim);display:grid;place-items:center}
+.iconbtn:hover{color:var(--bad);border-color:rgba(240,114,114,.35)}
+.iconbtn.go:hover{color:var(--ok);border-color:rgba(69,196,138,.35)}
+
+/* ---------- Başarımlar ---------- */
+.ach-sum{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.ach-sum .big{font-size:2.2rem;font-weight:800;color:var(--gold2)}
+.ach-sum .bar{flex:1;min-width:200px}
+.achs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.ach{padding:14px;border-radius:14px;background:#0b1224;border:1px solid var(--line);display:flex;gap:12px;align-items:flex-start}
+.ach.on{border-color:rgba(216,178,94,.5);background:linear-gradient(180deg,rgba(216,178,94,.08),#0b1224)}
+.medal{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;flex:none;background:#151e36;color:var(--dim);border:2px solid var(--line2)}
+.ach.on .medal{background:radial-gradient(circle at 30% 30%,var(--gold2),var(--gold) 60%,#8a6420);color:var(--goldInk);border-color:rgba(255,255,255,.35);box-shadow:0 4px 14px rgba(216,178,94,.3)}
+.medal svg{width:22px;height:22px}
+.ach b{display:block;font-size:.92rem}
+.ach small{display:block;color:var(--muted);font-size:.8rem}
+.ach .ap{height:4px;border-radius:9px;background:#151e36;margin-top:.45rem;overflow:hidden}
+.ach .ap i{display:block;height:100%;background:var(--gold)}
+.ach .at{font-size:.72rem;color:var(--dim);margin-top:.25rem}
+.cat-title{font-size:.78rem;color:var(--dim);text-transform:uppercase;letter-spacing:.6px;margin:22px 0 10px;font-weight:700}
+
+/* ---------- Sıralama ---------- */
+.lb{display:grid;gap:8px}
+.lb-row{display:grid;grid-template-columns:44px 52px 1fr auto auto;gap:12px;align-items:center;padding:10px 14px;border-radius:12px;background:#0b1224;border:1px solid var(--line)}
+.lb-row.me{border-color:rgba(216,178,94,.6);background:linear-gradient(90deg,rgba(216,178,94,.08),#0b1224)}
+.lb-row .pos{font-weight:800;font-size:1.1rem;color:var(--muted);text-align:center}
+.lb-row .pos.p1{color:#ffd76a}.lb-row .pos.p2{color:#d7dde8}.lb-row .pos.p3{color:#e0a36d}
+.lb-row .who{display:flex;gap:.6rem;align-items:center;min-width:0}
+.lb-row .who span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-row .who small{display:block;color:var(--dim);font-size:.78rem}
+.lb-row .xp{font-weight:700;color:var(--gold2)}
+@media(max-width:560px){.lb-row{grid-template-columns:32px 40px 1fr auto}.lb-row .rkn{display:none}}
+
+/* ---------- Profil / Ayarlar ---------- */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.form-grid{grid-template-columns:1fr}}
+.avatars{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;max-width:520px}
+.av-opt{background:none;border:2px solid transparent;border-radius:50%;padding:3px;display:grid;place-items:center}
+.av-opt[aria-checked=true]{border-color:var(--gold2);box-shadow:0 0 0 3px rgba(216,178,94,.18)}
+.av-opt svg{width:100%;height:auto;max-width:46px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chipt{padding:.42rem .8rem;border-radius:99px;border:1.5px solid var(--line2);background:#0b1224;font-size:.86rem;font-weight:600;color:var(--muted)}
+.chipt[aria-pressed=true]{border-color:var(--gold);color:var(--gold2);background:rgba(216,178,94,.08)}
+.chipt[disabled]{opacity:.4;cursor:not-allowed}
+.set-row{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:14px 0;border-top:1px solid rgba(255,255,255,.05);flex-wrap:wrap}
+.set-row:first-of-type{border-top:0;padding-top:0}
+.set-row .st b{display:block}
+.set-row .st span{color:var(--muted);font-size:.88rem}
+.set-row .sa{display:flex;gap:8px;flex-wrap:wrap}
+.codes{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin:.6rem 0;padding:14px;border-radius:12px;background:#0b1224;border:1px solid var(--line);font-family:Consolas,monospace;letter-spacing:.06em}
+.codes span{padding:.3rem .5rem;border-radius:8px;background:rgba(255,255,255,.03)}
+.codes span.used{text-decoration:line-through;color:var(--dim)}
+.danger-zone{border-color:rgba(240,114,114,.35)}
+
+/* ---------- Modal, bildirim, rütbe animasyonu ---------- */
+.modal-bg{position:fixed;inset:0;background:rgba(3,6,14,.72);backdrop-filter:blur(3px);display:grid;place-items:center;z-index:80;padding:16px}
+.modal{width:100%;max-width:440px;padding:22px}
+.modal h3{margin:0 0 .4rem;font-size:1.15rem}
+.modal p{color:var(--muted);margin:0 0 1rem;font-size:.92rem}
+.modal .row{display:flex;gap:.5rem;justify-content:flex-end;margin-top:1.1rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#1b2541;border:1px solid var(--line2);color:var(--text);padding:.7rem 1rem;border-radius:12px;box-shadow:var(--shadow);opacity:0;transition:.25s;z-index:100;display:flex;gap:.5rem;align-items:center;max-width:92vw}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok svg{color:var(--ok)}.toast.bad svg{color:var(--bad)}.toast.gold svg{color:var(--gold2)}
+.levelup{position:fixed;inset:0;background:rgba(5,8,18,.9);display:grid;place-items:center;z-index:95;opacity:0;pointer-events:none;transition:opacity .3s}
+.levelup.show{opacity:1;pointer-events:auto}
+.levelup .in{text-align:center;transform:scale(.7);transition:transform .45s cubic-bezier(.2,1.6,.4,1)}
+.levelup.show .in{transform:scale(1)}
+.levelup h3{font-size:1.7rem;margin:.6rem 0 .2rem;color:var(--gold2)}
+.levelup p{color:var(--muted);margin:0 0 1.2rem}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+.sec{animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 32 32"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2d68f"/><stop offset="1" stop-color="#b98b35"/></linearGradient></defs><path d="M16 2 28 7v9c0 7-5 12-12 14C9 28 4 23 4 16V7z" fill="url(#lg)"/><path d="M11 21V11h3v7.4h6V21z" fill="#1d1607"/><path d="m18 13 3-3 3 3" stroke="#1d1607" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 9v12h14V9"/></symbol>
+  <symbol id="map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2zM9 4v14M15 6v14"/></symbol>
+  <symbol id="library" viewBox="0 0 24 24"><path d="M4 4v16M8 4v16M12 4l5 16M17 4h3v16h-3"/></symbol>
+  <symbol id="trophy" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3a3 3 0 0 1-3 4M7 5H4a3 3 0 0 0 3 4"/></symbol>
+  <symbol id="podium" viewBox="0 0 24 24"><path d="M3 21h18M8 21V11h8v10M3 21v-6h5M21 21v-8h-5"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="logout" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l-5-5 5-5M5 12h12"/></symbol>
+  <symbol id="swap" viewBox="0 0 24 24"><path d="M16 3l4 4-4 4M20 7H4M8 21l-4-4 4-4M4 17h16"/></symbol>
+  <symbol id="menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+  <symbol id="alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="book" viewBox="0 0 24 24"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-5a3 3 0 0 0-2 1"/><path d="M20 4v14h-6a2 2 0 0 0-1 .3"/></symbol>
+  <symbol id="bug" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></symbol>
+  <symbol id="bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+  <symbol id="refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></symbol>
+  <symbol id="bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></symbol>
+  <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></symbol>
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
+  <symbol id="upload" viewBox="0 0 24 24"><path d="M12 21V9M7 14l5-5 5 5M5 3h14"/></symbol>
+  <symbol id="copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
+  <symbol id="key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3M15 8l2 2"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6-4.5-4.1 6-.7z"/></symbol>
+  <symbol id="flame" viewBox="0 0 24 24"><path d="M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-5 3-7 0 2 1 3 2 3 0-3 0-6 1-8z"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="M12 2 20 5v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/></symbol>
+  <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
+  <symbol id="crown" viewBox="0 0 24 24"><path d="M3 18h18l-2-10-4 4-3-7-3 7-4-4z"/></symbol>
+  <symbol id="text" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h10M4 18h7"/></symbol>
+  <symbol id="translate" viewBox="0 0 24 24"><path d="M4 5h8M8 3v2M10 5c-1 4-3 7-6 9M6 9c1 2 3 4 6 5"/><path d="m13 21 4-9 4 9M14.5 18h5"/></symbol>
+  <symbol id="grammar" viewBox="0 0 24 24"><path d="M4 20 9 4h2l5 16M6 14h8"/><path d="M17 8h4M19 6v4"/></symbol>
+  <symbol id="calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="hand" viewBox="0 0 24 24"><path d="M7 11V5a2 2 0 0 1 4 0v5M11 10V4a2 2 0 0 1 4 0v6M15 10V6a2 2 0 0 1 4 0v8a8 8 0 0 1-8 8 7 7 0 0 1-6-3l-2.5-4a2 2 0 0 1 3.4-2L7 15"/></symbol>
+</svg>
+
+<div class="app">
+  <aside class="sb" id="sb">
+    <a class="logo" href="index.html"><svg width="28" height="28"><use href="#logo"/></svg><span>LevelUp <b>English</b></span></a>
+    <div class="sb-user" id="sbUser"></div>
+    <nav aria-label="Panel menüsü">
+      <a href="#genel" data-nav="genel"><svg class="i"><use href="#home"/></svg> Genel bakış</a>
+      <a href="#ogren" data-nav="ogren"><svg class="i"><use href="#map"/></svg> Öğrenme yolu</a>
+      <a href="#kutuphane" data-nav="kutuphane"><svg class="i"><use href="#library"/></svg> Kütüphaneler <span class="cnt" id="navLib">0</span></a>
+      <a href="#basarimlar" data-nav="basarimlar"><svg class="i"><use href="#trophy"/></svg> Başarımlar <span class="cnt" id="navAch">0</span></a>
+      <a href="#siralama" data-nav="siralama"><svg class="i"><use href="#podium"/></svg> Sıralama</a>
+      <a href="#profil" data-nav="profil"><svg class="i"><use href="#user"/></svg> Profil</a>
+      <a href="#ayarlar" data-nav="ayarlar"><svg class="i"><use href="#gear"/></svg> Ayarlar ve veri</a>
+    </nav>
+    <div class="sb-foot">
+      <a href="index.html"><svg class="i"><use href="#home"/></svg> Ana sayfa</a>
+      <button type="button" id="switchBtn"><svg class="i"><use href="#swap"/></svg> Hesap değiştir</button>
+      <button type="button" id="logoutBtn"><svg class="i"><use href="#logout"/></svg> Çıkış yap</button>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <div>
+    <div class="mtop">
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menüyü aç"><svg class="i"><use href="#menu"/></svg></button>
+      <a class="logo" href="index.html"><svg width="26" height="26"><use href="#logo"/></svg><span>LevelUp <b>English</b></span></a>
+    </div>
+
+    <main class="content">
+      <!-- ================= GENEL BAKIŞ ================= -->
+      <section class="sec" data-sec="genel">
+        <div class="page-head">
+          <div><h1 id="hello"></h1><p id="helloSub"></p></div>
+          <a class="btn btn-gold" href="#ogren">Öğrenmeye devam et <svg class="i"><use href="#arrow"/></svg></a>
+        </div>
+
+        <div class="grid g-top">
+          <div class="card rank-card" id="rankCard"></div>
+          <div class="card pad">
+            <div class="ch"><h2><svg class="i"><use href="#target"/></svg> Günlük görevler</h2><span class="pill" id="taskCount"></span></div>
+            <div id="tasks"></div>
+            <div class="tasks-foot"><span>Görevler her gün yenilenir.</span><span id="taskXp"></span></div>
+          </div>
+        </div>
+
+        <div class="grid g-mid" style="margin-top:16px" id="stats"></div>
+
+        <div class="grid g-bot" style="margin-top:16px">
+          <div class="card pad">
+            <div class="ch"><h2><svg class="i"><use href="#bulb"/></svg> Beceri analizi</h2><span class="pill">Uygulama içi performans</span></div>
+            <div id="skills"></div>
+          </div>
+          <div class="card pad">
+            <div class="ch"><h2><svg class="i"><use href="#bell"/></svg> Tekrar davetleri</h2></div>
+            <div id="invites"></div>
+          </div>
+        </div>
+
+        <div class="grid g-bot" style="margin-top:16px">
+          <div class="card pad">
+            <div class="ch"><h2><svg class="i"><use href="#library"/></svg> Kütüphaneler</h2><a class="more" href="#kutuphane">Tümünü aç</a></div>
+            <div class="lib-cards" id="libCards"></div>
+          </div>
+          <div class="card pad">
+            <div class="ch"><h2><svg class="i"><use href="#trophy"/></svg> Başarımlar</h2><a class="more" href="#basarimlar" id="achCount"></a></div>
+            <div id="achMini"></div>
+          </div>
+        </div>
+
+        <div class="card pad" style="margin-top:16px">
+          <div class="ch"><h2><svg class="i"><use href="#calendar"/></svg> Son hareketler</h2></div>
+          <div id="acts"></div>
+        </div>
+      </section>
+
+      <!-- ================= ÖĞRENME YOLU ================= -->
+      <section class="sec" data-sec="ogren" hidden>
+        <div class="page-head"><div><h1>Öğrenme yolu</h1><p>Önce seviyeni seç, sonra o seviyedeki konulardan birini çalış.</p></div></div>
+        <div class="card pad">
+          <div class="ch"><h2><svg class="i"><use href="#shield"/></svg> Rütbe merdiveni</h2><span class="pill gold" id="ladderNow"></span></div>
+          <div class="ladder" id="ladder"></div>
+        </div>
+        <div class="card pad" style="margin-top:16px">
+          <div class="ch"><h2><svg class="i"><use href="#map"/></svg> Konular</h2><span class="pill info">Ders içerikleri sonraki adımda eklenecek</span></div>
+          <div class="lvtabs" id="lvtabs" role="tablist"></div>
+          <div class="topics" id="topics"></div>
+        </div>
+      </section>
+
+      <!-- ================= KÜTÜPHANELER ================= -->
+      <section class="sec" data-sec="kutuphane" hidden>
+        <div class="page-head"><div><h1>Kütüphaneler</h1><p>Kendi kelimelerini ekle; zorlandığın kelimeleri hata kütüphanende takip et.</p></div></div>
+        <div class="tabs" role="tablist">
+          <button class="tab" role="tab" data-lib="kelime" type="button"><svg class="i"><use href="#book"/></svg> Kelime kütüphanesi <span class="cnt" id="cntKelime">0</span></button>
+          <button class="tab" role="tab" data-lib="hata" type="button"><svg class="i"><use href="#bug"/></svg> Hata kütüphanesi <span class="cnt" id="cntHata">0</span></button>
+        </div>
+        <div class="card pad">
+          <div class="ch"><h2 id="addTitle"></h2></div>
+          <form class="addform" id="addForm" novalidate>
+            <div><label class="lbl" for="wEn">İngilizce</label><div class="inp"><input id="wEn" maxlength="40" spellcheck="false" placeholder="ör. improve"></div></div>
+            <div><label class="lbl" for="wTr">Türkçe</label><div class="inp"><input id="wTr" maxlength="60" placeholder="ör. geliştirmek"></div></div>
+            <div><label class="lbl" for="wEx" id="wExLbl">Örnek cümle (isteğe bağlı)</label><div class="inp"><input id="wEx" maxlength="140"></div></div>
+            <button class="btn btn-gold" type="submit"><svg class="i"><use href="#plus"/></svg> Ekle</button>
+          </form>
+          <p class="err" id="addErr"></p>
+          <p class="hint">İpucu: Türkçe anlamı bir sözlükten kontrol ederek yaz.</p>
+          <div class="toolbar">
+            <div class="search inp"><svg class="i"><use href="#search"/></svg><input id="wSearch" placeholder="Kelime ara…"></div>
+            <div class="filters" id="filters"></div>
+          </div>
+          <div class="words" id="words"></div>
+        </div>
+      </section>
+
+      <!-- ================= BAŞARIMLAR ================= -->
+      <section class="sec" data-sec="basarimlar" hidden>
+        <div class="page-head"><div><h1>Başarı koleksiyonu</h1><p>Çalıştıkça yeni rozetler açılır.</p></div></div>
+        <div class="card pad ach-sum" id="achSum"></div>
+        <div id="achList"></div>
+      </section>
+
+      <!-- ================= SIRALAMA ================= -->
+      <section class="sec" data-sec="siralama" hidden>
+        <div class="page-head"><div><h1>Sıralama</h1><p>Bu tarayıcıda hesabı olan kullanıcılar arasında toplam XP sıralaması.</p></div></div>
+        <div class="card pad"><div class="lb" id="lb"></div></div>
+      </section>
+
+      <!-- ================= PROFİL ================= -->
+      <section class="sec" data-sec="profil" hidden>
+        <div class="page-head"><div><h1>Profil</h1><p>Bilgilerini ve öğrenme tercihlerini düzenle.</p></div></div>
+        <form class="card pad" id="profileForm" novalidate>
+          <label class="lbl">Avatar</label>
+          <div class="avatars" id="pAvatars" role="radiogroup"></div>
+          <div class="form-grid" style="margin-top:16px">
+            <div><label class="lbl" for="pAd">Ad</label><div class="inp"><input id="pAd" maxlength="30"></div></div>
+            <div><label class="lbl" for="pSoyad">Soyad</label><div class="inp"><input id="pSoyad" maxlength="30"></div></div>
+            <div><label class="lbl" for="pUser">Kullanıcı adı</label><div class="inp"><input id="pUser" readonly></div></div>
+            <div><label class="lbl" for="pMail">E-posta</label><div class="inp"><input id="pMail" readonly></div></div>
+            <div><label class="lbl" for="pGoal">Günlük hedef</label><div class="inp"><select id="pGoal"><option value="5">5 dakika · Hafif</option><option value="10">10 dakika · Düzenli</option><option value="20">20 dakika · Kararlı</option></select></div></div>
+            <div><label class="lbl">Hesap</label><div class="inp"><input id="pInfo" readonly></div></div>
+          </div>
+          <label class="lbl" style="margin-top:16px">İlgi alanların (en fazla 3)</label>
+          <div class="chips" id="pTags"></div>
+          <p class="err" id="pErr"></p>
+          <div style="margin-top:18px;display:flex;gap:8px"><button class="btn btn-gold" type="submit">Kaydet</button><button class="btn btn-line" type="button" id="pReset">Vazgeç</button></div>
+        </form>
+      </section>
+
+      <!-- ================= AYARLAR ================= -->
+      <section class="sec" data-sec="ayarlar" hidden>
+        <div class="page-head"><div><h1>Ayarlar ve veri</h1><p>Verilerini yedekle, güvenlik ayarlarını yönet.</p></div></div>
+        <div class="grid g-two">
+          <div class="card pad">
+            <div class="ch"><h2><svg class="i"><use href="#download"/></svg> Veri yönetimi</h2></div>
+            <div class="set-row"><div class="st"><b>Dışa Aktar</b><span>Bu tarayıcıdaki tüm LevelUp verilerini <code>veriler.txt</code> olarak indir.</span></div><div class="sa"><button class="btn btn-gold sm" id="btnExport" type="button"><svg class="i"><use href="#download"/></svg> Dışa Aktar</button></div></div>
+            <div class="set-row"><div class="st"><b>İçe Aktar</b><span>Daha önce indirilen <code>veriler.txt</code> dosyasını geri yükle. Mevcut verilerin yerine geçer.</span></div><div class="sa"><button class="btn btn-line sm" id="btnImport" type="button"><svg class="i"><use href="#upload"/></svg> İçe Aktar</button><input type="file" id="importFile" accept=".txt,text/plain,application/json" hidden></div></div>
+          </div>
+          <div class="card pad">
+            <div class="ch"><h2><svg class="i"><use href="#lock"/></svg> Güvenlik</h2></div>
+            <div id="secBox"></div>
+          </div>
+        </div>
+        <div class="card pad danger-zone" style="margin-top:16px">
+          <div class="set-row"><div class="st"><b>Hesabı sil</b><span>Hesabın ve tüm ilerlemen bu tarayıcıdan kalıcı olarak silinir.</span></div><div class="sa"><button class="btn btn-danger sm" id="delBtn" type="button"><svg class="i"><use href="#trash"/></svg> Hesabı sil</button></div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal" hidden></div>
+<div class="levelup" id="levelup" aria-live="assertive"><div class="in"><div id="luEm"></div><h3 id="luTitle"></h3><p id="luSub"></p><button class="btn btn-gold" type="button" id="luOk">Harika!</button></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ================= Ortak yardımcılar ================= */
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const K = { users:'lue_users', active:'lue_aktif' };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ALERT = '<svg class="i"><use href="#alert"/></svg>';
+const ic = (id, cls = 'i') => `<svg class="${cls}"><use href="#${id}"/></svg>`;
+function loadUsers(){ try{ const v = JSON.parse(localStorage.getItem(K.users)); return Array.isArray(v) ? v : []; }catch(e){ return []; } }
+function saveUsers(l){ localStorage.setItem(K.users, JSON.stringify(l)); }
+function cyrb53(str, seed = 0){
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for(let i = 0, ch; i < str.length; i++){ ch = str.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507); h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507); h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16);
+}
+const hashPass = (p, salt) => cyrb53(salt + '|' + p, 7) + cyrb53(p + '|' + salt, 13);
+const rnd = n => Math.random().toString(36).slice(2, 2 + n);
+function setErr(id, msg){ const el = $('#' + id); el.innerHTML = msg ? ALERT + '<span>' + esc(msg) + '</span>' : ''; }
+function shake(el){ el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+function toast(msg, type = 'ok'){
+  const t = $('#toast');
+  t.className = 'toast ' + type;
+  t.innerHTML = `${ic(type === 'bad' ? 'alert' : type === 'gold' ? 'trophy' : 'check')}<span>${esc(msg)}</span>`;
+  requestAnimationFrame(() => t.classList.add('show'));
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 3200);
+}
+const today = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const daysBetween = (a, b) => Math.round((new Date(b) - new Date(a)) / 86400000);
+function fmtTime(t){
+  const d = new Date(t), n = new Date(), diff = (n - d) / 1000;
+  if(diff < 60) return 'az önce';
+  if(diff < 3600) return Math.floor(diff / 60) + ' dk önce';
+  if(today(d) === today(n)) return 'bugün ' + d.toLocaleTimeString('tr-TR', { hour:'2-digit', minute:'2-digit' });
+  return d.toLocaleDateString('tr-TR', { day:'numeric', month:'short' });
+}
+
+/* ================= Rütbeler ve avatarlar ================= */
+const RANKS = [
+  { ad:'Bakır',  cefr:'A1',    c1:'#f0a06a', c2:'#8a4a22' },
+  { ad:'Bronz',  cefr:'A1–A2', c1:'#e2b27a', c2:'#7a5230' },
+  { ad:'Gümüş',  cefr:'A2–B1', c1:'#f1f4f9', c2:'#7d8798' },
+  { ad:'Altın',  cefr:'B1',    c1:'#ffe08a', c2:'#b8862b' },
+  { ad:'Platin', cefr:'B1–B2', c1:'#d3fff5', c2:'#4f9c94' },
+  { ad:'Elmas',  cefr:'B2',    c1:'#cde9ff', c2:'#3d7fd6' },
+  { ad:'Mitril', cefr:'B2–C1', c1:'#d6fbff', c2:'#6d5cff' }
+];
+const ROMAN = ['', 'I', 'II', 'III'];
+/* Her rütbede bir kademeyi (III→II→I) geçmek için gereken XP */
+const XP_TIER = [300, 400, 500, 600, 700, 800, 900];
+let svgSeq = 0;
+function emblem(i, size = 56, tier = 0){
+  const r = RANKS[i], id = 'em' + (svgSeq++);
+  const wings = i >= 5 ? `<path d="M10 20 2 14l3 14 7 4M54 20l8-6-3 14-7 4" fill="url(#${id})" opacity=".75"/>` : '';
+  const crown = i === 6 ? `<path d="M22 6l4 5 6-7 6 7 4-5v6H22z" fill="url(#${id})" stroke="rgba(255,255,255,.6)" stroke-width="1"/>` : '';
+  const center = tier
+    ? `<text x="32" y="39" text-anchor="middle" font-size="15" font-weight="800" fill="#fff" font-family="Georgia,serif" stroke="rgba(0,0,0,.35)" stroke-width=".6">${ROMAN[tier]}</text>`
+    : `<path d="M32 21 38 31 32 43 26 31Z" fill="${r.c1}" stroke="rgba(255,255,255,.7)" stroke-width="1"/>`;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true">
+    <defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${r.c1}"/><stop offset="1" stop-color="${r.c2}"/></linearGradient></defs>
+    ${wings}<path d="M32 8 52 15v15c0 13-9 22-20 27C21 52 12 43 12 30V15Z" fill="url(#${id})" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/>
+    <path d="M32 14 46 19v11c0 9-6 16-14 20-8-4-14-11-14-20V19Z" fill="rgba(8,12,26,.42)"/>${crown}${center}</svg>`;
+}
+const AVATARS = [
+  { id:'kalkan', a:'#3b5bdb', b:'#1c2f7a', d:'M12 3 19 6v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z' },
+  { id:'yildiz', a:'#f08c00', b:'#8a4b00', d:'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6-4.5-4.1 6-.7z' },
+  { id:'simsek', a:'#7048e8', b:'#3b1f8f', d:'M13 2 4 14h7l-1 8 9-12h-7z' },
+  { id:'ay',     a:'#1c7ed6', b:'#0b3d6e', d:'M20 13.5A8 8 0 1 1 10.5 4a6.3 6.3 0 0 0 9.5 9.5z' },
+  { id:'yaprak', a:'#2f9e44', b:'#14532d', d:'M5 20c0-8 5-14 15-15-1 9-6 15-15 15zM5 20l8-8' },
+  { id:'alev',   a:'#e8590c', b:'#7c2d12', d:'M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-5 3-7 0 2 1 3 2 3 0-3 0-6 1-8z' },
+  { id:'tac',    a:'#c99a2e', b:'#6b4d10', d:'M3 18h18l-2-10-4 4-3-7-3 7-4-4z' },
+  { id:'kitap',  a:'#0c8599', b:'#0b4752', d:'M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z' }
+];
+function avatarSvg(avId, size = 40){
+  const a = AVATARS.find(x => x.id === avId) || AVATARS[0], id = 'av' + (svgSeq++);
+  return `<svg class="av" width="${size}" height="${size}" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a.a}"/><stop offset="1" stop-color="${a.b}"/></linearGradient></defs><circle cx="20" cy="20" r="19" fill="url(#${id})" stroke="rgba(255,255,255,.25)"/><g transform="translate(8 8)"><path d="${a.d}" fill="rgba(255,255,255,.92)" stroke="rgba(255,255,255,.92)" stroke-width="1" stroke-linejoin="round"/></g></svg>`;
+}
+const rankName = p => `${RANKS[p.rank].ad} ${ROMAN[p.tier]}`;
+
+/* ================= Oturum ve veri ================= */
+const ACTIVE_ID = localStorage.getItem(K.active);
+let me = loadUsers().find(u => u.id === ACTIVE_ID);
+if(!me){ localStorage.removeItem(K.active); location.replace('index.html'); }
+const PKEY = 'lue_ilerleme_' + (me ? me.id : '');
+function defaultProg(){
+  return { rank:0, tier:3, xp:0, toplamXp:0, seri:0, sonCalisma:null, ogrenilen:[], bilemedigi:[], kutuphane:[], hataKutuphanesi:[],
+    beceri:{ kelime:{d:0,t:0}, dilbilgisi:{d:0,t:0}, okuma:{d:0,t:0}, ceviri:{d:0,t:0} }, uniteler:[], sinavlar:[],
+    basarimlar:[], gunluk:null, hareketler:[], sayac:{ gorev:0, tamGun:0, hatadanOgrenilen:0 } };
+}
+let P = (() => { try{ return JSON.parse(localStorage.getItem(PKEY)); }catch(e){ return null; } })() || defaultProg();
+P = Object.assign(defaultProg(), P);
+P.sayac = Object.assign({ gorev:0, tamGun:0, hatadanOgrenilen:0 }, P.sayac);
+function saveP(){ localStorage.setItem(PKEY, JSON.stringify(P)); }
+function saveMe(){ const users = loadUsers(), i = users.findIndex(u => u.id === me.id); if(i > -1){ users[i] = me; saveUsers(users); } }
+function log(m){ P.hareketler.unshift({ t:Date.now(), m }); P.hareketler = P.hareketler.slice(0, 40); }
+/* Bugün çalışıldı: seri hesabı */
+function markStudy(){
+  const t = today();
+  if(P.sonCalisma === t) return;
+  P.seri = P.sonCalisma && daysBetween(P.sonCalisma, t) === 1 ? P.seri + 1 : 1;
+  P.sonCalisma = t;
+}
+
+/* ================= XP ve rütbe ================= */
+function examReady(){ return P.tier === 1 && P.xp >= XP_TIER[P.rank]; }
+function addXp(n, why){
+  if(n <= 0) return;
+  const before = rankName(P), need = XP_TIER[P.rank];
+  P.toplamXp += n; P.xp += n;
+  let up = false;
+  while(P.tier > 1 && P.xp >= need){ P.xp -= need; P.tier--; up = true; }
+  if(P.tier === 1 && P.xp > need) P.xp = need; // Kademe I'de XP dolunca sınav beklenir
+  log(`+${n} XP · ${why}`);
+  if(up){ log(`Kademe atlandı: ${before} → ${rankName(P)}`); showLevelUp(); }
+  else if(examReady()) toast('XP doldu! Rütbe sınavına girebilirsin.', 'gold');
+}
+function showLevelUp(){
+  $('#luEm').innerHTML = emblem(P.rank, 130, P.tier);
+  $('#luTitle').textContent = rankName(P) + ' oldun!';
+  $('#luSub').textContent = P.tier === 1 ? 'Bu kademede XP dolunca rütbe sınavı açılacak.' : 'Rütbende bir kademe yükseldin.';
+  $('#levelup').classList.add('show'); $('#luOk').focus();
+}
+$('#luOk').addEventListener('click', () => $('#levelup').classList.remove('show'));
+
+/* ================= Günlük görevler ================= */
+const TASK_POOL = {
+  ekle:   { ad:'Kelime kütüphanene 3 kelime ekle', hedef:3, xp:15 },
+  kelime: { ad:'Bir üniteden 5 yeni kelime öğren', hedef:5, xp:20 },
+  okuma:  { ad:'1 okuma metni tamamla',            hedef:1, xp:25 },
+  tekrar: { ad:'Hata kütüphanesinden 3 kelimeyi öğren', hedef:3, xp:20 },
+  test:   { ad:'1 alıştırma testi çöz',             hedef:1, xp:15 }
+};
+function ensureDaily(){
+  const t = today();
+  if(P.gunluk && P.gunluk.tarih === t) return;
+  // Kütüphaneye ekleme görevi her gün var; diğer ikisi güne göre değişir
+  const rest = ['kelime','okuma','tekrar','test'], seed = parseInt(cyrb53(t + me.id).slice(-6), 16);
+  const a = rest[seed % 4], b = rest[(seed + 1 + (seed >> 3) % 3) % 4];
+  P.gunluk = { tarih:t, gorevler:['ekle', a, b].map(id => ({ id, ilerleme:0, tamam:false })) };
+  saveP();
+}
+function taskProgress(id, n = 1){
+  ensureDaily();
+  const g = P.gunluk.gorevler.find(x => x.id === id);
+  if(!g || g.tamam) return;
+  g.ilerleme = Math.min(TASK_POOL[id].hedef, g.ilerleme + n);
+  if(g.ilerleme >= TASK_POOL[id].hedef){
+    g.tamam = true; P.sayac.gorev++;
+    toast(`Görev tamamlandı: +${TASK_POOL[id].xp} XP`, 'gold');
+    addXp(TASK_POOL[id].xp, 'Günlük görev: ' + TASK_POOL[id].ad);
+    if(P.gunluk.gorevler.every(x => x.tamam)){ P.sayac.tamGun++; log('Bugünün tüm görevleri tamamlandı'); }
+  }
+}
+
+/* ================= Başarımlar (50) ================= */
+const lib = () => P.kutuphane, err = () => P.hataKutuphanesi;
+const skillPct = k => P.beceri[k].t >= 20 ? P.beceri[k].d / P.beceri[k].t * 100 : 0;
+const ACH = [
+  // [id, ad, açıklama, ikon, kategori, hedef, değer]
+  ['hosgeldin','Hoş geldin','Hesabını oluştur','star','Başlangıç',1,() => 1],
+  ['ilgi','Kendini tanıt','En az bir ilgi alanı seç','user','Başlangıç',1,() => me.ilgiler.length ? 1 : 0],
+  ['lib1','İlk kelime','Kütüphanene ilk kelimeni ekle','book','Kütüphane',1,() => lib().length],
+  ['lib10','Koleksiyoncu','Kütüphanende 10 kelime','book','Kütüphane',10,() => lib().length],
+  ['lib25','Kelime sandığı','Kütüphanende 25 kelime','book','Kütüphane',25,() => lib().length],
+  ['lib50','Kelime hazinesi','Kütüphanende 50 kelime','book','Kütüphane',50,() => lib().length],
+  ['lib100','Sözlük gibi','Kütüphanende 100 kelime','book','Kütüphane',100,() => lib().length],
+  ['libok5','Öğrendim!','Kütüphanende 5 kelimeyi "öğrendim" yap','check','Kütüphane',5,() => lib().filter(w => w.durum === 'ogrendim').length],
+  ['libok25','Kalıcı hafıza','Kütüphanende 25 kelimeyi "öğrendim" yap','check','Kütüphane',25,() => lib().filter(w => w.durum === 'ogrendim').length],
+  ['err1','Hatalarından öğren','Hata kütüphanene bir kelime ekle','bug','Hatalar',1,() => err().length + P.sayac.hatadanOgrenilen],
+  ['errfix5','Düzeltici','Hata kütüphanesinden 5 kelimeyi öğren','refresh','Hatalar',5,() => P.sayac.hatadanOgrenilen],
+  ['errfix25','Hata avcısı','Hata kütüphanesinden 25 kelimeyi öğren','refresh','Hatalar',25,() => P.sayac.hatadanOgrenilen],
+  ['w10','İlk adımlar','Derslerde 10 kelime öğren','text','Kelime',10,() => P.ogrenilen.length],
+  ['w50','Kelime avcısı','Derslerde 50 kelime öğren','text','Kelime',50,() => P.ogrenilen.length],
+  ['w100','Kelime ustası','Derslerde 100 kelime öğren','text','Kelime',100,() => P.ogrenilen.length],
+  ['w250','Kelime bilgesi','Derslerde 250 kelime öğren','text','Kelime',250,() => P.ogrenilen.length],
+  ['w500','Yürüyen sözlük','Derslerde 500 kelime öğren','text','Kelime',500,() => P.ogrenilen.length],
+  ['w1000','Bin kelime','Derslerde 1000 kelime öğren','text','Kelime',1000,() => P.ogrenilen.length],
+  ['s3','Isınma turu','3 günlük çalışma serisi','flame','Seri',3,() => P.seri],
+  ['s7','İstikrar','7 günlük çalışma serisi','flame','Seri',7,() => P.seri],
+  ['s14','Alışkanlık','14 günlük çalışma serisi','flame','Seri',14,() => P.seri],
+  ['s30','Bir ay boyunca','30 günlük çalışma serisi','flame','Seri',30,() => P.seri],
+  ['s60','Durdurulamaz','60 günlük çalışma serisi','flame','Seri',60,() => P.seri],
+  ['s100','Efsanevi seri','100 günlük çalışma serisi','flame','Seri',100,() => P.seri],
+  ['r1','Bronz','Bronz rütbesine yüksel','shield','Rütbe',1,() => P.rank >= 1 ? 1 : 0],
+  ['r2','Gümüş','Gümüş rütbesine yüksel','shield','Rütbe',1,() => P.rank >= 2 ? 1 : 0],
+  ['r3','Altın','Altın rütbesine yüksel','shield','Rütbe',1,() => P.rank >= 3 ? 1 : 0],
+  ['r4','Platin','Platin rütbesine yüksel','shield','Rütbe',1,() => P.rank >= 4 ? 1 : 0],
+  ['r5','Elmas','Elmas rütbesine yüksel','shield','Rütbe',1,() => P.rank >= 5 ? 1 : 0],
+  ['r6','Mitril','Mitril rütbesine yüksel','crown','Rütbe',1,() => P.rank >= 6 ? 1 : 0],
+  ['u1','İlk ünite','İlk üniteni tamamla','map','Ünite',1,() => P.uniteler.length],
+  ['u5','Yolda','5 ünite tamamla','map','Ünite',5,() => P.uniteler.length],
+  ['u10','Gezgin','10 ünite tamamla','map','Ünite',10,() => P.uniteler.length],
+  ['u25','Kâşif','25 ünite tamamla','map','Ünite',25,() => P.uniteler.length],
+  ['e1','Sınav cesareti','İlk rütbe sınavını geç','trophy','Sınav',1,() => P.sinavlar.filter(s => s.gecti).length],
+  ['e5','Sınav ustası','5 rütbe sınavı geç','trophy','Sınav',5,() => P.sinavlar.filter(s => s.gecti).length],
+  ['e100','Mükemmeliyetçi','Bir sınavdan %100 al','target','Sınav',1,() => P.sinavlar.some(s => s.puan === 100) ? 1 : 0],
+  ['x500','Kıvılcım','Toplam 500 XP kazan','bolt','XP',500,() => P.toplamXp],
+  ['x1000','Enerji dolu','Toplam 1.000 XP kazan','bolt','XP',1000,() => P.toplamXp],
+  ['x5000','Güç merkezi','Toplam 5.000 XP kazan','bolt','XP',5000,() => P.toplamXp],
+  ['x10000','Fırtına','Toplam 10.000 XP kazan','bolt','XP',10000,() => P.toplamXp],
+  ['g1','Görev başında','İlk günlük görevini tamamla','target','Görev',1,() => P.sayac.gorev],
+  ['g10','Görev adamı','10 günlük görev tamamla','target','Görev',10,() => P.sayac.gorev],
+  ['g50','Görev efsanesi','50 günlük görev tamamla','target','Görev',50,() => P.sayac.gorev],
+  ['gd1','Tam gün','Bir günün tüm görevlerini bitir','calendar','Görev',1,() => P.sayac.tamGun],
+  ['gd7','Kusursuz hafta','7 gün tüm görevleri bitir','calendar','Görev',7,() => P.sayac.tamGun],
+  ['sk1','Kelime uzmanı','Kelime becerinde %80 başarı','book','Beceri',80,() => skillPct('kelime')],
+  ['sk2','Dil bilgisi uzmanı','Dil bilgisinde %80 başarı','grammar','Beceri',80,() => skillPct('dilbilgisi')],
+  ['sk3','Okuma uzmanı','Okuduğunu anlamada %80 başarı','text','Beceri',80,() => skillPct('okuma')],
+  ['sk4','Çeviri uzmanı','Çeviride %80 başarı','translate','Beceri',80,() => skillPct('ceviri')]
+].map(([id, ad, acik, ikon, kat, hedef, deger]) => ({ id, ad, acik, ikon, kat, hedef, deger }));
+
+function checkAch(silent){
+  const have = new Set(P.basarimlar.map(b => b.id)), fresh = [];
+  ACH.forEach(a => { if(!have.has(a.id) && a.deger() >= a.hedef){ P.basarimlar.push({ id:a.id, t:Date.now() }); fresh.push(a); } });
+  fresh.forEach(a => log('Başarım açıldı: ' + a.ad));
+  if(fresh.length && !silent) toast('Yeni başarım: ' + fresh.map(a => a.ad).join(', '), 'gold');
+  return fresh.length;
+}
+
+/* ================= Gezinme ================= */
+const SECS = ['genel','ogren','kutuphane','basarimlar','siralama','profil','ayarlar'];
+function route(){
+  const [name, q] = location.hash.slice(1).split('?');
+  const sec = SECS.includes(name) ? name : 'genel';
+  $$('.sec').forEach(s => s.hidden = s.dataset.sec !== sec);
+  $$('[data-nav]').forEach(a => a.dataset.nav === sec ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+  if(sec === 'kutuphane' && q && q.includes('hata')) libTab = 'hata';
+  RENDER[sec]();
+  closeMenu(); window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', route);
+function openMenu(){ $('#sb').classList.add('open'); $('#scrim').hidden = false; }
+function closeMenu(){ $('#sb').classList.remove('open'); $('#scrim').hidden = true; }
+$('#menuBtn').addEventListener('click', openMenu);
+$('#scrim').addEventListener('click', closeMenu);
+function logout(){ localStorage.removeItem(K.active); location.href = 'index.html'; }
+$('#logoutBtn').addEventListener('click', logout);
+$('#switchBtn').addEventListener('click', logout);
+
+function renderShell(){
+  $('#sbUser').innerHTML = `${avatarSvg(me.avatar, 40)}<div><div class="nm">${esc(me.ad + ' ' + me.soyad)}</div><div class="rk">${esc(rankName(P))} · ${P.toplamXp} XP</div></div>`;
+  $('#navLib').textContent = P.kutuphane.length + P.hataKutuphanesi.length;
+  $('#navAch').textContent = P.basarimlar.length;
+}
+
+/* ================= Genel bakış ================= */
+function renderGenel(){
+  ensureDaily();
+  const h = new Date().getHours();
+  $('#hello').textContent = `${h < 12 ? 'Günaydın' : h < 18 ? 'İyi günler' : 'İyi akşamlar'}, ${me.ad}!`;
+  $('#helloSub').textContent = P.sonCalisma === today() ? 'Bugün çalıştın, harika gidiyorsun.' : 'Bugün kısa bir çalışmaya ne dersin?';
+
+  // Rütbe kartı
+  const need = XP_TIER[P.rank], pct = Math.min(100, P.xp / need * 100), ready = examReady(), last = P.rank === RANKS.length - 1;
+  const nextName = last ? 'son rütbe' : RANKS[P.rank + 1].ad + ' III';
+  $('#rankCard').style.setProperty('--glow', RANKS[P.rank].c1);
+  $('#rankCard').innerHTML = `
+    <div class="rk-row">
+      <div class="em">${emblem(P.rank, 104, P.tier)}</div>
+      <div>
+        <div class="rk-label">Mevcut rütbe</div>
+        <div class="rk-name">${esc(rankName(P))}</div>
+        <span class="pill gold">${RANKS[P.rank].cefr}</span> <span class="pill">Toplam ${P.toplamXp} XP</span>
+      </div>
+    </div>
+    <div class="xp-top"><span>Kademe XP'si</span><span><b>${P.xp}</b> / ${need} XP</span></div>
+    <div class="xpbar" role="progressbar" aria-valuemin="0" aria-valuemax="${need}" aria-valuenow="${P.xp}"><i style="width:${pct}%"></i></div>
+    <div class="tiers">${[3, 2, 1].map(t => `<span class="${t > P.tier ? 'done' : t === P.tier ? 'now' : ''}">${RANKS[P.rank].ad} ${ROMAN[t]}</span>`).join('')}</div>
+    <div class="exam ${ready ? 'ready' : ''}">
+      <span class="ei">${ic(ready ? 'trophy' : 'lock')}</span>
+      <span class="et"><b>Rütbe sınavı</b>${ready ? `XP doldu! Sınavı geçersen <b style="display:inline;color:var(--gold2)">${esc(nextName)}</b> olursun.` : P.tier === 1 ? `${need - P.xp} XP sonra sınav açılır.` : `${RANKS[P.rank].ad} I kademesinde XP dolunca açılır.`}</span>
+      <button class="btn ${ready ? 'btn-gold' : 'btn-line'} sm" type="button" id="examBtn" ${ready ? '' : 'disabled'}>Sınava git</button>
+    </div>`;
+  $('#examBtn').onclick = () => toast('Rütbe sınavları ders içerikleri eklendiğinde açılacak.', 'gold');
+
+  // Görevler
+  const gs = P.gunluk.gorevler, done = gs.filter(g => g.tamam).length;
+  $('#taskCount').textContent = `${done}/${gs.length}`;
+  $('#taskCount').className = 'pill ' + (done === gs.length ? 'ok' : '');
+  $('#taskXp').textContent = 'Toplam ödül: ' + gs.reduce((s, g) => s + TASK_POOL[g.id].xp, 0) + ' XP';
+  $('#tasks').innerHTML = gs.map(g => {
+    const T = TASK_POOL[g.id];
+    return `<div class="task ${g.tamam ? 'done' : ''}"><span class="tc">${g.tamam ? ic('check') : ''}</span>
+      <div class="tt">${esc(T.ad)}<div class="mini"><i style="width:${g.ilerleme / T.hedef * 100}%"></i></div></div>
+      <span class="tn">${g.ilerleme}/${T.hedef}</span><span class="tx">+${T.xp} XP</span></div>`;
+  }).join('');
+
+  // İstatistikler
+  const learned = P.ogrenilen.length + P.kutuphane.filter(w => w.durum === 'ogrendim').length;
+  const tot = Object.values(P.beceri).reduce((a, b) => ({ d:a.d + b.d, t:a.t + b.t }), { d:0, t:0 });
+  $('#stats').innerHTML = [
+    [learned, 'Öğrenilen kelime', 'Dersler + kütüphane'],
+    [tot.t >= 10 ? Math.round(tot.d / tot.t * 100) + '<small>%</small>' : '—', 'Genel başarı', tot.t >= 10 ? `${tot.t} soru üzerinden` : 'Henüz yeterli veri yok'],
+    [P.uniteler.length, 'Tamamlanan ünite', 'Öğrenme yolundan'],
+    [P.seri + '<small> gün</small>', 'Çalışma serisi', P.seri ? 'Seriyi bozma!' : 'Bugün başlat']
+  ].map(([v, l, s]) => `<div class="card stat"><div class="v">${v}</div><div class="l">${l}</div><div class="s">${s}</div></div>`).join('');
+
+  // Beceri analizi
+  const SK = [['kelime','Kelime bilgisi'],['dilbilgisi','Dil bilgisi'],['okuma','Okuduğunu anlama'],['ceviri','Çeviri']];
+  const vals = SK.map(([k, n]) => { const b = P.beceri[k]; return { k, n, ok:b.t >= 5, pct:b.t ? Math.round(b.d / b.t * 100) : 0 }; });
+  const known = vals.filter(v => v.ok), weak = known.length >= 2 ? known.reduce((a, b) => a.pct <= b.pct ? a : b) : null;
+  $('#skills').innerHTML = vals.map(v => `<div class="skill"><div class="sk-top"><b>${v.n}</b>${v.ok ? `<span>%${v.pct}</span>` : '<span class="na">Henüz yeterli veri yok</span>'}</div><div class="skbar ${v.ok ? '' : 'na'}">${v.ok ? `<i style="width:${v.pct}%"></i>` : ''}</div></div>`).join('') +
+    `<div class="tip">${ic('bulb')}<span>${weak ? `<b>Önerilen çalışma alanı:</b> ${esc(weak.n)} çalışmalarına biraz daha ağırlık verebilirsin.` : '<b>Beceri analizin hazırlanıyor.</b> Ünitelerdeki sorular çözüldükçe her alan için yüzdeler oluşur. Bu yüzdeler uygulama içi performansını gösterir, resmî seviye değildir.'}</span></div>`;
+
+  // Davetler
+  const inv = invites();
+  $('#invites').innerHTML = inv.length ? inv.map(x => `<a class="invite" href="${x.href}"><span class="ii">${ic(x.icon)}</span><span class="it">${esc(x.t)}<small>${esc(x.s)}</small></span>${ic('chev')}</a>`).join('') : '<div class="empty">Şimdilik bekleyen bir davet yok. Harika gidiyorsun!</div>';
+
+  // Kütüphaneler
+  $('#libCards').innerHTML = `
+    <a class="lib" href="#kutuphane"><span class="n">${P.kutuphane.length}</span>${ic('book')}<b>Kelime kütüphanesi</b><span>Kaydettiğin kelimeler</span></a>
+    <a class="lib" href="#kutuphane?hata"><span class="n">${P.hataKutuphanesi.length}</span>${ic('bug')}<b>Hata kütüphanesi</b><span>Zorlandığın kelimeler</span></a>`;
+
+  // Başarımlar
+  $('#achCount').textContent = `${P.basarimlar.length} / ${ACH.length} açıldı`;
+  const lastA = [...P.basarimlar].sort((a, b) => b.t - a.t).slice(0, 2).map(b => ACH.find(a => a.id === b.id)).filter(Boolean);
+  const near = nearestAch();
+  $('#achMini').innerHTML = lastA.map(a => `<div class="ach-mini"><span class="medal" style="width:38px;height:38px;background:radial-gradient(circle at 30% 30%,var(--gold2),var(--gold) 60%,#8a6420);color:var(--goldInk);border-color:rgba(255,255,255,.35)">${ic(a.ikon)}</span><span style="flex:1"><b>${esc(a.ad)}</b><br><small class="muted">${esc(a.acik)}</small></span><span class="pill ok">Kazanıldı</span></div>`).join('') +
+    (near ? `<div class="ach-mini"><span class="medal" style="width:38px;height:38px">${ic(near.ikon)}</span><span style="flex:1"><b>${esc(near.ad)}</b><br><small class="muted">${esc(near.acik)}</small></span><span class="pill">${Math.floor(Math.min(near.deger(), near.hedef))}/${near.hedef}</span></div>` : '');
+
+  // Son hareketler
+  $('#acts').innerHTML = P.hareketler.length ? P.hareketler.slice(0, 6).map(a => `<div class="act"><time>${fmtTime(a.t)}</time><span>${esc(a.m)}</span></div>`).join('') : '<div class="empty">Henüz hareket yok.</div>';
+}
+function nearestAch(){
+  const have = new Set(P.basarimlar.map(b => b.id));
+  return ACH.filter(a => !have.has(a.id) && a.hedef > 1).map(a => ({ a, r:a.deger() / a.hedef })).sort((x, y) => y.r - x.r)[0]?.a || null;
+}
+function invites(){
+  const out = [], t = today();
+  if(!P.uniteler.length) out.push({ icon:'map', href:'#ogren', t:'İlk ünitene başlamaya ne dersin?', s:'A1 · ' + (me.ilgiler[0] || 'Günlük rutinler') + ' seni bekliyor' });
+  if(P.sonCalisma && daysBetween(P.sonCalisma, t) >= 3) out.push({ icon:'refresh', href:'#kutuphane', t:'Bir süredir çalışmadın.', s:`Son çalışman ${daysBetween(P.sonCalisma, t)} gün önceydi. Birkaç kelimeyi hatırlamaya ne dersin?` });
+  if(P.hataKutuphanesi.length) out.push({ icon:'bug', href:'#kutuphane?hata', t:`Hata kütüphanende ${P.hataKutuphanesi.length} kelime seni bekliyor.`, s:'Birkaçını tekrar etmeye ne dersin?' });
+  const old = P.kutuphane.filter(w => w.durum !== 'ogrendim' && daysBetween(today(new Date(w.t)), t) >= 3).length;
+  if(old) out.push({ icon:'book', href:'#kutuphane', t:`${old} kelimeyi bir süredir tekrar etmedin.`, s:'Unutmadan önce bir göz at.' });
+  if(!P.kutuphane.length) out.push({ icon:'plus', href:'#kutuphane', t:'Kendi kelime kütüphaneni oluştur.', s:'Günlük hayatta karşılaştığın kelimeleri kaydet.' });
+  const near = nearestAch();
+  if(near && near.deger() / near.hedef >= .5) out.push({ icon:'trophy', href:'#basarimlar', t:`"${near.ad}" başarımına çok az kaldı!`, s:near.acik });
+  return out.slice(0, 4);
+}
+
+/* ================= Öğrenme yolu ================= */
+const LEVELS = [
+  { k:'A1', min:0, konular:[['Günlük rutinler','Sabah, okul, iş, saatler'],['Alışveriş','Market, fiyatlar, sayılar'],['Yiyecekler','Yemekler, içecekler, sipariş'],['Sosyal yaşam','Tanışma, arkadaşlar, davetler'],['Şehir ve ulaşım','Yerler, yol tarifi, otobüs'],['Ev ve yaşam','Odalar, eşyalar, aile']] },
+  { k:'A2', min:1, konular:[['Seyahat','Rezervasyon, bilet, otel'],['Sağlık','Doktor, eczane, şikayetler'],['Hava ve mevsimler','Tahmin, kıyafetler'],['Hobiler','Spor, müzik, film'],['Geçmiş deneyimler','Hafta sonu ne yaptın?'],['Telefon ve mesaj','Kısa yazışmalar']] },
+  { k:'B1', min:3, konular:[['İş hayatı','Mülakat, toplantı, e-posta'],['Teknoloji','Uygulamalar, sosyal medya'],['Çevre','Geri dönüşüm, iklim'],['Haberler','Kısa haber metinleri'],['Kültür','Gelenekler, festivaller'],['Fikir bildirme','Katılıyorum / katılmıyorum']] },
+  { k:'B2', min:5, konular:[['Tartışma metinleri','Avantaj ve dezavantaj'],['Resmî yazışma','Şikayet, başvuru'],['Bilim','Popüler bilim yazıları'],['Deyimler','Günlük deyimler']] },
+  { k:'C1', min:6, konular:[['Makale okuma','Uzun ve yoğun metinler'],['Akademik yazma','Paragraf ve özet'],['İnce anlamlar','Eş anlamlılar ve tonlama']] }
+];
+let lvSel = 0;
+function renderOgren(){
+  $('#ladderNow').textContent = 'Şu an: ' + rankName(P);
+  $('#ladder').innerHTML = RANKS.map((r, i) => `<div class="rung ${i < P.rank ? 'past' : i === P.rank ? 'now' : ''}">${emblem(i, 52, i === P.rank ? P.tier : 0)}<b>${r.ad}</b><small>${r.cefr}</small></div>`).join('');
+  $('#lvtabs').innerHTML = LEVELS.map((l, i) => { const open = P.rank >= l.min; return `<button class="lvtab" role="tab" type="button" data-i="${i}" aria-selected="${i === lvSel}" ${open ? '' : 'disabled'} title="${open ? '' : RANKS[l.min].ad + ' rütbesinde açılır'}">${open ? '' : ic('lock')}${l.k}</button>`; }).join('');
+  const L = LEVELS[lvSel];
+  $('#topics').innerHTML = L.konular.map(([a, b]) => `
+    <div class="topic"><div class="tt"><b>${esc(a)}</b>${me.ilgiler.includes(a) ? '<span class="pill gold">İlgi alanın</span>' : '<span class="pill">Yakında</span>'}</div>
+      <span class="d">${esc(b)}</span>
+      <div class="parts"><i>Kelimeler</i><i>Cümleler</i><i>Dil bilgisi</i><i>Okuma</i><i>Anlama</i><i>Çeviri</i><i>Ünite testi</i></div>
+    </div>`).join('');
+}
+$('#lvtabs').addEventListener('click', e => { const b = e.target.closest('.lvtab'); if(b && !b.disabled){ lvSel = +b.dataset.i; renderOgren(); } });
+
+/* ================= Kütüphaneler ================= */
+let libTab = 'kelime', libFilter = 'hepsi';
+const STATES = { yeni:['Yeni','info'], ogreniyorum:['Öğreniyorum',''], ogrendim:['Öğrendim','ok'] };
+function renderKutuphane(){
+  $$('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.lib === libTab));
+  $('#cntKelime').textContent = P.kutuphane.length; $('#cntHata').textContent = P.hataKutuphanesi.length;
+  const isK = libTab === 'kelime';
+  $('#addTitle').innerHTML = isK ? ic('plus') + ' Kelime kütüphanene ekle' : ic('plus') + ' Zorlandığın bir kelimeyi ekle';
+  $('#wExLbl').textContent = isK ? 'Örnek cümle (isteğe bağlı)' : 'Not (isteğe bağlı) — ör. nerede karıştırdın?';
+  $('#filters').innerHTML = isK ? [['hepsi','Hepsi'],['yeni','Yeni'],['ogreniyorum','Öğreniyorum'],['ogrendim','Öğrendim']].map(([k, n]) => `<button type="button" class="filt" data-f="${k}" aria-pressed="${libFilter === k}">${n}</button>`).join('') : '';
+  renderWords();
+}
+function renderWords(){
+  const q = $('#wSearch').value.trim().toLocaleLowerCase('tr'), isK = libTab === 'kelime';
+  let list = isK ? P.kutuphane : P.hataKutuphanesi;
+  if(isK && libFilter !== 'hepsi') list = list.filter(w => w.durum === libFilter);
+  if(q) list = list.filter(w => (w.en + ' ' + w.tr).toLocaleLowerCase('tr').includes(q));
+  list = [...list].sort((a, b) => b.t - a.t);
+  if(!list.length){
+    $('#words').innerHTML = `<div class="empty">${q || libFilter !== 'hepsi' ? 'Aramana uyan kelime yok.' : isK ? 'Kütüphanen boş. İlk kelimeni yukarıdan ekle.' : 'Testlerde zorlandığın kelimeler burada görünecek. İstersen kendin de ekleyebilirsin.'}</div>`;
+    return;
+  }
+  $('#words').innerHTML = list.map(w => isK ? `
+    <div class="word"><span class="en">${esc(w.en)}</span><span class="tr">${esc(w.tr)}</span><span class="ex">${esc(w.ornek || '')}</span>
+      <span class="wa"><button type="button" class="pill state ${STATES[w.durum][1]}" data-state="${w.id}" title="Durumu değiştir">${STATES[w.durum][0]}</button>
+      <button type="button" class="iconbtn" data-del="${w.id}" aria-label="Sil">${ic('trash')}</button></span></div>` : `
+    <div class="word"><span class="en">${esc(w.en)}</span><span class="tr">${esc(w.tr)}</span><span class="ex">${esc(w.not || '')}</span>
+      <span class="wa"><span class="pill bad">Tekrar edilmeli</span>
+      <button type="button" class="iconbtn go" data-learn="${w.id}" aria-label="Öğrendim" title="Öğrendim: kelime kütüphanesine taşı">${ic('check')}</button>
+      <button type="button" class="iconbtn" data-del="${w.id}" aria-label="Sil">${ic('trash')}</button></span></div>`).join('');
+}
+$$('.tab').forEach(t => t.addEventListener('click', () => { libTab = t.dataset.lib; libFilter = 'hepsi'; setErr('addErr', ''); history.replaceState(null, '', '#kutuphane' + (libTab === 'hata' ? '?hata' : '')); renderKutuphane(); }));
+$('#filters').addEventListener('click', e => { const b = e.target.closest('.filt'); if(b){ libFilter = b.dataset.f; renderKutuphane(); } });
+$('#wSearch').addEventListener('input', renderWords);
+['wEn','wTr','wEx'].forEach(id => $('#' + id).addEventListener('input', () => setErr('addErr', '')));
+$('#addForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const en = $('#wEn').value.trim().replace(/\s+/g, ' '), tr = $('#wTr').value.trim().replace(/\s+/g, ' '), ex = $('#wEx').value.trim();
+  if(!en || !tr){ setErr('addErr', 'İngilizce kelimeyi ve Türkçe anlamını yaz.'); shake($('#addForm')); return; }
+  if(!/^[A-Za-z][A-Za-z' -]*$/.test(en)){ setErr('addErr', 'İngilizce kısımda yalnızca İngilizce harfler, boşluk, kesme ve tire kullan.'); shake($('#addForm')); return; }
+  const isK = libTab === 'kelime', list = isK ? P.kutuphane : P.hataKutuphanesi;
+  if(list.some(w => w.en.toLowerCase() === en.toLowerCase())){ setErr('addErr', `"${en}" zaten ${isK ? 'kelime' : 'hata'} kütüphanende var.`); return; }
+  const item = isK ? { id:'w' + rnd(8), en, tr, ornek:ex, durum:'yeni', t:Date.now() } : { id:'h' + rnd(8), en, tr, not:ex, t:Date.now() };
+  list.push(item);
+  if(!isK && !P.bilemedigi.includes(en.toLowerCase())) P.bilemedigi.push(en.toLowerCase());
+  log(`${isK ? 'Kelime' : 'Hata'} kütüphanesine eklendi: ${en}`);
+  markStudy();
+  if(isK) taskProgress('ekle');
+  afterChange();
+  $('#wEn').value = $('#wTr').value = $('#wEx').value = ''; $('#wEn').focus();
+  toast(`"${en}" eklendi`);
+});
+$('#words').addEventListener('click', e => {
+  const s = e.target.closest('[data-state]'), d = e.target.closest('[data-del]'), l = e.target.closest('[data-learn]');
+  if(s){
+    const w = P.kutuphane.find(x => x.id === s.dataset.state), order = ['yeni','ogreniyorum','ogrendim'];
+    w.durum = order[(order.indexOf(w.durum) + 1) % 3];
+    if(w.durum === 'ogrendim'){ log('Öğrenildi olarak işaretlendi: ' + w.en); markStudy(); }
+    afterChange();
+  } else if(d){
+    const isK = libTab === 'kelime', list = isK ? P.kutuphane : P.hataKutuphanesi, w = list.find(x => x.id === d.dataset.del);
+    confirmBox('Kelime silinsin mi?', `"${w.en}" ${isK ? 'kelime' : 'hata'} kütüphanenden silinecek.`, 'Sil', () => {
+      list.splice(list.indexOf(w), 1);
+      if(!isK) P.bilemedigi = P.bilemedigi.filter(x => x !== w.en.toLowerCase());
+      afterChange(); toast('Silindi');
+    });
+  } else if(l){
+    const w = P.hataKutuphanesi.find(x => x.id === l.dataset.learn);
+    P.hataKutuphanesi = P.hataKutuphanesi.filter(x => x !== w);
+    P.bilemedigi = P.bilemedigi.filter(x => x !== w.en.toLowerCase());
+    if(!P.kutuphane.some(x => x.en.toLowerCase() === w.en.toLowerCase())) P.kutuphane.push({ id:'w' + rnd(8), en:w.en, tr:w.tr, ornek:'', durum:'ogrendim', t:Date.now() });
+    P.sayac.hatadanOgrenilen++;
+    log('Hata kütüphanesinden öğrenildi: ' + w.en);
+    markStudy(); taskProgress('tekrar');
+    afterChange(); toast(`"${w.en}" öğrenildi ve kelime kütüphanene taşındı`);
+  }
+});
+function afterChange(){ checkAch(); saveP(); renderShell(); const s = location.hash.slice(1).split('?')[0] || 'genel'; (RENDER[s] || RENDER.genel)(); }
+
+/* ================= Başarımlar ================= */
+function renderBasarimlar(){
+  const have = new Map(P.basarimlar.map(b => [b.id, b.t])), n = have.size, pct = n / ACH.length * 100;
+  $('#achSum').innerHTML = `<span class="big">${n}<small class="muted" style="font-size:1rem"> / ${ACH.length}</small></span><div class="bar"><div class="xp-top" style="margin-top:0"><span>Koleksiyon</span><span><b>%${Math.round(pct)}</b> tamamlandı</span></div><div class="xpbar"><i style="width:${pct}%"></i></div></div>`;
+  const cats = [...new Set(ACH.map(a => a.kat))];
+  $('#achList').innerHTML = cats.map(c => `<div class="cat-title">${c}</div><div class="achs">${ACH.filter(a => a.kat === c).map(a => {
+    const on = have.has(a.id), v = Math.min(a.deger(), a.hedef);
+    return `<div class="ach ${on ? 'on' : ''}"><span class="medal">${ic(on ? a.ikon : 'lock')}</span><div style="flex:1;min-width:0"><b>${esc(a.ad)}</b><small>${esc(a.acik)}</small>
+      ${on ? `<div class="at">Kazanıldı · ${fmtTime(have.get(a.id))}</div>` : a.hedef > 1 ? `<div class="ap"><i style="width:${v / a.hedef * 100}%"></i></div><div class="at">${Math.floor(v)} / ${a.hedef}</div>` : '<div class="at">Kilitli</div>'}</div></div>`;
+  }).join('')}</div>`).join('');
+}
+
+/* ================= Sıralama ================= */
+function renderSiralama(){
+  const rows = loadUsers().map(u => {
+    let p = null; try{ p = JSON.parse(localStorage.getItem('lue_ilerleme_' + u.id)); }catch(e){}
+    p = p || { rank:0, tier:3, toplamXp:0 };
+    return { u, p };
+  }).sort((a, b) => b.p.toplamXp - a.p.toplamXp || b.p.rank - a.p.rank || a.p.tier - b.p.tier);
+  $('#lb').innerHTML = rows.map((r, i) => `
+    <div class="lb-row ${r.u.id === me.id ? 'me' : ''}"><span class="pos ${i < 3 ? 'p' + (i + 1) : ''}">${i + 1}</span>
+      ${avatarSvg(r.u.avatar, 44)}
+      <span class="who"><span>${esc(r.u.kullaniciAdi)}${r.u.id === me.id ? ' <span class="pill gold">Sen</span>' : ''}<small>${esc(r.u.ad)}</small></span></span>
+      <span class="rkn" style="display:flex;align-items:center;gap:.4rem">${emblem(r.p.rank, 30, r.p.tier)}<span class="muted" style="font-size:.86rem">${RANKS[r.p.rank].ad} ${ROMAN[r.p.tier]}</span></span>
+      <span class="xp">${r.p.toplamXp} XP</span></div>`).join('') +
+    (rows.length < 2 ? '<div class="empty" style="margin-top:8px">Bu tarayıcıda şimdilik sadece sen varsın. Arkadaşların da aynı tarayıcıdan kayıt olursa burada yarışırsınız.</div>' : '');
+}
+
+/* ================= Profil ================= */
+const TOPICS = ['Günlük rutinler','Alışveriş','Yiyecekler','Sosyal yaşam','Şehir ve ulaşım','Ev ve yaşam','Seyahat','İş hayatı'];
+let draft = null;
+function renderProfil(){
+  draft = { avatar:me.avatar, ilgiler:[...me.ilgiler] };
+  $('#pAd').value = me.ad; $('#pSoyad').value = me.soyad; $('#pUser').value = me.kullaniciAdi; $('#pMail').value = me.eposta;
+  $('#pGoal').value = String(me.gunlukHedef || 10);
+  const prov = { eposta:'E-posta', google:'Google', apple:'Apple', facebook:'Facebook' }[me.saglayici] || me.saglayici;
+  $('#pInfo').value = `${prov} ile · ${new Date(me.olusturma).toLocaleDateString('tr-TR')} tarihinde katıldı`;
+  setErr('pErr', ''); drawProfilePickers();
+}
+function drawProfilePickers(){
+  $('#pAvatars').innerHTML = AVATARS.map(a => `<button type="button" class="av-opt" role="radio" data-av="${a.id}" aria-checked="${a.id === draft.avatar}" aria-label="Avatar ${a.id}">${avatarSvg(a.id, 46)}</button>`).join('');
+  $('#pTags').innerHTML = TOPICS.map(t => { const on = draft.ilgiler.includes(t); return `<button type="button" class="chipt" data-t="${esc(t)}" aria-pressed="${on}" ${!on && draft.ilgiler.length >= 3 ? 'disabled' : ''}>${esc(t)}</button>`; }).join('');
+}
+$('#pAvatars').addEventListener('click', e => { const b = e.target.closest('.av-opt'); if(b){ draft.avatar = b.dataset.av; drawProfilePickers(); } });
+$('#pTags').addEventListener('click', e => { const b = e.target.closest('.chipt'); if(!b || b.disabled) return; const t = b.dataset.t; draft.ilgiler = draft.ilgiler.includes(t) ? draft.ilgiler.filter(x => x !== t) : [...draft.ilgiler, t]; drawProfilePickers(); });
+$('#pReset').addEventListener('click', renderProfil);
+$('#profileForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const ad = $('#pAd').value.trim(), soyad = $('#pSoyad').value.trim(), re = /^[A-Za-zÇĞİÖŞÜçğıöşü' -]{2,30}$/;
+  if(!re.test(ad) || !re.test(soyad)) return setErr('pErr', 'Ad ve soyad yalnızca harflerden oluşmalı (en az 2 harf).');
+  me.ad = ad; me.soyad = soyad; me.avatar = draft.avatar; me.ilgiler = draft.ilgiler; me.gunlukHedef = +$('#pGoal').value;
+  saveMe(); log('Profil güncellendi'); checkAch(); saveP(); renderShell(); toast('Profil kaydedildi');
+});
+
+/* ================= Ayarlar ================= */
+function renderAyarlar(){
+  const isMail = !!me.sifre, left = (me.kurtarma || []).filter(c => !c.kullanildi).length;
+  $('#secBox').innerHTML = isMail ? `
+    <div class="set-row"><div class="st"><b>Şifre</b><span>Hesabının şifresini değiştir.</span></div><div class="sa"><button class="btn btn-line sm" id="chPass" type="button">${ic('key')} Değiştir</button></div></div>
+    <div class="set-row"><div class="st"><b>Kurtarma kodları</b><span>Kullanılmamış ${left} / ${(me.kurtarma || []).length} kod.</span></div><div class="sa"><button class="btn btn-line sm" id="showCodes" type="button">Göster</button><button class="btn btn-ghost sm" id="newCodes" type="button">${ic('refresh')} Yenile</button></div></div>` : `
+    <div class="set-row"><div class="st"><b>Bağlı hesap</b><span>${esc({ google:'Google', apple:'Apple', facebook:'Facebook' }[me.saglayici] || me.saglayici)} ile giriş yapıyorsun (${esc(me.eposta)}). Şifre ve kurtarma kodu gerekmez.</span></div></div>`;
+  $('#secBox').insertAdjacentHTML('beforeend', `<div class="set-row"><div class="st"><b>Oturum</b><span>Son giriş: ${me.sonGiris ? new Date(me.sonGiris).toLocaleString('tr-TR') : '—'}</span></div><div class="sa"><button class="btn btn-line sm" type="button" id="lo2">${ic('logout')} Çıkış yap</button></div></div>`);
+  $('#lo2').onclick = logout;
+  if(!isMail) return;
+  $('#chPass').onclick = changePass;
+  $('#showCodes').onclick = () => codesModal(false);
+  $('#newCodes').onclick = () => confirmBox('Yeni kodlar oluşturulsun mu?', 'Eski kurtarma kodlarının hepsi geçersiz olur.', 'Yenile', () => {
+    const abc = 'abcdefghjkmnpqrstuvwxyz23456789', part = () => Array.from({length:5}, () => abc[Math.floor(Math.random() * abc.length)]).join('');
+    me.kurtarma = Array.from({length:6}, () => ({ kod:part() + '-' + part(), kullanildi:false }));
+    saveMe(); log('Kurtarma kodları yenilendi'); saveP(); renderAyarlar(); setTimeout(() => codesModal(true), 50);
+  }, false);
+}
+function modal(html){
+  const m = $('#modal'); m.innerHTML = `<div class="card modal" role="dialog" aria-modal="true">${html}</div>`; m.hidden = false;
+  const close = () => { m.hidden = true; m.innerHTML = ''; };
+  m.onclick = e => { if(e.target === m || e.target.closest('[data-close]')) close(); };
+  m.onkeydown = e => { if(e.key === 'Escape') close(); };
+  setTimeout(() => { const f = m.querySelector('input,button.btn-gold,button.btn-danger'); if(f) f.focus(); }, 30);
+  return close;
+}
+function confirmBox(title, text, okText, onOk, danger = true){
+  const close = modal(`<h3>${esc(title)}</h3><p>${esc(text)}</p><div class="row"><button class="btn btn-line sm" type="button" data-close>Vazgeç</button><button class="btn ${danger ? 'btn-danger' : 'btn-gold'} sm" type="button" id="cOk">${esc(okText)}</button></div>`);
+  $('#cOk').onclick = () => { close(); onOk(); };
+}
+function codesModal(fresh){
+  const txt = 'LevelUp English - Kurtarma kodları\nHesap: ' + me.eposta + '\n\n' + me.kurtarma.filter(c => !c.kullanildi).map(c => c.kod).join('\n') + '\n\nHer kod yalnızca bir kez kullanılabilir.';
+  modal(`<h3>Kurtarma kodların</h3><p>${fresh ? 'Yeni kodların hazır. Güvenli bir yere kaydet.' : 'Üstü çizili kodlar daha önce kullanıldı.'}</p>
+    <div class="codes">${me.kurtarma.map(c => `<span class="${c.kullanildi ? 'used' : ''}">${c.kod}</span>`).join('')}</div>
+    <div class="row"><button class="btn btn-ghost sm" type="button" id="cpy">${ic('copy')} Kopyala</button><button class="btn btn-ghost sm" type="button" id="dl">${ic('download')} .txt indir</button><button class="btn btn-gold sm" type="button" data-close>Tamam</button></div>`);
+  $('#cpy').onclick = () => (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(() => toast('Kodlar kopyalandı'), () => toast('Kopyalanamadı; kodları elle seç.', 'bad'));
+  $('#dl').onclick = () => downloadText('levelup-kurtarma-kodlari.txt', txt);
+}
+function changePass(){
+  const close = modal(`<h3>Şifre değiştir</h3><p>Yeni şifre en az 8 karakter olmalı; büyük harf, küçük harf ve rakam içermeli.</p>
+    <label class="lbl" for="op">Mevcut şifre</label><div class="inp"><input id="op" type="password" autocomplete="current-password"></div>
+    <label class="lbl" for="np" style="margin-top:10px">Yeni şifre</label><div class="inp"><input id="np" type="password" autocomplete="new-password"></div>
+    <label class="lbl" for="np2" style="margin-top:10px">Yeni şifre (tekrar)</label><div class="inp"><input id="np2" type="password" autocomplete="new-password"></div>
+    <p class="err" id="cpErr"></p>
+    <div class="row"><button class="btn btn-line sm" type="button" data-close>Vazgeç</button><button class="btn btn-gold sm" type="button" id="cpOk">Kaydet</button></div>`);
+  $('#cpOk').onclick = () => {
+    const o = $('#op').value, n = $('#np').value, n2 = $('#np2').value;
+    if(hashPass(o, me.tuz) !== me.sifre) return setErr('cpErr', 'Mevcut şifre hatalı.');
+    if(!(n.length >= 8 && /[A-ZÇĞİÖŞÜ]/.test(n) && /[a-zçğıöşü]/.test(n) && /\d/.test(n))) return setErr('cpErr', 'Yeni şifre kuralları karşılamıyor.');
+    if(n !== n2) return setErr('cpErr', 'Yeni şifreler eşleşmiyor.');
+    if(n === o) return setErr('cpErr', 'Yeni şifre eskisiyle aynı olamaz.');
+    me.tuz = rnd(10); me.sifre = hashPass(n, me.tuz); saveMe(); log('Şifre değiştirildi'); saveP();
+    close(); toast('Şifren güncellendi');
+  };
+}
+function downloadText(name, txt){
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], { type:'text/plain;charset=utf-8' }));
+  a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 400);
+}
+/* Dışa / İçe aktar: localStorage'daki TÜM veri */
+$('#btnExport').addEventListener('click', () => {
+  saveP();
+  const data = { uygulama:'LevelUp English', surum:1, tarih:new Date().toISOString(), veriler:{} };
+  for(let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); data.veriler[k] = localStorage.getItem(k); }
+  downloadText('veriler.txt', JSON.stringify(data, null, 2));
+  toast('veriler.txt indirildi');
+});
+$('#btnImport').addEventListener('click', () => $('#importFile').click());
+$('#importFile').addEventListener('change', e => {
+  const f = e.target.files[0]; e.target.value = '';
+  if(!f) return;
+  confirmBox('Veriler içe aktarılsın mı?', 'Seçtiğin dosya bu tarayıcıdaki TÜM LevelUp verilerinin yerine geçecek.', 'İçe aktar', () => {
+    const r = new FileReader();
+    r.onload = () => {
+      try{
+        const d = JSON.parse(r.result), v = d && d.veriler;
+        if(!v || typeof v !== 'object') throw new Error();
+        localStorage.clear();
+        Object.keys(v).forEach(k => localStorage.setItem(k, String(v[k])));
+        toast('Veriler geri yüklendi');
+        setTimeout(() => location.reload(), 700);
+      }catch(err){ toast('Dosya okunamadı. Uygulamadan indirilen veriler.txt dosyasını seç.', 'bad'); }
+    };
+    r.readAsText(f);
+  }, false);
+});
+$('#delBtn').addEventListener('click', () => {
+  const close = modal(`<h3>Hesabı sil</h3><p>Bu işlem geri alınamaz. Onaylamak için kullanıcı adını (<b>${esc(me.kullaniciAdi)}</b>) yaz.</p>
+    <div class="inp"><input id="delIn" spellcheck="false" autocomplete="off"></div><p class="err" id="delErr"></p>
+    <div class="row"><button class="btn btn-line sm" type="button" data-close>Vazgeç</button><button class="btn btn-danger sm" type="button" id="delOk">Kalıcı olarak sil</button></div>`);
+  $('#delOk').onclick = () => {
+    if($('#delIn').value.trim().toLowerCase() !== me.kullaniciAdi) return setErr('delErr', 'Kullanıcı adı eşleşmiyor.');
+    saveUsers(loadUsers().filter(u => u.id !== me.id));
+    localStorage.removeItem(PKEY); localStorage.removeItem(K.active);
+    close(); location.href = 'index.html';
+  };
+});
+
+/* ================= Başlat ================= */
+const RENDER = { genel:renderGenel, ogren:renderOgren, kutuphane:renderKutuphane, basarimlar:renderBasarimlar, siralama:renderSiralama, profil:renderProfil, ayarlar:renderAyarlar };
+if(me){
+  ensureDaily();
+  if(!P.basarimlar.some(b => b.id === 'hosgeldin')) P.basarimlar.push({ id:'hosgeldin', t:me.olusturma || Date.now() });
+  checkAch(true); saveP();
+  renderShell(); route();
+}
+</script>
+</body>
+</html>

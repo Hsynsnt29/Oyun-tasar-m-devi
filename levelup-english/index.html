@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LevelUp English — Rütbeni yükselt, İngilizceni geliştir</title>
+<style>
+:root{
+  --bg:#0a0f1e;--bg2:#0d1426;--card:#121a2f;--card2:#172139;--line:#243150;--line2:#33436a;
+  --text:#e8ecf6;--muted:#9aa6c2;--dim:#6c7997;
+  --gold:#d8b25e;--gold2:#f2d68f;--goldInk:#1d1607;
+  --ok:#45c48a;--bad:#f07272;--warn:#f0b34a;--info:#74b6ff;
+  --r:16px;--shadow:0 14px 40px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;color:var(--text);font:15px/1.6 "Segoe UI",Inter,system-ui,-apple-system,Roboto,Arial,sans-serif;
+  background:radial-gradient(1100px 600px at 85% -10%,rgba(216,178,94,.10),transparent 60%),
+             radial-gradient(900px 520px at -10% 25%,rgba(116,182,255,.07),transparent 60%),var(--bg)}
+a{color:var(--gold2);text-decoration:none}
+a:hover{text-decoration:underline}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+svg.i{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+[hidden]{display:none!important}
+
+/* Butonlar */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:1px solid transparent;border-radius:12px;padding:.72rem 1.15rem;font-weight:650;transition:transform .12s,filter .15s,background .15s,border-color .15s;text-decoration:none!important;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--goldInk);box-shadow:0 6px 20px rgba(216,178,94,.25)}
+.btn-gold:hover{filter:brightness(1.06)}
+.btn-line{background:transparent;border-color:var(--line2);color:var(--text)}
+.btn-line:hover{border-color:var(--gold);color:var(--gold2)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--text)}
+.btn-ghost:hover{background:rgba(255,255,255,.08)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;filter:none}
+.btn.sm{padding:.45rem .8rem;font-size:.88rem;border-radius:10px}
+.btn.full{width:100%}
+
+/* Üst menü */
+header.top{position:sticky;top:0;z-index:20;background:rgba(10,15,30,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05)}
+.nav{display:flex;align-items:center;gap:1.5rem;height:68px}
+.logo{display:flex;align-items:center;gap:.6rem;white-space:nowrap;font-weight:800;font-size:1.12rem;color:var(--text)!important;text-decoration:none!important;letter-spacing:.2px}
+.logo b{color:var(--gold2)}
+.nav-links{display:flex;gap:1.3rem;margin-left:1rem}
+.nav-links a{color:var(--muted);font-size:.93rem}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.nav-right{margin-left:auto;display:flex;gap:.6rem;align-items:center}
+@media(max-width:420px){.nav{gap:.6rem}.logo span{font-size:.98rem}.nav-right .btn{padding:.4rem .6rem}}
+@media(max-width:820px){.nav-links{display:none}}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:64px 0 56px}
+@media(max-width:940px){.hero{grid-template-columns:1fr;padding-top:36px}}
+.eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.32rem .75rem;border:1px solid rgba(216,178,94,.35);border-radius:999px;color:var(--gold2);font-size:.8rem;font-weight:650;letter-spacing:.4px;text-transform:uppercase;background:rgba(216,178,94,.07)}
+h1{font-size:clamp(2.1rem,4.4vw,3.35rem);line-height:1.1;margin:.9rem 0 1rem;letter-spacing:-.5px}
+h1 .g{background:linear-gradient(90deg,var(--gold2),var(--gold) 60%,#b98b35);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);font-size:1.08rem;max-width:560px}
+.hero-cta{display:flex;gap:.7rem;flex-wrap:wrap;margin:1.6rem 0 1.8rem}
+.rank-strip{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.rank-strip .rs{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.7rem;color:var(--dim)}
+.rank-strip .rs svg{filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));transition:transform .2s}
+.rank-strip .rs:hover svg{transform:translateY(-3px) scale(1.05)}
+
+/* Giriş kartı */
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.login-card{padding:26px}
+.login-card h2{margin:0 0 .2rem;font-size:1.35rem}
+.login-card .sub{color:var(--muted);margin:0 0 1.1rem;font-size:.92rem}
+.chips-title{font-size:.78rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin:0 0 .45rem}
+.chips{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1rem}
+.chip{display:inline-flex;align-items:center;gap:.4rem;padding:.25rem .65rem .25rem .25rem;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:.86rem;transition:border-color .15s}
+.chip:hover{border-color:var(--gold)}
+.chip svg.av{width:26px;height:26px}
+label.lbl{display:block;font-size:.86rem;font-weight:600;margin:.85rem 0 .35rem;color:#cfd6e6}
+.inp{position:relative}
+.inp input{width:100%;background:#0b1224;border:1.5px solid var(--line);border-radius:12px;padding:.75rem .9rem;outline:none;transition:border-color .15s,box-shadow .15s}
+.inp input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(216,178,94,.13)}
+.inp input.bad{border-color:var(--bad)}
+.inp .eye{position:absolute;right:.45rem;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--muted);padding:.35rem;border-radius:8px;display:grid;place-items:center}
+.inp .eye:hover{color:var(--text)}
+.inp.has-eye input{padding-right:2.7rem}
+.row-between{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin:.6rem 0 1rem;font-size:.86rem}
+.err{color:var(--bad);font-size:.85rem;min-height:0;margin:.4rem 0 0;display:flex;gap:.4rem;align-items:flex-start}
+.err:empty{display:none}
+.warn-line{color:var(--warn);font-size:.82rem;margin:.35rem 0 0;display:flex;gap:.35rem;align-items:center}
+.or{display:flex;align-items:center;gap:.7rem;color:var(--dim);font-size:.8rem;margin:1rem 0}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.welcome{text-align:center}
+.welcome .em{display:flex;justify-content:center;margin:.3rem 0 .6rem}
+.welcome .who{font-size:1.2rem;font-weight:750}
+.welcome .rk{color:var(--muted);font-size:.92rem;margin-bottom:1.1rem}
+.welcome .acts{display:grid;gap:.55rem}
+
+/* Robot doğrulaması */
+.captcha{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:#0b1224;border:1.5px solid var(--line);border-radius:12px;padding:.65rem .85rem;margin-top:.9rem}
+.cap-btn{display:flex;align-items:center;gap:.7rem;background:none;border:0;padding:.2rem;border-radius:8px;font-weight:600;text-align:left}
+.cap-box{width:1.7rem;height:1.7rem;border:2px solid var(--line2);border-radius:6px;display:grid;place-items:center;flex:none;transition:border-color .15s}
+.cap-btn:hover .cap-box{border-color:var(--gold)}
+.cap-spin{display:none;width:1.4rem;height:1.4rem;border:3px solid rgba(216,178,94,.25);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+.cap-ok{display:none;color:var(--ok);width:1.2rem;height:1.2rem;stroke-width:3}
+.captcha[data-state=loading] .cap-box{border-color:transparent}
+.captcha[data-state=loading] .cap-spin{display:block}
+.captcha[data-state=ok] .cap-box{border-color:var(--ok);background:rgba(69,196,138,.12)}
+.captcha[data-state=ok] .cap-ok{display:block}
+.cap-brand{display:flex;align-items:center;gap:.35rem;color:var(--dim);font-size:.68rem;line-height:1.2;text-align:right}
+.cap-brand svg{width:1.5rem;height:1.5rem;color:var(--gold)}
+.cap-task{margin-top:.6rem;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:#0b1224}
+.cap-head{background:linear-gradient(90deg,#2a2210,#3a2e12);color:var(--gold2);padding:.65rem .85rem;font-size:.9rem}
+.cap-head b{display:block;font-size:1.2rem;color:#fff}
+.cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px}
+.cap-cell{position:relative;aspect-ratio:1;border:0;border-radius:8px;display:grid;place-items:center;transition:transform .15s}
+.cap-cell svg{width:56%;height:56%;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.cap-cell[aria-pressed=true]{transform:scale(.85);outline:3px solid var(--gold);outline-offset:-3px}
+.cap-foot{display:flex;justify-content:space-between;gap:.5rem;padding:.2rem .6rem .6rem}
+.cap-msg{padding:0 .8rem .3rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+
+/* Bölümler */
+section.block{padding:64px 0;border-top:1px solid rgba(255,255,255,.04)}
+.sec-head{max-width:640px;margin-bottom:28px}
+.sec-head h2{font-size:clamp(1.55rem,2.6vw,2.1rem);margin:.5rem 0 .5rem;letter-spacing:-.3px}
+.sec-head p{color:var(--muted);margin:0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.grid3{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid3{grid-template-columns:1fr}}
+.feat{padding:22px}
+.feat .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(216,178,94,.1);color:var(--gold2);border:1px solid rgba(216,178,94,.25);margin-bottom:.8rem}
+.feat .ic svg{width:22px;height:22px}
+.feat h3{margin:0 0 .35rem;font-size:1.05rem}
+.feat p{margin:0;color:var(--muted);font-size:.93rem}
+
+.ranks{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
+@media(max-width:980px){.ranks{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:560px){.ranks{grid-template-columns:repeat(2,1fr)}}
+.rank{padding:18px 12px;text-align:center;position:relative;overflow:hidden}
+.rank::before{content:"";position:absolute;inset:-40% -40% auto;height:120px;background:radial-gradient(closest-side,var(--glow),transparent);opacity:.35}
+.rank .nm{font-weight:750;margin-top:.4rem;position:relative}
+.rank .tiers{color:var(--dim);font-size:.75rem;position:relative}
+.rank .cefr{display:inline-block;margin-top:.45rem;font-size:.72rem;padding:.12rem .5rem;border-radius:999px;border:1px solid var(--line2);color:var(--muted);position:relative}
+.rank.mitril{border-color:rgba(155,232,255,.45);box-shadow:0 0 30px rgba(109,92,255,.18),var(--shadow)}
+.rule-box{margin-top:20px;padding:20px 22px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:820px){.rule-box{grid-template-columns:1fr 1fr}}
+.rule-box div{font-size:.9rem;color:var(--muted)}
+.rule-box b{display:block;color:var(--text);margin-bottom:.15rem}
+.rule-box .n{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:rgba(216,178,94,.15);color:var(--gold2);font-size:.78rem;font-weight:800;margin-bottom:.4rem}
+
+.loop{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;counter-reset:s}
+@media(max-width:980px){.loop{grid-template-columns:repeat(2,1fr)}}
+.loop .st{padding:16px 14px;position:relative}
+.loop .st::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:rgba(116,182,255,.12);color:var(--info);font-weight:800;font-size:.8rem;margin-bottom:.5rem}
+.loop .st b{display:block;font-size:.95rem}
+.loop .st span{color:var(--muted);font-size:.82rem}
+
+.levels{display:grid;grid-template-columns:260px 1fr;gap:16px}
+@media(max-width:820px){.levels{grid-template-columns:1fr}}
+.lv-list{padding:10px;display:grid;gap:6px;align-content:start}
+.lv{display:flex;justify-content:space-between;align-items:center;padding:.7rem .85rem;border-radius:10px;border:1px solid transparent;background:none;text-align:left;width:100%}
+.lv:hover{background:rgba(255,255,255,.04)}
+.lv[aria-selected=true]{background:rgba(216,178,94,.1);border-color:rgba(216,178,94,.35)}
+.lv small{color:var(--dim)}
+.topics{padding:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-content:start}
+@media(max-width:700px){.topics{grid-template-columns:1fr 1fr}}
+.tp{border:1px solid var(--line);border-radius:12px;padding:14px;background:rgba(255,255,255,.02)}
+.tp b{display:block}
+.tp span{color:var(--muted);font-size:.84rem}
+
+.data-box{padding:24px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.data-box p{margin:.25rem 0 0;color:var(--muted);font-size:.92rem;max-width:620px}
+.data-acts{display:flex;gap:.6rem;flex-wrap:wrap}
+
+footer{padding:30px 0 40px;color:var(--dim);font-size:.85rem;border-top:1px solid rgba(255,255,255,.05)}
+footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+footer nav{display:flex;gap:1rem;flex-wrap:wrap}
+footer a{color:var(--muted)}
+
+/* Bildirim ve geçiş */
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#1b2541;border:1px solid var(--line2);color:var(--text);padding:.7rem 1rem;border-radius:12px;box-shadow:var(--shadow);opacity:0;transition:.25s;z-index:100;display:flex;gap:.5rem;align-items:center;max-width:92vw}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok svg{color:var(--ok)}.toast.bad svg{color:var(--bad)}
+.enter{position:fixed;inset:0;background:rgba(10,15,30,.92);display:grid;place-items:center;z-index:90;opacity:0;pointer-events:none;transition:opacity .25s}
+.enter.show{opacity:1;pointer-events:auto}
+.enter .in{text-align:center;transform:scale(.9);transition:transform .35s}
+.enter.show .in{transform:scale(1)}
+.enter .in p{color:var(--muted);margin:.4rem 0 0}
+.enter .in h3{margin:.8rem 0 0;font-size:1.4rem}
+</style>
+</head>
+<body>
+
+<!-- İkonlar (SVG sprite) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 32 32"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2d68f"/><stop offset="1" stop-color="#b98b35"/></linearGradient></defs><path d="M16 2 28 7v9c0 7-5 12-12 14C9 28 4 23 4 16V7z" fill="url(#lg)"/><path d="M11 21V11h3v7.4h6V21z" fill="#1d1607"/><path d="m18 13 3-3 3 3" stroke="#1d1607" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="eye-off" viewBox="0 0 24 24"><path d="M9.9 4.2A10 10 0 0 1 12 4c6.4 0 10 8 10 8a17 17 0 0 1-2.2 3.2M6.6 6.6C3.9 8.4 2 12 2 12s3.6 8 10 8a9.7 9.7 0 0 0 5.4-1.6M3 3l18 18M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
+  <symbol id="alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="M12 2 20 5v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="book" viewBox="0 0 24 24"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-5a3 3 0 0 0-2 1"/><path d="M20 4v14h-6a2 2 0 0 0-1 .3"/></symbol>
+  <symbol id="text" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h10M4 18h7"/></symbol>
+  <symbol id="grammar" viewBox="0 0 24 24"><path d="M4 20 9 4h2l5 16M6 14h8"/><path d="M17 8h4M19 6v4"/></symbol>
+  <symbol id="translate" viewBox="0 0 24 24"><path d="M4 5h8M8 3v2M10 5c-1 4-3 7-6 9M6 9c1 2 3 4 6 5"/><path d="m13 21 4-9 4 9M14.5 18h5"/></symbol>
+  <symbol id="library" viewBox="0 0 24 24"><path d="M4 4v16M8 4v16M12 4l5 16M17 4h3v16h-3"/></symbol>
+  <symbol id="bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+  <symbol id="trophy" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3a3 3 0 0 1-3 4M7 5H4a3 3 0 0 0 3 4"/></symbol>
+  <symbol id="download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
+  <symbol id="upload" viewBox="0 0 24 24"><path d="M12 21V9M7 14l5-5 5 5M5 3h14"/></symbol>
+  <symbol id="logout" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l-5-5 5-5M5 12h12"/></symbol>
+  <symbol id="cap-book" viewBox="0 0 24 24"><path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H19v16H7.5A2.5 2.5 0 0 0 5 20.5z"/><path d="M5 20.5A2.5 2.5 0 0 0 7.5 23H19v-5"/><path d="M9 6.5h6M9 9.5h4"/></symbol>
+  <symbol id="cap-car" viewBox="0 0 24 24"><path d="M3 15.5V12l2.2-4.6A2 2 0 0 1 7 6.3h10a2 2 0 0 1 1.8 1.1L21 12v3.5a1 1 0 0 1-1 1h-.6M4.6 16.5H4a1 1 0 0 1-1-1"/><path d="M9.6 16.5h4.8M3 12h18M8 6.5 7 12M16 6.5l1 5.5"/><circle cx="7.1" cy="16.5" r="2.1"/><circle cx="16.9" cy="16.5" r="2.1"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap nav">
+    <a class="logo" href="index.html"><svg width="30" height="30"><use href="#logo"/></svg><span>LevelUp <b>English</b></span></a>
+    <nav class="nav-links" aria-label="Sayfa bölümleri">
+      <a href="#ozellikler">Özellikler</a>
+      <a href="#rutbeler">Rütbeler</a>
+      <a href="#dongu">Nasıl çalışır?</a>
+      <a href="#seviyeler">Seviyeler</a>
+      <a href="#veri">Veri yönetimi</a>
+    </nav>
+    <div class="nav-right" id="navRight"></div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div>
+      <span class="eyebrow"><svg class="i"><use href="#trophy"/></svg> Okuma · Yazma · Kelime · Çeviri</span>
+      <h1>İngilizceni geliştir,<br><span class="g">rütbeni yükselt.</span></h1>
+      <p class="lead">Günlük hayattan konularla kelime, cümle, dil bilgisi, okuma ve çeviri çalış. Kazandığın XP ile rütbende ilerle; bir üst rütbeye ise yalnızca <b>rütbe sınavını</b> geçerek çık.</p>
+      <div class="hero-cta">
+        <a class="btn btn-gold" href="register.html">Ücretsiz kayıt ol <svg class="i"><use href="#arrow"/></svg></a>
+        <a class="btn btn-line" href="#rutbeler">Rütbe sistemini incele</a>
+      </div>
+      <div class="rank-strip" id="heroRanks" aria-label="Rütbeler"></div>
+    </div>
+
+    <!-- Kullanıcı girişi (ödev kuralı: giriş index.html'de) -->
+    <div class="card login-card" id="loginCard" aria-live="polite"></div>
+  </div>
+
+  <section class="block" id="ozellikler">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Özellikler</span>
+        <h2>Ezber değil, gerçek kullanım</h2>
+        <p>Her ünite birbirine bağlı ilerler: önce kelimeyi görürsün, sonra cümlede, sonra metinde ve en sonunda kendin yazarsın.</p>
+      </div>
+      <div class="grid3">
+        <article class="card feat"><div class="ic"><svg class="i"><use href="#book"/></svg></div><h3>Kelime ve örnek cümle</h3><p>Her kelimenin Türkçesi, örnek cümlesi ve kullanım notu. Bağlam içinde öğren.</p></article>
+        <article class="card feat"><div class="ic"><svg class="i"><use href="#grammar"/></svg></div><h3>Dil bilgisi</h3><p>Ünitedeki cümlelerle bağlantılı kısa konu anlatımları ve alıştırmalar.</p></article>
+        <article class="card feat"><div class="ic"><svg class="i"><use href="#text"/></svg></div><h3>Okuma ve anlama</h3><p>Öğrendiğin kelimeleri içeren kısa metinler ve okuduğunu anlama soruları.</p></article>
+        <article class="card feat"><div class="ic"><svg class="i"><use href="#translate"/></svg></div><h3>Çeviri ve yazma</h3><p>Türkçeden İngilizceye çeviri, kelime sıralama ve kendi cümleni kurma.</p></article>
+        <article class="card feat"><div class="ic"><svg class="i"><use href="#library"/></svg></div><h3>Kelime ve hata kütüphanesi</h3><p>Kendi kelimelerini ekle; zorlandığın kelimeleri ayrı bir listede takip et.</p></article>
+        <article class="card feat"><div class="ic"><svg class="i"><use href="#bell"/></svg></div><h3>Tekrar davetleri</h3><p>Uzun süredir çalışmadığın konular için sana nazik hatırlatmalar gelir.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="rutbeler">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Rütbe sistemi</span>
+        <h2>Bakır'dan Mitril'e yedi rütbe</h2>
+        <p>Her rütbenin üç kademesi vardır (III → II → I). XP seni rütbe içinde ilerletir, sınav ise rütbe atlatır.</p>
+      </div>
+      <div class="ranks" id="rankGrid"></div>
+      <div class="card rule-box">
+        <div><span class="n">1</span><b>Bakır III ile başla</b>Herkes ilk rütbenin ilk kademesinden başlar.</div>
+        <div><span class="n">2</span><b>XP kazan</b>Dersler, görevler ve testler XP kazandırır; XP dolunca kademe atlarsın.</div>
+        <div><span class="n">3</span><b>Rütbe sınavı</b>Kademe I'de XP dolunca rütbe sınavı açılır.</div>
+        <div><span class="n">4</span><b>Geç ya da güçlen</b>Geçersen üst rütbeye çıkarsın; geçemezsen zorlandığın konuları çalışıp tekrar girersin.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="dongu">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Öğrenme döngüsü</span>
+        <h2>Bir çalışma oturumu nasıl ilerler?</h2>
+      </div>
+      <div class="loop">
+        <div class="card st"><b>Yeni kelimeler</b><span>Türkçe anlam ve örnek</span></div>
+        <div class="card st"><b>Cümleler</b><span>Kelimeyi cümlede gör</span></div>
+        <div class="card st"><b>Dil bilgisi</b><span>Ünitenin konusu</span></div>
+        <div class="card st"><b>Okuma</b><span>Kısa bir metin</span></div>
+        <div class="card st"><b>Anlama</b><span>Metin soruları</span></div>
+        <div class="card st"><b>Çeviri</b><span>Kendin yaz</span></div>
+        <div class="card st"><b>İlerleme</b><span>XP ve ünite testi</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="seviyeler">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Günlük İngilizce</span>
+        <h2>Önce seviyeni, sonra konunu seç</h2>
+        <p>Ana temamız günlük yaşam. Her seviyede farklı günlük konular bulunur; istediğin konudan başlayabilirsin.</p>
+      </div>
+      <div class="levels">
+        <div class="card lv-list" role="tablist" id="lvList"></div>
+        <div class="card topics" id="topics"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="veri">
+    <div class="wrap">
+      <div class="card data-box">
+        <div>
+          <h2 style="margin:0;font-size:1.3rem">Veri yönetimi</h2>
+          <p>Tüm hesaplar ve ilerlemeler yalnızca bu tarayıcıda saklanır. <b>Dışa Aktar</b> ile hepsini <code>veriler.txt</code> dosyasına indirebilir, <b>İçe Aktar</b> ile bu dosyayı geri yükleyebilirsin.</p>
+        </div>
+        <div class="data-acts">
+          <button class="btn btn-gold" id="btnExport" type="button"><svg class="i"><use href="#download"/></svg> Dışa Aktar</button>
+          <button class="btn btn-line" id="btnImport" type="button"><svg class="i"><use href="#upload"/></svg> İçe Aktar</button>
+          <input type="file" id="importFile" accept=".txt,text/plain,application/json" hidden>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 LevelUp English · BMG uygulama ödevi · Yerel çalışan demo</span>
+    <nav aria-label="Sayfalar">
+      <a href="index.html">Ana sayfa</a>
+      <a href="register.html">Kayıt ol</a>
+      <a href="login.html">Giriş yap</a>
+      <a href="login.html#unuttum">Şifremi unuttum</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="enter" id="enter" aria-hidden="true"><div class="in"><div id="enterEm"></div><h3 id="enterName"></h3><p>Panele yönlendiriliyorsun…</p></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ================= Ortak yardımcılar ================= */
+const $ = (s, r = document) => r.querySelector(s);
+const K = { users: 'lue_users', active: 'lue_aktif', fail: 'lue_giris_hata' };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ALERT = '<svg class="i"><use href="#alert"/></svg>';
+function loadUsers(){ try{ const v = JSON.parse(localStorage.getItem(K.users)); return Array.isArray(v) ? v : []; }catch(e){ return []; } }
+function saveUsers(l){ localStorage.setItem(K.users, JSON.stringify(l)); }
+function progKey(id){ return 'lue_ilerleme_' + id; }
+function loadProg(id){ try{ return JSON.parse(localStorage.getItem(progKey(id))) || null; }catch(e){ return null; } }
+function cyrb53(str, seed = 0){
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for(let i = 0, ch; i < str.length; i++){ ch = str.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507); h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507); h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16);
+}
+const hashPass = (p, salt) => cyrb53(salt + '|' + p, 7) + cyrb53(p + '|' + salt, 13);
+function toast(msg, type = 'ok'){
+  const t = $('#toast');
+  t.className = 'toast ' + type;
+  t.innerHTML = `<svg class="i"><use href="#${type === 'ok' ? 'check' : 'alert'}"/></svg><span>${esc(msg)}</span>`;
+  requestAnimationFrame(() => t.classList.add('show'));
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 3000);
+}
+function shake(el){ el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+
+/* ================= Rütbeler ve avatarlar ================= */
+const RANKS = [
+  { ad:'Bakır',  cefr:'A1',    c1:'#f0a06a', c2:'#8a4a22' },
+  { ad:'Bronz',  cefr:'A1–A2', c1:'#e2b27a', c2:'#7a5230' },
+  { ad:'Gümüş',  cefr:'A2–B1', c1:'#f1f4f9', c2:'#7d8798' },
+  { ad:'Altın',  cefr:'B1',    c1:'#ffe08a', c2:'#b8862b' },
+  { ad:'Platin', cefr:'B1–B2', c1:'#d3fff5', c2:'#4f9c94' },
+  { ad:'Elmas',  cefr:'B2',    c1:'#cde9ff', c2:'#3d7fd6' },
+  { ad:'Mitril', cefr:'B2–C1', c1:'#d6fbff', c2:'#6d5cff' }
+];
+const ROMAN = ['', 'I', 'II', 'III'];
+let emblemSeq = 0;
+function emblem(i, size = 56, tier = 0){
+  const r = RANKS[i], id = 'em' + (emblemSeq++);
+  const wings = i >= 5 ? `<path d="M10 20 2 14l3 14 7 4M54 20l8-6-3 14-7 4" fill="url(#${id})" opacity=".75"/>` : '';
+  const crown = i === 6 ? `<path d="M22 6l4 5 6-7 6 7 4-5v6H22z" fill="url(#${id})" stroke="rgba(255,255,255,.6)" stroke-width="1"/>` : '';
+  const center = tier
+    ? `<text x="32" y="39" text-anchor="middle" font-size="15" font-weight="800" fill="#fff" font-family="Georgia,serif" stroke="rgba(0,0,0,.35)" stroke-width=".6">${ROMAN[tier]}</text>`
+    : `<path d="M32 21 38 31 32 43 26 31Z" fill="${r.c1}" stroke="rgba(255,255,255,.7)" stroke-width="1"/>`;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true">
+    <defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${r.c1}"/><stop offset="1" stop-color="${r.c2}"/></linearGradient></defs>
+    ${wings}<path d="M32 8 52 15v15c0 13-9 22-20 27C21 52 12 43 12 30V15Z" fill="url(#${id})" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/>
+    <path d="M32 14 46 19v11c0 9-6 16-14 20-8-4-14-11-14-20V19Z" fill="rgba(8,12,26,.42)"/>${crown}${center}</svg>`;
+}
+const AVATARS = [
+  { id:'kalkan', a:'#3b5bdb', b:'#1c2f7a', d:'M12 3 19 6v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z' },
+  { id:'yildiz', a:'#f08c00', b:'#8a4b00', d:'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6-4.5-4.1 6-.7z' },
+  { id:'simsek', a:'#7048e8', b:'#3b1f8f', d:'M13 2 4 14h7l-1 8 9-12h-7z' },
+  { id:'ay',     a:'#1c7ed6', b:'#0b3d6e', d:'M20 13.5A8 8 0 1 1 10.5 4a6.3 6.3 0 0 0 9.5 9.5z' },
+  { id:'yaprak', a:'#2f9e44', b:'#14532d', d:'M5 20c0-8 5-14 15-15-1 9-6 15-15 15zM5 20l8-8' },
+  { id:'alev',   a:'#e8590c', b:'#7c2d12', d:'M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-5 3-7 0 2 1 3 2 3 0-3 0-6 1-8z' },
+  { id:'tac',    a:'#c99a2e', b:'#6b4d10', d:'M3 18h18l-2-10-4 4-3-7-3 7-4-4z' },
+  { id:'kitap',  a:'#0c8599', b:'#0b4752', d:'M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z' }
+];
+function avatarSvg(avId, size = 40){
+  const a = AVATARS.find(x => x.id === avId) || AVATARS[0], id = 'av' + (emblemSeq++);
+  return `<svg class="av" width="${size}" height="${size}" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a.a}"/><stop offset="1" stop-color="${a.b}"/></linearGradient></defs><circle cx="20" cy="20" r="19" fill="url(#${id})" stroke="rgba(255,255,255,.25)"/><g transform="translate(8 8)"><path d="${a.d}" fill="rgba(255,255,255,.92)" stroke="rgba(255,255,255,.92)" stroke-width="1" stroke-linejoin="round"/></g></svg>`;
+}
+
+/* ================= Robot doğrulaması ================= */
+function makeCaptcha(root, chance = .5){
+  root.innerHTML = `
+    <div class="captcha" data-state="idle">
+      <button type="button" class="cap-btn" role="checkbox" aria-checked="false">
+        <span class="cap-box"><span class="cap-spin"></span><svg class="i cap-ok"><use href="#check"/></svg></span>
+        <span>Ben robot değilim</span>
+      </button>
+      <span class="cap-brand"><small>LevelUp<br>güvenlik</small><svg class="i"><use href="#shield"/></svg></span>
+    </div>
+    <div class="cap-task" hidden>
+      <div class="cap-head">Aşağıdakilerden <b></b> olanların hepsini seç</div>
+      <div class="cap-grid"></div>
+      <p class="err cap-msg" aria-live="polite"></p>
+      <div class="cap-foot">
+        <button type="button" class="btn btn-ghost sm" data-cap="new"><svg class="i"><use href="#refresh"/></svg> Yeni görseller</button>
+        <button type="button" class="btn btn-gold sm" data-cap="verify">Doğrula</button>
+      </div>
+    </div>
+    <p class="err cap-need" aria-live="polite"></p>`;
+  const box = root.querySelector('.captcha'), btn = root.querySelector('.cap-btn'), task = root.querySelector('.cap-task'),
+        grid = root.querySelector('.cap-grid'), what = root.querySelector('.cap-head b'),
+        msg = root.querySelector('.cap-msg'), need = root.querySelector('.cap-need');
+  const COLORS = [['#1d2a4d','#8fb8ff'], ['#2e2410','#f2d68f'], ['#13322a','#6fe0aa'], ['#3a1a20','#ff9aa5'], ['#261d45','#b9a6ff'], ['#12323a','#7fdcf0']];
+  let state = 'idle', answer = '';
+  const set = s => { state = s; box.dataset.state = s; btn.setAttribute('aria-checked', s === 'ok'); };
+  const say = (el, t) => el.innerHTML = t ? ALERT + '<span>' + esc(t) + '</span>' : '';
+  function newTask(){
+    const target = Math.random() < .5 ? 'book' : 'car', other = target === 'book' ? 'car' : 'book', n = 3 + Math.floor(Math.random() * 3);
+    const cells = Array.from({length:9}, (_, i) => i < n ? target : other).sort(() => Math.random() - .5);
+    answer = cells.map((c, i) => c === target ? i : '').filter(x => x !== '').join(',');
+    what.textContent = target === 'book' ? 'kitap' : 'araba';
+    grid.innerHTML = cells.map((c, i) => {
+      const [bg, fg] = COLORS[Math.floor(Math.random() * COLORS.length)], r = Math.round(Math.random() * 30 - 15);
+      return `<button type="button" class="cap-cell" data-i="${i}" aria-pressed="false" aria-label="${c === 'book' ? 'Kitap' : 'Araba'}" style="background:${bg};color:${fg}"><svg style="transform:rotate(${r}deg)"><use href="#cap-${c}" stroke="currentColor"/></svg></button>`;
+    }).join('');
+    task.hidden = false;
+  }
+  btn.addEventListener('click', () => {
+    if(state !== 'idle') return;
+    set('loading'); say(need, '');
+    setTimeout(() => {
+      if(Math.random() < chance){ set('idle'); say(msg, ''); newTask(); grid.querySelector('button').focus(); }
+      else set('ok');
+    }, 900 + Math.random() * 500);
+  });
+  grid.addEventListener('click', e => {
+    const c = e.target.closest('.cap-cell'); if(!c) return;
+    c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') !== 'true'); say(msg, '');
+  });
+  task.addEventListener('click', e => {
+    const b = e.target.closest('[data-cap]'); if(!b) return;
+    if(b.dataset.cap === 'new'){ say(msg, ''); return newTask(); }
+    const picked = [...grid.querySelectorAll('[aria-pressed=true]')].map(x => x.dataset.i).join(',');
+    if(!picked) return say(msg, 'En az bir görsel seç.');
+    if(picked === answer){ task.hidden = true; set('loading'); setTimeout(() => set('ok'), 600); }
+    else { say(msg, 'Seçimin hatalı. Yeni görsellerle tekrar dene.'); shake(task); setTimeout(newTask, 700); }
+  });
+  return {
+    get ok(){ return state === 'ok'; },
+    reset(){ set('idle'); task.hidden = true; say(msg, ''); say(need, ''); },
+    require(){ say(need, 'Devam etmek için robot olmadığını doğrula.'); shake(box); btn.focus(); }
+  };
+}
+
+/* ================= Dışa / İçe aktar ================= */
+function exportData(){
+  const data = { uygulama:'LevelUp English', surum:1, tarih:new Date().toISOString(), veriler:{} };
+  for(let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); data.veriler[k] = localStorage.getItem(k); }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'veriler.txt';
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+function importData(file, done){
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const d = JSON.parse(r.result), v = d && d.veriler;
+      if(!v || typeof v !== 'object') throw new Error('biçim');
+      localStorage.clear();
+      Object.keys(v).forEach(k => localStorage.setItem(k, String(v[k])));
+      done(true, Object.keys(v).length);
+    }catch(e){ done(false); }
+  };
+  r.onerror = () => done(false);
+  r.readAsText(file);
+}
+
+/* ================= Sayfa: ana içerik ================= */
+const LEVELS = [
+  { k:'A1', ad:'A1 · Başlangıç', konular:[['Günlük rutinler','Sabah, okul, iş, saatler'],['Alışveriş','Market, fiyatlar, sayılar'],['Yiyecekler','Yemekler, içecekler, sipariş'],['Sosyal yaşam','Tanışma, arkadaşlar, davetler'],['Şehir ve ulaşım','Yerler, yol tarifi, otobüs'],['Ev ve yaşam','Odalar, eşyalar, aile']] },
+  { k:'A2', ad:'A2 · Temel', konular:[['Tatil planı','Rezervasyon, bilet, otel'],['Sağlık','Doktor, eczane, şikayetler'],['Hava ve mevsimler','Tahmin, kıyafetler'],['Hobiler','Spor, müzik, film'],['Geçmiş deneyimler','Hafta sonu ne yaptın?'],['Telefon ve mesaj','Kısa yazışmalar']] },
+  { k:'B1', ad:'B1 · Orta', konular:[['İş hayatı','Mülakat, toplantı, e-posta'],['Teknoloji','Uygulamalar, sosyal medya'],['Çevre','Geri dönüşüm, iklim'],['Haberler','Kısa haber metinleri'],['Kültür','Gelenekler, festivaller'],['Fikir bildirme','Katılıyorum / katılmıyorum']] },
+  { k:'B2', ad:'B2 · Orta üstü', konular:[['Tartışma metinleri','Avantaj ve dezavantaj'],['Resmî yazışma','Şikayet, başvuru'],['Bilim','Popüler bilim yazıları'],['Deyimler','Günlük deyimler']] },
+  { k:'C1', ad:'C1 · İleri', konular:[['Makale okuma','Uzun ve yoğun metinler'],['Akademik yazma','Paragraf ve özet'],['İnce anlamlar','Eş anlamlılar ve tonlama']] }
+];
+$('#heroRanks').innerHTML = RANKS.map((r, i) => `<span class="rs" title="${r.ad} · ${r.cefr}">${emblem(i, 30 + i * 4)}${r.ad}</span>`).join('');
+$('#rankGrid').innerHTML = RANKS.map((r, i) => `
+  <div class="card rank${i === 6 ? ' mitril' : ''}" style="--glow:${r.c1}">
+    ${emblem(i, 64)}<div class="nm">${r.ad}</div><div class="tiers">III → II → I</div><span class="cefr">${r.cefr}</span>
+  </div>`).join('');
+function showLevel(i){
+  document.querySelectorAll('.lv').forEach((b, j) => b.setAttribute('aria-selected', i === j));
+  $('#topics').innerHTML = LEVELS[i].konular.map(([a, b]) => `<div class="tp"><b>${esc(a)}</b><span>${esc(b)}</span></div>`).join('');
+}
+$('#lvList').innerHTML = LEVELS.map((l, i) => `<button class="lv" role="tab" type="button" data-i="${i}"><span>${l.ad}</span><small>${l.konular.length} konu</small></button>`).join('');
+$('#lvList').addEventListener('click', e => { const b = e.target.closest('.lv'); if(b) showLevel(+b.dataset.i); });
+showLevel(0);
+
+$('#btnExport').addEventListener('click', () => { exportData(); toast('veriler.txt indirildi'); });
+$('#btnImport').addEventListener('click', () => $('#importFile').click());
+$('#importFile').addEventListener('change', e => {
+  const f = e.target.files[0]; e.target.value = '';
+  if(!f) return;
+  if(!confirm('İçe aktarılan dosya bu tarayıcıdaki TÜM LevelUp verilerinin yerine geçecek. Devam edilsin mi?')) return;
+  importData(f, (ok, n) => {
+    if(ok){ toast(n + ' kayıt geri yüklendi'); renderLogin(); renderNav(); }
+    else toast('Dosya okunamadı. Uygulamadan indirilen veriler.txt dosyasını seç.', 'bad');
+  });
+});
+
+/* ================= Kullanıcı girişi ================= */
+function activeUser(){
+  const id = localStorage.getItem(K.active);
+  return id ? loadUsers().find(u => u.id === id) || null : null;
+}
+function rankText(p){ return p ? `${RANKS[p.rank].ad} ${ROMAN[p.tier]} · ${p.xp} XP` : 'Bakır III · 0 XP'; }
+function renderNav(){
+  const u = activeUser();
+  $('#navRight').innerHTML = u
+    ? `<a class="btn btn-gold sm" href="dashboard.html">Panelim</a>`
+    : `<a class="btn btn-ghost sm" href="login.html">Giriş yap</a><a class="btn btn-gold sm" href="register.html">Kayıt ol</a>`;
+}
+function getFail(){ try{ return JSON.parse(sessionStorage.getItem(K.fail)) || { n:0, until:0 }; }catch(e){ return { n:0, until:0 }; } }
+function setFail(f){ sessionStorage.setItem(K.fail, JSON.stringify(f)); }
+
+let cap = null, lockTimer = null;
+function renderLogin(){
+  const card = $('#loginCard'), u = activeUser();
+  if(u){
+    const p = loadProg(u.id);
+    card.innerHTML = `<div class="welcome">
+      <div class="em">${p ? emblem(p.rank, 84, p.tier) : emblem(0, 84, 3)}</div>
+      <div class="who">Tekrar hoş geldin, ${esc(u.ad)}!</div>
+      <div class="rk">${esc(rankText(p))}</div>
+      <div class="acts">
+        <a class="btn btn-gold full" href="dashboard.html">Panele git <svg class="i"><use href="#arrow"/></svg></a>
+        <button class="btn btn-line full" type="button" id="switchAcc"><svg class="i"><use href="#logout"/></svg> Farklı hesapla giriş yap</button>
+      </div></div>`;
+    $('#switchAcc').onclick = () => { localStorage.removeItem(K.active); renderLogin(); renderNav(); };
+    return;
+  }
+  const users = loadUsers();
+  card.innerHTML = `
+    <h2>Giriş yap</h2>
+    <p class="sub">Aynı tarayıcıda birden fazla kişi kendi hesabıyla çalışabilir.</p>
+    ${users.length ? `<p class="chips-title">Bu tarayıcıdaki hesaplar</p><div class="chips">${users.map(x => `<button type="button" class="chip" data-u="${esc(x.kullaniciAdi)}" data-social="${x.saglayici && x.saglayici !== 'eposta' ? x.saglayici : ''}">${avatarSvg(x.avatar, 26)}${esc(x.kullaniciAdi)}</button>`).join('')}</div>` : ''}
+    <form id="loginForm" novalidate>
+      <label class="lbl" for="lgId">E-posta veya kullanıcı adı</label>
+      <div class="inp"><input id="lgId" autocomplete="username" spellcheck="false"></div>
+      <label class="lbl" for="lgPw">Şifre</label>
+      <div class="inp has-eye"><input id="lgPw" type="password" autocomplete="current-password">
+        <button type="button" class="eye" id="lgEye" aria-label="Şifreyi göster"><svg class="i"><use href="#eye"/></svg></button></div>
+      <p class="warn-line" id="caps" hidden>${ALERT} Caps Lock açık</p>
+      <div id="lgCap" hidden></div>
+      <p class="err" id="lgErr" aria-live="polite"></p>
+      <div class="row-between"><a href="login.html#unuttum">Şifremi unuttum</a><a href="login.html">Google / Apple / Facebook</a></div>
+      <button class="btn btn-gold full" id="lgBtn" type="submit">Giriş yap</button>
+    </form>
+    <div class="or">hesabın yok mu?</div>
+    <a class="btn btn-line full" href="register.html">Yeni hesap oluştur</a>`;
+  cap = makeCaptcha($('#lgCap'), .45);
+  const f = getFail();
+  if(f.n >= 3) $('#lgCap').hidden = false;
+  checkLock();
+
+  card.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    if(c.dataset.social){ location.href = 'login.html'; return; }
+    $('#lgId').value = c.dataset.u; $('#lgPw').focus();
+  }));
+  $('#lgEye').addEventListener('click', () => {
+    const pw = $('#lgPw'), show = pw.type === 'password';
+    pw.type = show ? 'text' : 'password';
+    $('#lgEye').innerHTML = `<svg class="i"><use href="#${show ? 'eye-off' : 'eye'}"/></svg>`;
+    $('#lgEye').setAttribute('aria-label', show ? 'Şifreyi gizle' : 'Şifreyi göster');
+  });
+  $('#lgPw').addEventListener('keyup', e => { $('#caps').hidden = !(e.getModifierState && e.getModifierState('CapsLock')); });
+  $('#loginForm').addEventListener('submit', onLogin);
+}
+function checkLock(){
+  const f = getFail(), btn = $('#lgBtn'); if(!btn) return;
+  clearInterval(lockTimer);
+  const tick = () => {
+    const left = Math.ceil((f.until - Date.now()) / 1000);
+    if(left > 0){ btn.disabled = true; btn.textContent = `Çok fazla deneme · ${left} sn bekle`; }
+    else { btn.disabled = false; btn.textContent = 'Giriş yap'; clearInterval(lockTimer); }
+  };
+  if(f.until > Date.now()){ tick(); lockTimer = setInterval(tick, 1000); }
+}
+function onLogin(e){
+  e.preventDefault();
+  const idv = $('#lgId').value.trim().toLowerCase(), pw = $('#lgPw').value, err = $('#lgErr');
+  err.innerHTML = '';
+  if(!idv || !pw){ err.innerHTML = ALERT + '<span>E-posta/kullanıcı adı ve şifreni gir.</span>'; shake($('#loginForm')); return; }
+  const f = getFail();
+  if(f.until > Date.now()) return;
+  if(f.n >= 3 && !cap.ok){ $('#lgCap').hidden = false; cap.require(); return; }
+  const u = loadUsers().find(x => (x.eposta === idv || x.kullaniciAdi.toLowerCase() === idv) && x.sifre);
+  if(u && hashPass(pw, u.tuz) === u.sifre){ return loginSuccess(u); }
+  f.n++;
+  if(f.n >= 5){ f.until = Date.now() + 30000; f.n = 3; }
+  setFail(f);
+  err.innerHTML = ALERT + '<span>E-posta/kullanıcı adı veya şifre hatalı.</span>';
+  shake($('#loginForm')); $('#lgPw').value = ''; $('#lgPw').focus();
+  if(f.n >= 3){ $('#lgCap').hidden = false; cap.reset(); }
+  checkLock();
+}
+function loginSuccess(u){
+  const users = loadUsers(), x = users.find(z => z.id === u.id);
+  x.sonGiris = Date.now(); saveUsers(users);
+  localStorage.setItem(K.active, u.id);
+  sessionStorage.removeItem(K.fail);
+  const p = loadProg(u.id);
+  $('#enterEm').innerHTML = p ? emblem(p.rank, 96, p.tier) : emblem(0, 96, 3);
+  $('#enterName').textContent = 'Hoş geldin, ' + u.ad + '!';
+  $('#enter').classList.add('show');
+  setTimeout(() => location.href = 'dashboard.html', 1100);
+}
+
+renderNav();
+renderLogin();
+</script>
+</body>
+</html>
