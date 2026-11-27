@@ -92,6 +92,7 @@ svg.i{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:2;stro
 .fc .tr{font-size:1.2rem;font-weight:750;margin:.35rem 0 .3rem;color:var(--gold2)}
 .fc .ex{font-size:.83rem;color:var(--muted);font-style:italic;margin-top:auto}
 .fc .hint{font-size:.72rem;color:var(--dim);margin-top:.35rem}
+.ox{font-size:.66rem;padding:.05rem .35rem;border-radius:5px;background:rgba(116,182,255,.12);color:#a9d1ff;font-weight:700;letter-spacing:.3px}
 .fc.seen .front{border-color:rgba(69,196,138,.35)}
 .pips{display:inline-flex;gap:3px}
 .pips i{width:7px;height:7px;border-radius:50%;background:#26314f}
@@ -270,6 +271,8 @@ details.mtxt .reader p{font-size:.95rem;line-height:1.85}
 .exam-state.ok{border-color:rgba(216,178,94,.6);background:linear-gradient(90deg,rgba(216,178,94,.12),#0b1224)}
 .exam-state.ok > svg{color:var(--gold2)}
 .exam-state .xpmini{flex:1 1 100%}
+.exam-state.practice{border-color:rgba(116,182,255,.4);background:linear-gradient(90deg,rgba(116,182,255,.08),#0b1224)}
+.exam-state.practice > svg{color:var(--info)}
 .exam-state .xpmini small{color:var(--dim);font-size:.78rem}
 .hist{margin-top:14px;padding:14px 16px;border-radius:12px;background:#0b1224;border:1px solid var(--line);font-size:.9rem}
 .hist .row{display:flex;justify-content:space-between;align-items:center;gap:.6rem;padding:.45rem 0;border-top:1px solid rgba(255,255,255,.05);color:var(--muted)}
@@ -399,21 +402,21 @@ const rankName = p => `${RANKS[p.rank].ad} ${ROMAN[p.tier]}`;
    Çeviriler sözlükten kontrol edilecek (ödev kuralı). */
 const UNITS = {
   'a1-rutin': {
-    seviye:'A1', ad:'Günlük rutinler', ing:'Daily Routines',
+    seviye:'A1', ad:'Günlük rutinler', ing:'Daily Routines', sira:1,
     aciklama:'Sabahtan akşama günlük aktiviteleri anlatmayı öğren.',
     kelimeler:[
-      { id:'wake-up',     en:'wake up',          tr:'uyanmak',               ornek:'I wake up at seven o\'clock.',          ornekTr:'Saat yedide uyanırım.' },
-      { id:'get-up',      en:'get up',           tr:'(yataktan) kalkmak',    ornek:'She gets up early every day.',          ornekTr:'O her gün erken kalkar.' },
-      { id:'breakfast',   en:'have breakfast',   tr:'kahvaltı yapmak',       ornek:'We have breakfast in the kitchen.',     ornekTr:'Mutfakta kahvaltı yaparız.' },
-      { id:'brush-teeth', en:'brush your teeth', tr:'dişlerini fırçalamak',  ornek:'He brushes his teeth after breakfast.', ornekTr:'Kahvaltıdan sonra dişlerini fırçalar.' },
-      { id:'shower',      en:'take a shower',    tr:'duş almak',             ornek:'I take a shower in the morning.',       ornekTr:'Sabahları duş alırım.' },
-      { id:'dressed',     en:'get dressed',      tr:'giyinmek',              ornek:'She gets dressed quickly.',             ornekTr:'Hızlıca giyinir.' },
-      { id:'go-school',   en:'go to school',     tr:'okula gitmek',          ornek:'They go to school by bus.',             ornekTr:'Okula otobüsle giderler.' },
-      { id:'start',       en:'start',            tr:'başlamak',              ornek:'My lessons start at nine.',             ornekTr:'Derslerim dokuzda başlar.' },
-      { id:'finish',      en:'finish',           tr:'bitmek, bitirmek',      ornek:'School finishes at three o\'clock.',    ornekTr:'Okul saat üçte biter.' },
-      { id:'lunch',       en:'have lunch',       tr:'öğle yemeği yemek',     ornek:'We have lunch at twelve thirty.',       ornekTr:'On iki buçukta öğle yemeği yeriz.' },
-      { id:'homework',    en:'do homework',      tr:'ödev yapmak',           ornek:'I do my homework in the evening.',      ornekTr:'Ödevimi akşam yaparım.' },
-      { id:'go-bed',      en:'go to bed',        tr:'yatmak',                ornek:'My brother goes to bed at ten.',        ornekTr:'Erkek kardeşim saat onda yatar.' }
+      { id:'wake-up', ox:'A1',     en:'wake up',          tr:'uyanmak',               ornek:'I wake up at seven o\'clock.',          ornekTr:'Saat yedide uyanırım.' },
+      { id:'get-up', ox:'A1',      en:'get up',           tr:'(yataktan) kalkmak',    ornek:'She gets up early every day.',          ornekTr:'O her gün erken kalkar.' },
+      { id:'breakfast', ox:'A1',   en:'have breakfast',   tr:'kahvaltı yapmak',       ornek:'We have breakfast in the kitchen.',     ornekTr:'Mutfakta kahvaltı yaparız.' },
+      { id:'brush-teeth', ox:'A2', en:'brush your teeth', tr:'dişlerini fırçalamak',  ornek:'He brushes his teeth after breakfast.', ornekTr:'Kahvaltıdan sonra dişlerini fırçalar.' },
+      { id:'shower', ox:'A1',      en:'take a shower',    tr:'duş almak',             ornek:'I take a shower in the morning.',       ornekTr:'Sabahları duş alırım.' },
+      { id:'dressed', ox:'B1',     en:'get dressed',      tr:'giyinmek',              ornek:'She gets dressed quickly.',             ornekTr:'Hızlıca giyinir.' },
+      { id:'go-school', ox:'A1',   en:'go to school',     tr:'okula gitmek',          ornek:'They go to school by bus.',             ornekTr:'Okula otobüsle giderler.' },
+      { id:'start', ox:'A1',       en:'start',            tr:'başlamak',              ornek:'My lessons start at nine.',             ornekTr:'Derslerim dokuzda başlar.' },
+      { id:'finish', ox:'A1',      en:'finish',           tr:'bitmek, bitirmek',      ornek:'School finishes at three o\'clock.',    ornekTr:'Okul saat üçte biter.' },
+      { id:'lunch', ox:'A1',       en:'have lunch',       tr:'öğle yemeği yemek',     ornek:'We have lunch at twelve thirty.',       ornekTr:'On iki buçukta öğle yemeği yeriz.' },
+      { id:'homework', ox:'A1',    en:'do homework',      tr:'ödev yapmak',           ornek:'I do my homework in the evening.',      ornekTr:'Ödevimi akşam yaparım.' },
+      { id:'go-bed', ox:'A1',      en:'go to bed',        tr:'yatmak',                ornek:'My brother goes to bed at ten.',        ornekTr:'Erkek kardeşim saat onda yatar.' }
     ],
     /* 2. bölüm: Cümleler
        id: [boşluğa gelen doğru kısım, yanlış seçenekler, ipucu (yalın hâl), cümlede vurgulanan ifade] */
@@ -445,7 +448,23 @@ const UNITS = {
       'get':'almak, olmak (get up: kalkmak)', 'then':'sonra, ardından', 'with':'ile, birlikte', 'family':'aile', 'brush':'fırçalamak', 'finish':'bitmek, bitirmek',
       'friends':'arkadaşlar', 'and':'ve', 'sometimes':'bazen', 'watch':'izlemek', 'tv':'televizyon', 'usually':'genellikle'
     },
-    /* 3. bölüm: Dil bilgisi mini alıştırması */
+    /* 3. bölüm: Dil bilgisi konu anlatımı ve mini alıştırma */
+    konu:{
+      baslik:'Simple Present Tense (Geniş zaman)',
+      aciklama:'Her gün, her zaman yaptığımız işleri, alışkanlıkları ve rutinleri anlatırken kullanılır.',
+      kartlar:[
+        { baslik:'Olumlu cümle', p:'I / You / We / They ile fiil <b>yalın</b> kalır. He / She / It ile fiile <b>-s</b> eklenir.',
+          satir:[['I / You / We / They', 'I <em>wake</em> up at seven.'], ['He / She / It', 'She <em>wakes</em> up at seven.']] },
+        { baslik:'-s mi, -es mi?', p:'Çoğu fiile <b>-s</b> eklenir. -sh, -ch, -s, -x, -o ile bitenlere <b>-es</b> eklenir. <b>have</b> düzensizdir.',
+          satir:[['start, finish… →', 'start<em>s</em>, finish<em>es</em>'], ['brush, watch, go, do →', 'brush<em>es</em>, watch<em>es</em>, go<em>es</em>, do<em>es</em>'], ['have →', '<em>has</em> (He has breakfast.)']] },
+        { baslik:'Olumsuz cümle', p:'<b>don\'t / doesn\'t</b> + yalın fiil. doesn\'t kullanınca fiile -s <b>eklenmez</b>.',
+          satir:[['I / You / We / They', 'I <em>don\'t</em> have lunch at home.'], ['He / She / It', 'He <em>doesn\'t</em> get up early.']] },
+        { baslik:'Soru cümlesi', p:'<b>Do / Does</b> + özne + yalın fiil?',
+          satir:[['I / You / We / They', '<em>Do</em> you take a shower in the morning?'], ['He / She / It', '<em>Does</em> she go to school by bus?'], ['Kısa cevap', 'Yes, she does. / No, she doesn\'t.']] },
+        { baslik:'Sıklık zarfları', genis:true, p:'Bir işi ne sıklıkla yaptığımızı anlatır. <b>Ana fiilden önce</b> gelir: I <em>usually</em> go to bed at ten.',
+          siklik:[['always', 'her zaman', 100], ['usually', 'genellikle', 75], ['sometimes', 'bazen', 45], ['never', 'asla, hiç', 8]] }
+      ]
+    },
     dilbilgisi:[
       { tip:'secim', soru:'She ___ at seven every day. (get up)', dogru:'gets up', yanlis:['get up','getting up'], tr:'O her gün yedide kalkar.', aciklama:'He / She / It ile fiile -s eklenir.' },
       { tip:'secim', soru:'They ___ to school by bus. (go)', dogru:'go', yanlis:['goes','going'], tr:'Okula otobüsle giderler.', aciklama:'I / You / We / They ile fiil yalın kalır.' },
@@ -496,7 +515,549 @@ const UNITS = {
       { tip:'sirala', tr:'O, mutfakta kahvaltı yapar.', w:'breakfast', parcalar:['She', 'has', 'breakfast', 'in the kitchen'], dogru:['She has breakfast in the kitchen.'] },
       { tip:'sirala', tr:'Derslerim dokuzda başlar.', w:'start', parcalar:['My', 'lessons', 'start', 'at nine'], dogru:['My lessons start at nine.'] }
     ]
+  },
+
+  /* ====================================================================
+     2. ünite · A1 · Alışveriş — this/that/these/those, How much…?, Can I…?
+     (Headway Beginner sırası: Present Simple'dan sonra this/that ve fiyat sorma)
+     Kelimelerin hepsi Oxford 3000 listesinde A1.
+     ==================================================================== */
+  'a1-alisveris': {
+    seviye:'A1', ad:'Alışveriş', ing:'Shopping', sira:2,
+    aciklama:'Fiyat sormayı, bir şey satın almayı ve this / that / these / those kullanmayı öğren.',
+    kelimeler:[
+      { id:'shop',      ox:'A1', en:'shop',      tr:'dükkân, mağaza',      ornek:'This shop sells shoes and bags.',          ornekTr:'Bu dükkân ayakkabı ve çanta satar.' },
+      { id:'buy',       ox:'A1', en:'buy',       tr:'satın almak',         ornek:'I want to buy a new bag.',                 ornekTr:'Yeni bir çanta almak istiyorum.' },
+      { id:'sell',      ox:'A1', en:'sell',      tr:'satmak',              ornek:'They sell fruit at the market.',           ornekTr:'Pazarda meyve satarlar.' },
+      { id:'price',     ox:'A1', en:'price',     tr:'fiyat',               ornek:'What is the price of this T-shirt?',       ornekTr:'Bu tişörtün fiyatı nedir?' },
+      { id:'cheap',     ox:'A1', en:'cheap',     tr:'ucuz',                ornek:'These shoes are very cheap.',              ornekTr:'Bu ayakkabılar çok ucuz.' },
+      { id:'expensive', ox:'A1', en:'expensive', tr:'pahalı',              ornek:'That jacket is too expensive for me.',     ornekTr:'O ceket benim için fazla pahalı.' },
+      { id:'pay',       ox:'A1', en:'pay',       tr:'ödemek',              ornek:'Can I pay by card?',                       ornekTr:'Kartla ödeyebilir miyim?' },
+      { id:'money',     ox:'A1', en:'money',     tr:'para',                ornek:'I don\'t have much money.',                ornekTr:'Fazla param yok.' },
+      { id:'market',    ox:'A1', en:'market',    tr:'pazar',               ornek:'We buy vegetables at the market.',         ornekTr:'Sebzeleri pazardan alırız.' },
+      { id:'clothes',   ox:'A1', en:'clothes',   tr:'kıyafetler, giysiler', ornek:'She buys her clothes online.',            ornekTr:'Kıyafetlerini internetten alır.' },
+      { id:'shoes',     ox:'A1', en:'shoes',     tr:'ayakkabılar',         ornek:'I need new shoes for school.',             ornekTr:'Okul için yeni ayakkabıya ihtiyacım var.' },
+      { id:'bag',       ox:'A1', en:'bag',       tr:'çanta',               ornek:'How much is this bag?',                    ornekTr:'Bu çanta ne kadar?' }
+    ],
+    cumleler:{
+      'shop':      ['shop',      ['shops','shopping','to shop'],        'shop',  'shop'],
+      'buy':       ['buy',       ['buys','buying','to buy'],            'buy',   'buy'],
+      'sell':      ['sell',      ['sells','selling','to sell'],         'sell',  'sell'],
+      'price':     ['price',     ['cheap','sell','expensive'],          '',      'price'],
+      'cheap':     ['cheap',     ['price','money','buy'],               '',      'cheap'],
+      'expensive': ['expensive', ['price','sell','money'],              '',      'expensive'],
+      'pay':       ['pay',       ['pays','paying','to pay'],            'pay',   'pay'],
+      'money':     ['money',     ['cheap','buy','expensive'],           '',      'money'],
+      'market':    ['market',    ['cheap','buy','expensive'],           '',      'market'],
+      'clothes':   ['clothes',   ['cheap','pay','sell'],                '',      'clothes'],
+      'shoes':     ['shoes',     ['cheap','pay','sell'],                '',      'shoes'],
+      'bag':       ['bag',       ['cheap','buy','sell'],                '',      'bag']
+    },
+    sozluk:{
+      'this':'bu', 'that':'şu, o', 'these':'bunlar, bu (çoğul)', 'those':'şunlar, o (çoğul)', 'shop':'dükkân', 'sells':'satar (sell)', 'sell':'satmak',
+      'shoes':'ayakkabılar', 'and':'ve', 'bags':'çantalar', 'bag':'çanta', 'i':'ben', 'want':'istemek', 'to':'-e, -a; -mek', 'buy':'satın almak', 'buys':'satın alır (buy)',
+      'a':'bir', 'new':'yeni', 'they':'onlar', 'fruit':'meyve', 'at':'-de, -da', 'the':'belirli tanımlık (Türkçede karşılığı yok)', 'market':'pazar',
+      'what':'ne', 'is':'-dir (be)', 'are':'-dir (be, çoğul)', 'price':'fiyat', 'of':'-in, -ın', 't-shirt':'tişört', 'very':'çok', 'cheap':'ucuz',
+      'jacket':'ceket', 'too':'fazla, çok; de/da', 'expensive':'pahalı', 'for':'için', 'me':'bana, beni', 'can':'-ebilmek', 'pay':'ödemek', 'pays':'öder (pay)',
+      'by':'ile', 'card':'kart', "don't":'yapmıyorum (do not)', 'have':'sahip olmak', 'much':'çok (sayılamayan)', 'money':'para', 'we':'biz',
+      'vegetables':'sebzeler', 'she':'o (kadın)', 'her':'onun (kadın)', 'clothes':'kıyafetler', 'online':'internetten, çevrim içi', 'need':'ihtiyacı olmak',
+      'school':'okul', 'how':'nasıl', 'it':'o (cansız)', 'saturday':'cumartesi', 'morning':'sabah', 'tom':'Tom (erkek ismi)', 'his':'onun (erkek)',
+      'mother':'anne', 'go':'gitmek', 'there':'orada', 'people':'insanlar', 'good':'iyi', 'food':'yiyecek', 'not':'değil', 'then':'sonra',
+      'needs':'ihtiyacı var (need)', 'he':'o (erkek)', 'looks':'bakar (look)', 'pair':'çift', 'black':'siyah', 'asks':'sorar (ask)', 'forty':'kırk',
+      'pounds':'sterlin (para birimi)', 'says':'der (say)', 'woman':'kadın', 'small':'küçük', 'sister':'kız kardeş', 'does':'yapar (do)', 'with':'ile, yanında',
+      'so':'bu yüzden', 'home':'ev, eve', 'happy':'mutlu', "tom's":'Tom\'un', 'some':'biraz, birkaç', 'also':'de, da, ayrıca', 'in':'içinde, -de'
+    },
+    konu:{
+      baslik:'this / that / these / those ve fiyat sorma',
+      aciklama:'Alışverişte bir şeyi gösterirken ve fiyatını sorarken kullanılır.',
+      kartlar:[
+        { baslik:'Yakındaki ve uzaktaki şeyler', p:'Yakındaki için <b>this</b> (tekil) ve <b>these</b> (çoğul); uzaktaki için <b>that</b> (tekil) ve <b>those</b> (çoğul).',
+          satir:[['Yakın · tekil', '<em>This</em> bag is cheap.'], ['Yakın · çoğul', '<em>These</em> shoes are cheap.'], ['Uzak · tekil', '<em>That</em> jacket is expensive.'], ['Uzak · çoğul', '<em>Those</em> T-shirts are nice.']] },
+        { baslik:'Fiyat sorma: How much…?', p:'Tekil şey için <b>How much is…?</b>, çoğul şey için <b>How much are…?</b>',
+          satir:[['Tekil', '<em>How much is</em> this bag? — It\'s 20 pounds.'], ['Çoğul', '<em>How much are</em> these shoes? — They\'re 40 pounds.']] },
+        { baslik:'Kibar istek: Can I…?', p:'Dükkânda bir şey isterken <b>Can I + yalın fiil</b> kullanılır.',
+          satir:[['Ödeme', '<em>Can I</em> pay by card?'], ['Bir şey isteme', '<em>Can I</em> have a bag, please?']] },
+        { baslik:'Dikkat: çoğul kalan kelimeler', genis:true, p:'<b>clothes</b> ve <b>jeans</b> hep çoğuldur: These clothes <em>are</em> new. <b>shoes</b> çoğuldur; tekili <b>shoe</b> (bir tek ayakkabı).' }
+      ]
+    },
+    dilbilgisi:[
+      { tip:'secim', soru:'___ shoes are very cheap. (yakındaki, çoğul)', dogru:'These', yanlis:['This','That'], tr:'Bu ayakkabılar çok ucuz.', aciklama:'Yakındaki birden fazla şey için these.' },
+      { tip:'secim', soru:'___ bag over there is expensive. (uzaktaki, tekil)', dogru:'That', yanlis:['This','Those'], tr:'Oradaki çanta pahalı.', aciklama:'Uzaktaki tek bir şey için that.' },
+      { tip:'secim', soru:'How much ___ these jeans?', dogru:'are', yanlis:['is','do'], tr:'Bu kot pantolon ne kadar?', aciklama:'jeans çoğuldur: How much are…?' },
+      { tip:'secim', soru:'How much ___ this T-shirt?', dogru:'is', yanlis:['are','does'], tr:'Bu tişört ne kadar?', aciklama:'Tekil şey için How much is…?' },
+      { tip:'secim', soru:'I like ___ jacket in my hand. It\'s beautiful.', dogru:'this', yanlis:['these','those'], tr:'Elimdeki bu ceketi beğendim. Çok güzel.', aciklama:'Yakındaki tek bir şey için this.' },
+      { tip:'secim', soru:'___ I pay by card?', dogru:'Can', yanlis:['Do','Am'], tr:'Kartla ödeyebilir miyim?', aciklama:'Kibar istek: Can I + yalın fiil?' },
+      { tip:'secim', soru:'Hangi cümle doğru?', dogru:'How much are those shoes?', yanlis:['How much is those shoes?','How many are those shoes?'], tr:'Şu ayakkabılar ne kadar?', aciklama:'Fiyat için how much; çoğul isimle are.' },
+      { tip:'yaz', soru:'Look at ___ flowers over there! (uzaktaki, çoğul)', dogru:['those'], tr:'Oradaki çiçeklere bak!', aciklama:'Uzaktaki birden fazla şey için those.' },
+      { tip:'yaz', soru:'How much ___ that hat?', dogru:['is'], tr:'Şu şapka ne kadar?', aciklama:'hat tekildir: How much is…?' },
+      { tip:'yaz', soru:'___ I have a bag, please?', dogru:['Can','Could'], tr:'Bir poşet alabilir miyim, lütfen?', aciklama:'Kibar istek: Can I…? (Could I…? daha da kibar).' }
+    ],
+    okuma:{
+      baslik:'At the Market', avHedef:8,
+      paragraflar:[
+        "It is Saturday morning. Tom and his mother go to the [market|market]. They [buy|buy] fruit and vegetables there. The people at the market [sell|sell] good food, and it is not [expensive|expensive].",
+        "Then they go to a clothes [shop|shop]. Tom needs new [shoes|shoes] for school. He looks at the [price|price] of a pair of black shoes. 'How much are these shoes?' he asks. 'They are forty pounds,' says the woman. 'That is [cheap|cheap]!' says his mother.",
+        "His mother also buys some [clothes|clothes] and a small [bag|bag] for Tom's sister. She does not have much [money|money] with her, so she [pays|pay] by card. They go home happy."
+      ],
+      ceviri:[
+        "Cumartesi sabahı. Tom ve annesi pazara giderler. Orada meyve ve sebze alırlar. Pazardaki insanlar iyi yiyecekler satar ve pahalı değildir.",
+        "Sonra bir giyim mağazasına giderler. Tom'un okul için yeni ayakkabıya ihtiyacı var. Bir çift siyah ayakkabının fiyatına bakar. \"Bu ayakkabılar ne kadar?\" diye sorar. \"Kırk sterlin,\" der kadın. \"Bu ucuz!\" der annesi.",
+        "Annesi Tom'un kız kardeşi için de birkaç kıyafet ve küçük bir çanta alır. Yanında fazla parası yok, bu yüzden kartla öder. Eve mutlu dönerler."
+      ]
+    },
+    anlama:[
+      { soru:'When do Tom and his mother go to the market?', tr:'Tom ve annesi pazara ne zaman gider?', dogru:'On Saturday morning', yanlis:['On Sunday evening','On Friday afternoon'], kanit:'It is Saturday morning.' },
+      { soru:'What do they buy at the market?', tr:'Pazarda ne alırlar?', dogru:'Fruit and vegetables', yanlis:['Shoes and bags','Clothes and books'], kanit:'They buy fruit and vegetables there.' },
+      { soru:'The food at the market is expensive.', tr:'Pazardaki yiyecekler pahalıdır.', dy:true, dogru:'False', kanit:'The people at the market sell good food, and it is not expensive.' },
+      { soru:'Why does Tom need new shoes?', tr:'Tom neden yeni ayakkabıya ihtiyaç duyar?', dogru:'For school', yanlis:['For a party','For football'], kanit:'Tom needs new shoes for school.' },
+      { soru:'How much are the black shoes?', tr:'Siyah ayakkabılar ne kadar?', dogru:'Forty pounds', yanlis:['Fourteen pounds','Four pounds'], kanit:"'They are forty pounds,' says the woman." },
+      { soru:'Tom\'s mother pays by card.', tr:'Tom\'un annesi kartla öder.', dy:true, dogru:'True', kanit:'She does not have much money with her, so she pays by card.' },
+      { soru:'What does Tom\'s mother buy for Tom\'s sister?', tr:'Tom\'un annesi kız kardeşi için ne alır?', dogru:'Some clothes and a small bag', yanlis:['New shoes','A black jacket'], kanit:"His mother also buys some clothes and a small bag for Tom's sister." }
+    ],
+    ceviri:[
+      { tip:'yaz', tr:'Bu çanta ne kadar?', w:'bag', dogru:['How much is this bag?'] },
+      { tip:'yaz', tr:'Kartla ödeyebilir miyim?', w:'pay', dogru:['Can I pay by card?', 'Could I pay by card?'] },
+      { tip:'yaz', tr:'Bu ayakkabılar çok ucuz.', w:'cheap', dogru:['These shoes are very cheap.', 'These shoes are really cheap.'] },
+      { tip:'yaz', tr:'Pazardan meyve alırız.', w:'market', dogru:['We buy fruit at the market.', 'We buy fruit from the market.'] },
+      { tip:'yaz', tr:'O ceket çok pahalı.', w:'expensive', dogru:['That jacket is very expensive.', 'That jacket is too expensive.', 'That jacket is really expensive.'] },
+      { tip:'sirala', tr:'Kıyafetlerini internetten alır.', w:'clothes', parcalar:['She', 'buys', 'her clothes', 'online'], dogru:['She buys her clothes online.'] },
+      { tip:'sirala', tr:'Bu tişörtün fiyatı ne?', w:'price', parcalar:['What is', 'the price', 'of', 'this T-shirt'], dogru:['What is the price of this T-shirt?'] },
+      { tip:'sirala', tr:'Pazarda meyve satarlar.', w:'sell', parcalar:['They', 'sell', 'fruit', 'at the market'], dogru:['They sell fruit at the market.'] }
+    ]
+  },
+
+  /* ====================================================================
+     3. ünite · A1 · Ev ve yaşam — There is / There are, yer edatları
+     (Headway Beginner "Home sweet home"; MEB "Life in the House")
+     ==================================================================== */
+  'a1-ev': {
+    seviye:'A1', ad:'Ev ve yaşam', ing:'Home', sira:3,
+    aciklama:'Evini, odalarını ve eşyaların nerede olduğunu anlatmayı öğren.',
+    kelimeler:[
+      { id:'house',    ox:'A1', en:'house',    tr:'ev',                 ornek:'We live in a big house with a garden.',     ornekTr:'Bahçeli büyük bir evde yaşarız.' },
+      { id:'flat',     ox:'A1', en:'flat',     tr:'daire (apartman dairesi)', ornek:'My sister lives in a small flat in the city.', ornekTr:'Kız kardeşim şehirde küçük bir dairede yaşar.' },
+      { id:'bedroom',  ox:'A1', en:'bedroom',  tr:'yatak odası',        ornek:'There is a desk in my bedroom.',            ornekTr:'Yatak odamda bir çalışma masası var.' },
+      { id:'kitchen',  ox:'A1', en:'kitchen',  tr:'mutfak',             ornek:'My mother cooks dinner in the kitchen.',    ornekTr:'Annem akşam yemeğini mutfakta pişirir.' },
+      { id:'bathroom', ox:'A1', en:'bathroom', tr:'banyo',              ornek:'I take a shower in the bathroom.',          ornekTr:'Banyoda duş alırım.' },
+      { id:'garden',   ox:'A1', en:'garden',   tr:'bahçe',              ornek:'The children play football in the garden.', ornekTr:'Çocuklar bahçede futbol oynar.' },
+      { id:'table',    ox:'A1', en:'table',    tr:'masa',               ornek:'There are four chairs around the table.',   ornekTr:'Masanın etrafında dört sandalye var.' },
+      { id:'chair',    ox:'A1', en:'chair',    tr:'sandalye',           ornek:'Please sit on this chair.',                 ornekTr:'Lütfen bu sandalyeye otur.' },
+      { id:'bed',      ox:'A1', en:'bed',      tr:'yatak',              ornek:'My cat sleeps on my bed.',                  ornekTr:'Kedim yatağımda uyur.' },
+      { id:'window',   ox:'A1', en:'window',   tr:'pencere',            ornek:'Can you open the window, please?',          ornekTr:'Pencereyi açabilir misin, lütfen?' },
+      { id:'door',     ox:'A1', en:'door',     tr:'kapı',               ornek:'Please close the door when you go out.',    ornekTr:'Çıkarken lütfen kapıyı kapat.' },
+      { id:'wall',     ox:'A1', en:'wall',     tr:'duvar',              ornek:'There is a big picture on the wall.',       ornekTr:'Duvarda büyük bir resim var.' }
+    ],
+    cumleler:{
+      'house':    ['house',    ['chair','door','bed'],          '', 'house'],
+      'flat':     ['flat',     ['window','table','wall'],       '', 'flat'],
+      'bedroom':  ['bedroom',  ['door','window','chair'],       '', 'bedroom'],
+      'kitchen':  ['kitchen',  ['bed','chair','door'],          '', 'kitchen'],
+      'bathroom': ['bathroom', ['table','door','chair'],        '', 'bathroom'],
+      'garden':   ['garden',   ['bed','chair','table'],         '', 'garden'],
+      'table':    ['table',    ['door','window','wall'],        '', 'table'],
+      'chair':    ['chair',    ['window','door','kitchen'],     '', 'chair'],
+      'bed':      ['bed',      ['door','kitchen','bathroom'],   '', 'bed'],
+      'window':   ['window',   ['bed','table','chair'],         '', 'window'],
+      'door':     ['door',     ['bed','table','garden'],        '', 'door'],
+      'wall':     ['wall',     ['flat','garden','house'],       '', 'wall']
+    },
+    sozluk:{
+      'we':'biz', 'live':'yaşamak', 'lives':'yaşar (live)', 'in':'içinde, -de', 'a':'bir', 'big':'büyük', 'house':'ev', 'with':'ile, -li', 'garden':'bahçe',
+      'my':'benim', 'sister':'kız kardeş', 'small':'küçük', 'flat':'daire', 'the':'belirli tanımlık (Türkçede karşılığı yok)', 'city':'şehir', 'there':'orada; there is/are: var',
+      'is':'-dir (be)', 'are':'-dir (be, çoğul)', 'desk':'çalışma masası', 'bedroom':'yatak odası', 'mother':'anne', 'cooks':'pişirir (cook)', 'dinner':'akşam yemeği',
+      'kitchen':'mutfak', 'i':'ben', 'take':'almak', 'shower':'duş', 'bathroom':'banyo', 'children':'çocuklar', 'play':'oynamak', 'football':'futbol',
+      'four':'dört', 'chairs':'sandalyeler', 'chair':'sandalye', 'around':'etrafında', 'table':'masa', 'please':'lütfen', 'sit':'oturmak', 'on':'üstünde, -de',
+      'this':'bu', 'cat':'kedi', 'sleeps':'uyur (sleep)', 'bed':'yatak', 'can':'-ebilmek', 'you':'sen, siz', 'open':'açmak', 'window':'pencere', 'close':'kapatmak',
+      'door':'kapı', 'when':'-dığı zaman', 'go':'gitmek', 'out':'dışarı', 'picture':'resim', 'wall':'duvar', 'hello':'merhaba', "i'm":'ben …-im (I am)',
+      'ece':'Ece (kız ismi)', 'and':'ve', 'new':'yeni', 'it':'o (cansız)', 'not':'değil', 'but':'ama', 'love':'çok sevmek', 'three':'üç', 'rooms':'odalar',
+      'has':'sahip (have)', 'next':'next to: yanında', 'to':'-e, -a', 'under':'altında', 'opposite':'karşısında', 'two':'iki', "isn't":'değil, yok (is not)',
+      'some':'birkaç, biraz', 'flowers':'çiçekler', 'front':'in front of: önünde', 'of':'-in', 'loves':'çok sever (love)', 'home':'ev, yuva'
+    },
+    konu:{
+      baslik:'There is / There are ve yer edatları',
+      aciklama:'Bir yerde ne olduğunu (var / yok) ve eşyaların nerede durduğunu anlatırken kullanılır.',
+      kartlar:[
+        { baslik:'Var: There is / There are', p:'Tekil için <b>There is</b> (kısa: There\'s), çoğul için <b>There are</b>.',
+          satir:[['Tekil', '<em>There is</em> a bed in my room.'], ['Çoğul', '<em>There are</em> two windows in my room.']] },
+        { baslik:'Yok ve soru', p:'Olumsuz: <b>There isn\'t / There aren\'t</b>. Soru: <b>Is there…? / Are there…?</b>',
+          satir:[['Olumsuz', '<em>There isn\'t</em> a garden. <em>There aren\'t</em> any chairs.'], ['Soru', '<em>Is there</em> a bathroom upstairs? — Yes, there is.'], ['Soru (çoğul)', '<em>Are there</em> any flowers? — No, there aren\'t.']] },
+        { baslik:'Yer edatları (1)', p:'Bir şeyin nerede olduğunu söyler.',
+          satir:[['in · içinde', 'The cat is <em>in</em> the box.'], ['on · üstünde', 'The picture is <em>on</em> the wall.'], ['under · altında', 'The bag is <em>under</em> the table.']] },
+        { baslik:'Yer edatları (2)', p:'İki ya da daha çok şeye göre konum.',
+          satir:[['next to · yanında', 'The bed is <em>next to</em> the window.'], ['behind · arkasında', 'The garden is <em>behind</em> the house.'], ['between · arasında', 'The bathroom is <em>between</em> the kitchen and the bedroom.'], ['opposite · karşısında', 'The kitchen is <em>opposite</em> my bedroom.']] }
+      ]
+    },
+    dilbilgisi:[
+      { tip:'secim', soru:'There ___ a big garden behind the house.', dogru:'is', yanlis:['are','be'], tr:'Evin arkasında büyük bir bahçe var.', aciklama:'Tekil isimle There is.' },
+      { tip:'secim', soru:'There ___ three bedrooms in our flat.', dogru:'are', yanlis:['is','am'], tr:'Dairemizde üç yatak odası var.', aciklama:'Çoğul isimle There are.' },
+      { tip:'secim', soru:'___ there a bathroom upstairs?', dogru:'Is', yanlis:['Are','Do'], tr:'Üst katta banyo var mı?', aciklama:'Tekil soru: Is there…?' },
+      { tip:'secim', soru:'There ___ any chairs in the kitchen. (olumsuz, çoğul)', dogru:"aren't", yanlis:["isn't","don't"], tr:'Mutfakta hiç sandalye yok.', aciklama:"Çoğul olumsuz: There aren't (any)." },
+      { tip:'secim', soru:'The cat is ___ the bed. (yatağın altında)', dogru:'under', yanlis:['on','between'], tr:'Kedi yatağın altında.', aciklama:'under = altında.' },
+      { tip:'secim', soru:'The picture is ___ the wall. (duvarda)', dogru:'on', yanlis:['in','under'], tr:'Resim duvarda.', aciklama:'Duvarın yüzeyinde: on the wall.' },
+      { tip:'secim', soru:'The bathroom is ___ the kitchen and the bedroom. (arasında)', dogru:'between', yanlis:['next to','behind'], tr:'Banyo mutfakla yatak odasının arasında.', aciklama:'between … and … = … ile … arasında.' },
+      { tip:'yaz', soru:'There ___ two windows in my room.', dogru:['are'], tr:'Odamda iki pencere var.', aciklama:'Çoğul isimle There are.' },
+      { tip:'yaz', soru:'My desk is next ___ the window.', dogru:['to'], tr:'Çalışma masam pencerenin yanında.', aciklama:'next to = yanında (to unutulmaz).' },
+      { tip:'yaz', soru:'___ there a table in the garden?', dogru:['Is'], tr:'Bahçede masa var mı?', aciklama:'Tekil soru: Is there…?' }
+    ],
+    okuma:{
+      baslik:'My New Flat', avHedef:8,
+      paragraflar:[
+        "Hello! I'm Ece and this is my new [flat|flat]. It is not a big [house|house], but I love it. There are three rooms. My [bedroom|bedroom] is small, but it has a big [window|window].",
+        "There is a [bed|bed] next to the window and there is a desk under a picture on the [wall|wall]. The [kitchen|kitchen] is opposite my bedroom. There is a small [table|table] in the kitchen with two [chairs|chair].",
+        "The [bathroom|bathroom] is next to the kitchen. There isn't a [garden|garden], but there are some flowers in front of the [door|door]. My cat loves my new home!"
+      ],
+      ceviri:[
+        "Merhaba! Ben Ece ve bu benim yeni dairem. Büyük bir ev değil ama onu çok seviyorum. Üç oda var. Yatak odam küçük ama büyük bir penceresi var.",
+        "Pencerenin yanında bir yatak, duvardaki bir resmin altında da bir çalışma masası var. Mutfak yatak odamın karşısında. Mutfakta iki sandalyeli küçük bir masa var.",
+        "Banyo mutfağın yanında. Bahçe yok ama kapının önünde birkaç çiçek var. Kedim yeni evimizi çok seviyor!"
+      ]
+    },
+    anlama:[
+      { soru:'Ece lives in a big house.', tr:'Ece büyük bir evde yaşar.', dy:true, dogru:'False', kanit:'It is not a big house, but I love it.' },
+      { soru:'How many rooms are there in the flat?', tr:'Dairede kaç oda var?', dogru:'Three', yanlis:['Two','Four'], kanit:'There are three rooms.' },
+      { soru:'Where is the bed?', tr:'Yatak nerede?', dogru:'Next to the window', yanlis:['Under the window','In the kitchen'], kanit:'There is a bed next to the window and there is a desk under a picture on the wall.' },
+      { soru:'Where is the kitchen?', tr:'Mutfak nerede?', dogru:'Opposite the bedroom', yanlis:['Next to the garden','Behind the bathroom'], kanit:'The kitchen is opposite my bedroom.' },
+      { soru:'How many chairs are there in the kitchen?', tr:'Mutfakta kaç sandalye var?', dogru:'Two', yanlis:['Three','Four'], kanit:'There is a small table in the kitchen with two chairs.' },
+      { soru:'There is a garden.', tr:'Bir bahçe var.', dy:true, dogru:'False', kanit:"There isn't a garden, but there are some flowers in front of the door." },
+      { soru:'Where are the flowers?', tr:'Çiçekler nerede?', dogru:'In front of the door', yanlis:['In the bathroom','On the table'], kanit:"There isn't a garden, but there are some flowers in front of the door." }
+    ],
+    ceviri:[
+      { tip:'yaz', tr:'Evimizde üç yatak odası var.', w:'bedroom', dogru:['There are three bedrooms in our house.', 'Our house has three bedrooms.'] },
+      { tip:'yaz', tr:'Mutfakta bir masa var.', w:'table', dogru:['There is a table in the kitchen.', "There's a table in the kitchen."] },
+      { tip:'yaz', tr:'Kedi yatağın altında.', w:'bed', dogru:['The cat is under the bed.'] },
+      { tip:'yaz', tr:'Banyo mutfağın yanında.', w:'bathroom', dogru:['The bathroom is next to the kitchen.'] },
+      { tip:'yaz', tr:'Bahçede bir ağaç var mı?', w:'garden', dogru:['Is there a tree in the garden?'] },
+      { tip:'sirala', tr:'Duvarda büyük bir resim var.', w:'wall', parcalar:['There is', 'a big picture', 'on', 'the wall'], dogru:['There is a big picture on the wall.'] },
+      { tip:'sirala', tr:'Pencereyi açabilir misin?', w:'window', parcalar:['Can', 'you', 'open', 'the window'], dogru:['Can you open the window?'] },
+      { tip:'sirala', tr:'Küçük bir dairede yaşıyoruz.', w:'flat', parcalar:['We', 'live', 'in', 'a small flat'], dogru:['We live in a small flat.'] }
+    ]
+  },
+
+  /* ====================================================================
+     4. ünite · A1 · Şehir ve ulaşım — yol tarifi (emir cümleleri), yer edatları, by bus/train
+     (Headway Beginner "Places in a town / directions" ve "Forms of transport"; MEB "Life in the City")
+     ==================================================================== */
+  'a1-sehir': {
+    seviye:'A1', ad:'Şehir ve ulaşım', ing:'Town and Transport', sira:4,
+    aciklama:'Şehirdeki yerleri, yol tarifini ve ulaşım araçlarını öğren.',
+    kelimeler:[
+      { id:'street',   ox:'A1', en:'street',   tr:'sokak, cadde',   ornek:'Our school is in a quiet street.',           ornekTr:'Okulumuz sakin bir sokakta.' },
+      { id:'station',  ox:'A1', en:'station',  tr:'istasyon, gar',  ornek:'The train leaves from the station at nine.', ornekTr:'Tren istasyondan dokuzda kalkar.' },
+      { id:'hospital', ox:'A1', en:'hospital', tr:'hastane',        ornek:'My father is a doctor at the hospital.',     ornekTr:'Babam hastanede doktor.' },
+      { id:'bank',     ox:'A1', en:'bank',     tr:'banka',          ornek:'I need some money. Where is the bank?',      ornekTr:'Biraz paraya ihtiyacım var. Banka nerede?' },
+      { id:'museum',   ox:'A1', en:'museum',   tr:'müze',           ornek:'We visit the history museum on Sunday.',     ornekTr:'Pazar günü tarih müzesini ziyaret ederiz.' },
+      { id:'park',     ox:'A1', en:'park',     tr:'park',           ornek:"Let's walk in the park after lunch.",        ornekTr:'Öğle yemeğinden sonra parkta yürüyelim.' },
+      { id:'train',    ox:'A1', en:'train',    tr:'tren',           ornek:'I go to Ankara by train.',                   ornekTr:'Ankara\'ya trenle giderim.' },
+      { id:'taxi',     ox:'A1', en:'taxi',     tr:'taksi',          ornek:"It's late. Let's take a taxi.",              ornekTr:'Geç oldu. Taksiye binelim.' },
+      { id:'turn',     ox:'A1', en:'turn',     tr:'dönmek',         ornek:'Turn left at the hospital.',                 ornekTr:'Hastanede sola dön.' },
+      { id:'left',     ox:'A1', en:'left',     tr:'sol, sola',      ornek:'The station is on the left.',                ornekTr:'İstasyon solda.' },
+      { id:'right',    ox:'A1', en:'right',    tr:'sağ, sağa',      ornek:'Turn right and the bank is next to the park.', ornekTr:'Sağa dön; banka parkın yanında.' },
+      { id:'near',     ox:'A1', en:'near',     tr:'yakın, yakınında', ornek:'Is there a bank near here?',               ornekTr:'Buralarda bir banka var mı?' }
+    ],
+    cumleler:{
+      'street':   ['street',   ['left','near','turn'],         '',     'street'],
+      'station':  ['station',  ['near','left','turn'],         '',     'station'],
+      'hospital': ['hospital', ['near','right','turn'],        '',     'hospital'],
+      'bank':     ['bank',     ['left','near','turn'],         '',     'bank'],
+      'museum':   ['museum',   ['turn','right','near'],        '',     'museum'],
+      'park':     ['park',     ['near','left','turn'],         '',     'park'],
+      'train':    ['train',    ['street','park','museum'],     '',     'train'],
+      'taxi':     ['taxi',     ['museum','near','left'],       '',     'taxi'],
+      'turn':     ['Turn',     ['Turns','Turning','To turn'],  'turn', 'Turn'],
+      'left':     ['left',     ['near','turn','taxi'],         '',     'left'],
+      'right':    ['right',    ['near','street','station'],    '',     'right'],
+      'near':     ['near',     ['left','turn','train'],        '',     'near']
+    },
+    sozluk:{
+      'our':'bizim', 'school':'okul', 'is':'-dir (be)', 'in':'içinde, -de', 'a':'bir', 'quiet':'sakin, sessiz', 'street':'sokak', 'the':'belirli tanımlık (Türkçede karşılığı yok)',
+      'train':'tren', 'leaves':'ayrılır, kalkar (leave)', 'from':'-den, -dan', 'station':'istasyon', 'at':'-de, -da', 'nine':'dokuz', 'my':'benim', 'father':'baba',
+      'doctor':'doktor', 'hospital':'hastane', 'i':'ben', 'need':'ihtiyacı olmak', 'some':'biraz', 'money':'para', 'where':'nerede', 'bank':'banka', 'we':'biz',
+      'visit':'ziyaret etmek', 'history':'tarih', 'museum':'müze', 'on':'üstünde, -de', 'sunday':'pazar', "let's":'hadi …-elim (let us)', 'walk':'yürümek',
+      'park':'park', 'after':'-den sonra', 'lunch':'öğle yemeği', 'go':'gitmek', 'to':'-e, -a', 'ankara':'Ankara', 'by':'ile (taşıtla)', "it's":'o …-dir (it is)',
+      'late':'geç', 'take':'almak; (taşıta) binmek', 'taxi':'taksi', 'turn':'dönmek', 'left':'sol, sola', 'right':'sağ, sağa', 'and':'ve', 'next':'next to: yanında',
+      'there':'there is: var', 'near':'yakınında', 'here':'burada', 'name':'isim', 'can':'Can (erkek ismi); -ebilmek', 'live':'yaşamak', 'small':'küçük', 'town':'kasaba, şehir',
+      'centre':'merkez', 'every':'her', 'morning':'sabah', 'but':'ama', 'goes':'gider (go)', 'work':'iş', 'big':'büyük', 'today':'bugün', 'tourist':'turist',
+      'asks':'sorar (ask)', 'me':'bana', 'hello':'merhaba', 'say':'demek', 'past':'önünden geçerek', 'opposite':'karşısında', 'evening':'akşam', 'mother':'anne',
+      'tired':'yorgun', 'so':'bu yüzden', 'home':'eve', 'stops':'durur (stop)', 'turns':'döner (turn)', 'front':'in front of: önünde', 'of':'-in', 'house':'ev'
+    },
+    konu:{
+      baslik:'Yol tarifi ve ulaşım',
+      aciklama:'Bir yerin nerede olduğunu sorarken ve tarif ederken emir cümleleri ile yer edatları kullanılır.',
+      kartlar:[
+        { baslik:'Yol sorma', p:'Bir yeri sorarken:',
+          satir:[['Nerede?', '<em>Where is</em> the museum?'], ['Yakında var mı?', '<em>Is there</em> a bank <em>near</em> here?'], ['Nasıl giderim?', '<em>How do I get to</em> the station?']] },
+        { baslik:'Yol tarifi (emir cümlesi)', p:'Emir cümlesi <b>yalın fiil</b> ile başlar; özne yoktur. Olumsuzu <b>Don\'t</b> + yalın fiil.',
+          satir:[['Dön', '<em>Turn</em> left / <em>Turn</em> right.'], ['Geç', '<em>Go past</em> the bank.'], ['Sokağa gir', '<em>Take</em> the first street on the left.'], ['Olumsuz', '<em>Don\'t</em> turn left here.']] },
+        { baslik:'Konum söyleme', p:'Yeri tarif ederken:',
+          satir:[['Solda / sağda', 'It\'s <em>on the left</em> / <em>on the right</em>.'], ['Karşısında', 'The museum is <em>opposite</em> the hospital.'], ['Arasında', 'The park is <em>between</em> the school <em>and</em> the bank.'], ['Yanında', 'The station is <em>next to</em> a big park.']] },
+        { baslik:'Ulaşım: by + taşıt', p:'Taşıtla gidişte <b>by</b> kullanılır, artikel (a / the) gelmez. Yürüyerek: <b>on foot</b>.',
+          satir:[['Taşıtla', 'I go to work <em>by</em> bus / <em>by</em> train / <em>by</em> taxi.'], ['Yürüyerek', 'I go to school <em>on foot</em>. (= I walk to school.)']] }
+      ]
+    },
+    dilbilgisi:[
+      { tip:'secim', soru:'___ left at the park.', dogru:'Turn', yanlis:['Turns','Turning'], tr:'Parkta sola dön.', aciklama:'Emir cümlesi yalın fiille başlar.' },
+      { tip:'secim', soru:'Take the ___ street on the right. (birinci)', dogru:'first', yanlis:['one','once'], tr:'Sağdaki ilk sokağa gir.', aciklama:'Sıra: first (birinci), second (ikinci).' },
+      { tip:'secim', soru:'The bank is ___ the museum. (karşısında)', dogru:'opposite', yanlis:['between','under'], tr:'Banka müzenin karşısında.', aciklama:'opposite = karşısında.' },
+      { tip:'secim', soru:'I go to work ___ bus.', dogru:'by', yanlis:['on','with'], tr:'İşe otobüsle giderim.', aciklama:'Taşıtla: by bus, by train.' },
+      { tip:'secim', soru:'I go to school ___ foot. (yürüyerek)', dogru:'on', yanlis:['by','with'], tr:'Okula yürüyerek giderim.', aciklama:'Yürüyerek: on foot.' },
+      { tip:'secim', soru:'___ is the hospital? — It\'s next to the station.', dogru:'Where', yanlis:['What','Who'], tr:'Hastane nerede? — İstasyonun yanında.', aciklama:'Yer sorarken Where.' },
+      { tip:'secim', soru:'Hangi cümle doğru?', dogru:"Don't turn left. Turn right.", yanlis:['Not turn left. Turn right.',"Don't turns left. Turn right."], tr:'Sola dönme. Sağa dön.', aciklama:"Olumsuz emir: Don't + yalın fiil." },
+      { tip:'yaz', soru:'___ right at the station. (dönmek)', dogru:['Turn'], tr:'İstasyonda sağa dön.', aciklama:'Emir cümlesi yalın fiille başlar.' },
+      { tip:'yaz', soru:'The park is between the school ___ the bank.', dogru:['and'], tr:'Park okulla bankanın arasında.', aciklama:'between … and …' },
+      { tip:'yaz', soru:'We go to İzmir ___ train.', dogru:['by'], tr:'İzmir\'e trenle gideriz.', aciklama:'Taşıtla: by train.' }
+    ],
+    okuma:{
+      baslik:'Welcome to My Town', avHedef:8,
+      paragraflar:[
+        "My name is Can and I live in a small town. My school is in a quiet [street|street] [near|near] the town centre. Every morning I walk to school, but my father goes to work by [train|train]. The [station|station] is next to a big [park|park].",
+        "Today a tourist asks me, 'Hello, where is the [museum|museum]?' I say, 'Go past the [bank|bank] and [turn|turn] [left|left]. The museum is opposite the [hospital|hospital].'",
+        "In the evening my mother is tired, so we take a [taxi|taxi] home. The taxi turns [right|right] at the park and stops in front of our house."
+      ],
+      ceviri:[
+        "Benim adım Can ve küçük bir kasabada yaşıyorum. Okulum, kasaba merkezinin yakınında sakin bir sokakta. Her sabah okula yürüyorum ama babam işe trenle gidiyor. İstasyon büyük bir parkın yanında.",
+        "Bugün bir turist bana \"Merhaba, müze nerede?\" diye soruyor. \"Bankanın önünden geç ve sola dön. Müze hastanenin karşısında,\" diyorum.",
+        "Akşam annem yorgun, bu yüzden eve taksiyle dönüyoruz. Taksi parkta sağa dönüyor ve evimizin önünde duruyor."
+      ]
+    },
+    anlama:[
+      { soru:"Where is Can's school?", tr:'Can\'ın okulu nerede?', dogru:'In a quiet street near the town centre', yanlis:['Next to the hospital','Opposite the bank'], kanit:'My school is in a quiet street near the town centre.' },
+      { soru:'How does Can go to school?', tr:'Can okula nasıl gider?', dogru:'He walks.', yanlis:['By bus.','By train.'], kanit:'Every morning I walk to school, but my father goes to work by train.' },
+      { soru:"Can's father goes to work by bus.", tr:'Can\'ın babası işe otobüsle gider.', dy:true, dogru:'False', kanit:'Every morning I walk to school, but my father goes to work by train.' },
+      { soru:'What is next to the park?', tr:'Parkın yanında ne var?', dogru:'The station', yanlis:['The museum','The bank'], kanit:'The station is next to a big park.' },
+      { soru:'Where is the museum?', tr:'Müze nerede?', dogru:'Opposite the hospital', yanlis:['Next to the station','Behind the bank'], kanit:"The museum is opposite the hospital.'" },
+      { soru:'Why do they take a taxi home?', tr:'Eve neden taksiyle dönerler?', dogru:"Can's mother is tired.", yanlis:['It is raining.','The bus is late.'], kanit:'In the evening my mother is tired, so we take a taxi home.' },
+      { soru:'The taxi stops in front of the museum.', tr:'Taksi müzenin önünde durur.', dy:true, dogru:'False', kanit:'The taxi turns right at the park and stops in front of our house.' }
+    ],
+    ceviri:[
+      { tip:'yaz', tr:'İstasyonda sola dön.', w:'left', dogru:['Turn left at the station.'] },
+      { tip:'yaz', tr:'Buralarda bir hastane var mı?', w:'near', dogru:['Is there a hospital near here?'] },
+      { tip:'yaz', tr:'Babam işe trenle gider.', w:'train', dogru:['My father goes to work by train.', 'My dad goes to work by train.'] },
+      { tip:'yaz', tr:'Müze bankanın karşısında.', w:'museum', dogru:['The museum is opposite the bank.'] },
+      { tip:'yaz', tr:'Taksiye binelim.', w:'taxi', dogru:["Let's take a taxi.", 'Let us take a taxi.'] },
+      { tip:'sirala', tr:'Parkta sağa dön.', w:'right', parcalar:['Turn', 'right', 'at', 'the park'], dogru:['Turn right at the park.'] },
+      { tip:'sirala', tr:'Banka sakin bir sokakta.', w:'street', parcalar:['The bank', 'is', 'in', 'a quiet street'], dogru:['The bank is in a quiet street.'] },
+      { tip:'sirala', tr:'Hastane istasyonun yanında.', w:'station', parcalar:['The hospital', 'is', 'next to', 'the station'], dogru:['The hospital is next to the station.'] }
+    ]
+  },
+
+  /* ====================================================================
+     5. ünite · A1 · Sosyal yaşam — can / can't, like / love / hate + -ing, davetler
+     (Headway Beginner "We can do it!" ve "Weekend activities")
+     ==================================================================== */
+  'a1-sosyal': {
+    seviye:'A1', ad:'Sosyal yaşam', ing:'Free Time and Friends', sira:5,
+    aciklama:'Boş zaman etkinliklerini, neler yapabildiğini ve davetleri anlatmayı öğren.',
+    kelimeler:[
+      { id:'meet',      ox:'A1', en:'meet',      tr:'buluşmak, tanışmak', ornek:"Let's meet at the cafe at five.",             ornekTr:'Saat beşte kafede buluşalım.' },
+      { id:'visit',     ox:'A1', en:'visit',     tr:'ziyaret etmek',      ornek:'We visit our grandparents every Sunday.',     ornekTr:'Her pazar büyükanne ve büyükbabamızı ziyaret ederiz.' },
+      { id:'party',     ox:'A1', en:'party',     tr:'parti',              ornek:'Would you like to come to my party?',         ornekTr:'Partime gelmek ister misin?' },
+      { id:'birthday',  ox:'A1', en:'birthday',  tr:'doğum günü',         ornek:'My birthday is in June.',                     ornekTr:'Doğum günüm haziranda.' },
+      { id:'weekend',   ox:'A1', en:'weekend',   tr:'hafta sonu',         ornek:'What do you do at the weekend?',              ornekTr:'Hafta sonu ne yaparsın?' },
+      { id:'cinema',    ox:'A1', en:'cinema',    tr:'sinema',             ornek:"Let's go to the cinema tonight.",             ornekTr:'Bu akşam sinemaya gidelim.' },
+      { id:'concert',   ox:'A1', en:'concert',   tr:'konser',             ornek:'We listen to music at the concert.',          ornekTr:'Konserde müzik dinleriz.' },
+      { id:'dance',     ox:'A1', en:'dance',     tr:'dans etmek',         ornek:'My sister can dance very well.',              ornekTr:'Kız kardeşim çok iyi dans edebilir.' },
+      { id:'swim',      ox:'A1', en:'swim',      tr:'yüzmek',             ornek:"I can't swim, but I love the beach.",         ornekTr:'Yüzemem ama plajı çok severim.' },
+      { id:'play',      ox:'A1', en:'play',      tr:'oynamak; (çalgı) çalmak', ornek:'He plays the guitar in a band.',         ornekTr:'Bir müzik grubunda gitar çalar.' },
+      { id:'game',      ox:'A1', en:'game',      tr:'oyun',               ornek:'Do you want to play a computer game?',        ornekTr:'Bilgisayar oyunu oynamak ister misin?' },
+      { id:'free-time', ox:'A1', en:'free time', tr:'boş zaman',          ornek:'In my free time, I read books.',              ornekTr:'Boş zamanımda kitap okurum.' }
+    ],
+    cumleler:{
+      'meet':      ['meet',      ['meets','meeting','to meet'],      'meet',  'meet'],
+      'visit':     ['visit',     ['visits','visiting','to visit'],   'visit', 'visit'],
+      'party':     ['party',     ['dance','swim','play'],            '',      'party'],
+      'birthday':  ['birthday',  ['dance','meet','swim'],            '',      'birthday'],
+      'weekend':   ['weekend',   ['swim','dance','meet'],            '',      'weekend'],
+      'cinema':    ['cinema',    ['swim','dance','visit'],           '',      'cinema'],
+      'concert':   ['concert',   ['swim','meet','visit'],            '',      'concert'],
+      'dance':     ['dance',     ['dances','dancing','to dance'],    'dance', 'dance'],
+      'swim':      ['swim',      ['swims','swimming','to swim'],     'swim',  'swim'],
+      'play':      ['plays',     ['play','playing','to play'],       'play',  'plays'],
+      'game':      ['game',      ['party','concert','weekend'],      '',      'game'],
+      'free-time': ['free time', ['weekend','birthday','party'],     '',      'free time']
+    },
+    sozluk:{
+      "let's":'hadi …-elim (let us)', 'meet':'buluşmak', 'at':'-de, -da', 'the':'belirli tanımlık (Türkçede karşılığı yok)', 'cafe':'kafe', 'five':'beş', 'we':'biz',
+      'visit':'ziyaret etmek', 'our':'bizim', 'grandparents':'büyükanne ve büyükbaba', 'every':'her', 'sunday':'pazar', 'would':'would like: ister misin / isterim',
+      'you':'sen, siz', 'like':'sevmek; would like: istemek', 'to':'-e, -a; -mek', 'come':'gelmek', 'my':'benim', 'party':'parti', 'birthday':'doğum günü', 'is':'-dir (be)',
+      'in':'içinde, -de', 'june':'haziran', 'what':'ne', 'do':'yapmak', 'weekend':'hafta sonu', 'go':'gitmek', 'cinema':'sinema', 'tonight':'bu akşam',
+      'listen':'dinlemek', 'music':'müzik', 'concert':'konser', 'sister':'kız kardeş', 'can':'-ebilmek', 'dance':'dans etmek', 'very':'çok', 'well':'iyi',
+      "can't":'-emez (cannot)', 'swim':'yüzmek', 'but':'ama', 'i':'ben', 'love':'çok sevmek', 'beach':'plaj', 'he':'o (erkek)', 'plays':'oynar, çalar (play)',
+      'guitar':'gitar', 'a':'bir', 'band':'müzik grubu', 'want':'istemek', 'play':'oynamak', 'computer':'bilgisayar', 'game':'oyun', 'free':'boş, serbest',
+      'time':'zaman', 'read':'okumak', 'books':'kitaplar', 'hi':'merhaba', "i'm":'ben …-im (I am)', 'zeynep':'Zeynep (kız ismi)', 'and':'ve', 'sixteen':'on altı',
+      'on':'-de, -da (günlerle)', 'saturday':'cumartesi', 'morning':'sabah', 'friends':'arkadaşlar', 'park':'park', 'tennis':'tenis', 'so':'bu yüzden',
+      "don't":'yapmam (do not)', 'pool':'havuz', 'evening':'akşam', 'there':'there is: var', 'friend':'arkadaş', "elif's":'Elif\'in', 'house':'ev', "it's":'o …-dir (it is)',
+      'her':'onun (kadın)', 'eat':'yemek', 'cake':'pasta', 'lot':'a lot: çok', 'brother':'erkek kardeş', 'all':'bütün', 'afternoon':'öğleden sonra', 'with':'ile',
+      'cousin':'kuzen', 'or':'ya da', 'home':'ev', 'tired':'yorgun', 'night':'gece', 'happy':'mutlu'
+    },
+    konu:{
+      baslik:'can / can\'t, like + -ing ve davetler',
+      aciklama:'Neler yapabildiğini, nelerden hoşlandığını anlatırken ve birini bir yere davet ederken kullanılır.',
+      kartlar:[
+        { baslik:'can / can\'t (yapabilmek)', p:'<b>can / can\'t + yalın fiil</b>. Bütün öznelerle aynıdır; -s almaz.',
+          satir:[['Olumlu', 'She <em>can</em> dance very well.'], ['Olumsuz', 'I <em>can\'t</em> swim.'], ['Soru', '<em>Can</em> you play the guitar? — Yes, I can. / No, I can\'t.']] },
+        { baslik:'like / love / hate + -ing', p:'Bir etkinlikten hoşlanmayı anlatırken fiile <b>-ing</b> eklenir.',
+          satir:[['Severim', 'I <em>like</em> read<em>ing</em> books.'], ['Çok severim', 'We <em>love</em> danc<em>ing</em>.'], ['Nefret ederim', 'He <em>hates</em> get<em>ting</em> up early.']] },
+        { baslik:'Davet etme', p:'<b>Would you like to + yalın fiil?</b> kibar bir davettir. <b>Let\'s + yalın fiil</b> öneridir.',
+          satir:[['Davet', '<em>Would you like to</em> come to my party?'], ['Öneri', '<em>Let\'s</em> go to the cinema!']] },
+        { baslik:'Davete cevap', p:'Kabul ya da kibar ret:',
+          satir:[['Kabul', '<em>I\'d love to!</em> / <em>Yes, great!</em>'], ['Ret', '<em>Sorry, I can\'t.</em> I\'m busy.']] }
+      ]
+    },
+    dilbilgisi:[
+      { tip:'secim', soru:'She can ___ the piano very well.', dogru:'play', yanlis:['plays','playing'], tr:'Çok iyi piyano çalabilir.', aciklama:'can + yalın fiil (-s almaz).' },
+      { tip:'secim', soru:"I ___ swim. I'm afraid of the water.", dogru:"can't", yanlis:["don't can",'not can'], tr:'Yüzemem. Sudan korkarım.', aciklama:"Olumsuz: can't + yalın fiil." },
+      { tip:'secim', soru:'___ you speak English?', dogru:'Can', yanlis:['Do can','Are'], tr:'İngilizce konuşabilir misin?', aciklama:'Soru: Can + özne + yalın fiil?' },
+      { tip:'secim', soru:'I love ___ to music.', dogru:'listening', yanlis:['listen','listens'], tr:'Müzik dinlemeyi çok severim.', aciklama:'love / like / hate + -ing.' },
+      { tip:'secim', soru:'Would you like ___ to the cinema?', dogru:'to come', yanlis:['come','coming'], tr:'Sinemaya gelmek ister misin?', aciklama:'Would you like to + yalın fiil?' },
+      { tip:'secim', soru:'___ go to the park! (öneri)', dogru:"Let's", yanlis:['Let','Shall'], tr:'Hadi parka gidelim!', aciklama:"Öneri: Let's + yalın fiil." },
+      { tip:'secim', soru:'"Would you like to come to my party?" Hangi cevap doğru?', dogru:"I'd love to!", yanlis:['Yes, I like.','Yes, I would like.'], tr:'"Partime gelmek ister misin?"', aciklama:"Davete \"I'd love to!\" ya da \"Sorry, I can't.\" ile cevap verilir." },
+      { tip:'yaz', soru:'He ___ cook. He always eats in restaurants. (olumsuz, can)', dogru:["can't",'cannot','can not'], tr:'Yemek yapamaz. Hep restoranda yer.', aciklama:"can'in olumsuzu: can't (cannot)." },
+      { tip:'yaz', soru:'We hate ___ early at the weekend. (get up)', dogru:['getting up'], tr:'Hafta sonu erken kalkmaktan nefret ederiz.', aciklama:'hate + -ing: getting up (get → getting).' },
+      { tip:'yaz', soru:'___ you like to play tennis on Saturday?', dogru:['Would'], tr:'Cumartesi tenis oynamak ister misin?', aciklama:'Davet: Would you like to…?' }
+    ],
+    okuma:{
+      baslik:'A Busy Weekend', avHedef:8,
+      paragraflar:[
+        "Hi, I'm Zeynep and I'm sixteen. I love the [weekend|weekend]! On Saturday morning, I [meet|meet] my friends in the park and we [play|play] tennis. I can't [swim|swim] very well, so I don't go to the pool.",
+        "On Saturday evening, there is a [party|party] at my friend Elif's house. It's her [birthday|birthday]! We listen to music, eat cake and [dance|dance] a lot. Her brother plays a computer [game|game] all evening.",
+        "On Sunday, we [visit|visit] my grandparents. In the afternoon, I go to a [concert|concert] with my cousin, or we go to the [cinema|cinema]. In my [free time|free-time] at home, I read books. I'm tired on Sunday night, but I'm happy!"
+      ],
+      ceviri:[
+        "Merhaba, ben Zeynep ve on altı yaşındayım. Hafta sonunu çok seviyorum! Cumartesi sabahı arkadaşlarımla parkta buluşuyorum ve tenis oynuyoruz. Çok iyi yüzemiyorum, bu yüzden havuza gitmiyorum.",
+        "Cumartesi akşamı arkadaşım Elif'in evinde bir parti var. Onun doğum günü! Müzik dinliyoruz, pasta yiyoruz ve çok dans ediyoruz. Erkek kardeşi bütün akşam bilgisayar oyunu oynuyor.",
+        "Pazar günü büyükanne ve büyükbabamı ziyaret ediyoruz. Öğleden sonra kuzenimle bir konsere gidiyorum ya da sinemaya gidiyoruz. Evdeki boş zamanımda kitap okuyorum. Pazar gecesi yorgunum ama mutluyum!"
+      ]
+    },
+    anlama:[
+      { soru:'How old is Zeynep?', tr:'Zeynep kaç yaşında?', dogru:'Sixteen', yanlis:['Fifteen','Six'], kanit:"Hi, I'm Zeynep and I'm sixteen." },
+      { soru:'What does Zeynep do on Saturday morning?', tr:'Zeynep cumartesi sabahı ne yapar?', dogru:'She plays tennis with her friends.', yanlis:['She swims in the pool.','She visits her grandparents.'], kanit:'On Saturday morning, I meet my friends in the park and we play tennis.' },
+      { soru:'Zeynep can swim very well.', tr:'Zeynep çok iyi yüzebilir.', dy:true, dogru:'False', kanit:"I can't swim very well, so I don't go to the pool." },
+      { soru:"Why is there a party at Elif's house?", tr:'Elif\'in evinde neden parti var?', dogru:"It's Elif's birthday.", yanlis:["It's the weekend.","It's a concert."], kanit:"It's her birthday!" },
+      { soru:'Who plays a computer game all evening?', tr:'Bütün akşam kim bilgisayar oyunu oynar?', dogru:"Elif's brother", yanlis:['Zeynep',"Zeynep's cousin"], kanit:'Her brother plays a computer game all evening.' },
+      { soru:'Zeynep visits her grandparents on Sunday.', tr:'Zeynep pazar günü büyükanne ve büyükbabasını ziyaret eder.', dy:true, dogru:'True', kanit:'On Sunday, we visit my grandparents.' },
+      { soru:'How does Zeynep feel on Sunday night?', tr:'Zeynep pazar gecesi nasıl hisseder?', dogru:'Tired but happy', yanlis:['Sad','Bored'], kanit:"I'm tired on Sunday night, but I'm happy!" }
+    ],
+    ceviri:[
+      { tip:'yaz', tr:'Yüzemem.', w:'swim', dogru:["I can't swim.", 'I cannot swim.', 'I can not swim.'] },
+      { tip:'yaz', tr:'Partime gelmek ister misin?', w:'party', dogru:['Would you like to come to my party?'] },
+      { tip:'yaz', tr:'Hafta sonu arkadaşlarımla buluşurum.', w:'meet', dogru:['I meet my friends at the weekend.', 'At the weekend, I meet my friends.', 'I meet my friends on the weekend.', 'On the weekend, I meet my friends.', 'I meet my friends at weekends.'] },
+      { tip:'yaz', tr:'Doğum günüm mayısta.', w:'birthday', dogru:['My birthday is in May.'] },
+      { tip:'yaz', tr:'Bu akşam sinemaya gidelim.', w:'cinema', dogru:["Let's go to the cinema tonight.", "Tonight, let's go to the cinema.", "Let's go to the cinema this evening.", "Let's go to the cinema tonight!"] },
+      { tip:'sirala', tr:'Kız kardeşim çok iyi dans edebilir.', w:'dance', parcalar:['My sister', 'can', 'dance', 'very well'], dogru:['My sister can dance very well.'] },
+      { tip:'sirala', tr:'Boş zamanımda kitap okurum.', w:'free-time', parcalar:['In my', 'free time', 'I', 'read books'], dogru:['In my free time, I read books.', 'I read books in my free time.'] },
+      { tip:'sirala', tr:'Her pazar büyükanne ve büyükbabamızı ziyaret ederiz.', w:'visit', parcalar:['We', 'visit', 'our grandparents', 'every Sunday'], dogru:['We visit our grandparents every Sunday.', 'Every Sunday we visit our grandparents.'] }
+    ]
+  },
+
+  /* ====================================================================
+     6. ünite · A1 · Yiyecekler — would like, some / any, sayılabilen / sayılamayan
+     (Headway Beginner "Thank you very much!": would like, some and any, In a café)
+     ==================================================================== */
+  'a1-yiyecek': {
+    seviye:'A1', ad:'Yiyecekler', ing:'Food and Drink', sira:6,
+    aciklama:'Yiyecek ve içecekleri, kafede sipariş vermeyi ve some / any kullanmayı öğren.',
+    kelimeler:[
+      { id:'bread',     ox:'A1', en:'bread',     tr:'ekmek',               ornek:'Can I have some bread, please?',           ornekTr:'Biraz ekmek alabilir miyim, lütfen?' },
+      { id:'cheese',    ox:'A1', en:'cheese',    tr:'peynir',              ornek:"I'd like a cheese sandwich, please.",      ornekTr:'Peynirli bir sandviç istiyorum, lütfen.' },
+      { id:'egg',       ox:'A1', en:'egg',       tr:'yumurta',             ornek:'My brother eats two eggs every morning.',  ornekTr:'Erkek kardeşim her sabah iki yumurta yer.' },
+      { id:'fruit',     ox:'A1', en:'fruit',     tr:'meyve',               ornek:'Fruit is good for your health.',           ornekTr:'Meyve sağlığın için iyidir.' },
+      { id:'vegetable', ox:'A1', en:'vegetable', tr:'sebze',               ornek:'Carrots and potatoes are vegetables.',     ornekTr:'Havuç ve patates sebzedir.' },
+      { id:'chicken',   ox:'A1', en:'chicken',   tr:'tavuk',               ornek:'We have chicken and rice for dinner.',     ornekTr:'Akşam yemeğinde tavuk ve pilav yeriz.' },
+      { id:'rice',      ox:'A1', en:'rice',      tr:'pirinç, pilav',       ornek:'Turkish people often eat rice with meat.', ornekTr:'Türkler pilavı sık sık etle yer.' },
+      { id:'soup',      ox:'A1', en:'soup',      tr:'çorba',               ornek:'This tomato soup is delicious.',           ornekTr:'Bu domates çorbası çok lezzetli.' },
+      { id:'juice',     ox:'A1', en:'juice',     tr:'meyve suyu',          ornek:'Would you like some orange juice?',        ornekTr:'Biraz portakal suyu ister misin?' },
+      { id:'hungry',    ox:'A1', en:'hungry',    tr:'aç',                  ornek:"I'm hungry. Let's have lunch.",            ornekTr:'Açım. Öğle yemeği yiyelim.' },
+      { id:'menu',      ox:'A1', en:'menu',      tr:'menü, yemek listesi', ornek:'Can I see the menu, please?',              ornekTr:'Menüyü görebilir miyim, lütfen?' },
+      { id:'order',     ox:'A1', en:'order',     tr:'sipariş vermek',      ornek:'Are you ready to order?',                  ornekTr:'Sipariş vermeye hazır mısınız?' }
+    ],
+    cumleler:{
+      'bread':     ['bread',      ['hungry','order','egg'],           '',          'bread'],
+      'cheese':    ['cheese',     ['hungry','order','juice'],         '',          'cheese'],
+      'egg':       ['eggs',       ['egg','rice','soup'],              'egg',       'eggs'],
+      'fruit':     ['Fruit',      ['Hungry','Order','Menu'],          '',          'Fruit'],
+      'vegetable': ['vegetables', ['vegetable','hungry','order'],     'vegetable', 'vegetables'],
+      'chicken':   ['chicken',    ['hungry','menu','order'],          '',          'chicken'],
+      'rice':      ['rice',       ['hungry','order','menu'],          '',          'rice'],
+      'soup':      ['soup',       ['hungry','order','eggs'],          '',          'soup'],
+      'juice':     ['juice',      ['hungry','order','egg'],           '',          'juice'],
+      'hungry':    ['hungry',     ['menu','order','soup'],            '',          'hungry'],
+      'menu':      ['menu',       ['hungry','order','eat'],           '',          'menu'],
+      'order':     ['order',      ['orders','ordering','ordered'],    'order',     'order']
+    },
+    sozluk:{
+      'can':'-ebilmek', 'i':'ben', 'have':'sahip olmak; (yemek) yemek, içmek', 'some':'biraz, birkaç', 'bread':'ekmek', 'please':'lütfen', "i'd":'I would: …-mek isterim',
+      'like':'sevmek; would like: istemek', 'a':'bir', 'cheese':'peynir', 'sandwich':'sandviç', 'my':'benim', 'brother':'erkek kardeş', 'eats':'yer (eat)', 'two':'iki',
+      'eggs':'yumurtalar', 'every':'her', 'morning':'sabah', 'fruit':'meyve', 'is':'-dir (be)', 'good':'iyi', 'for':'için', 'your':'senin', 'health':'sağlık',
+      'carrots':'havuçlar', 'and':'ve', 'potatoes':'patatesler', 'are':'-dir (be, çoğul)', 'vegetables':'sebzeler', 'we':'biz', 'chicken':'tavuk', 'rice':'pirinç, pilav',
+      'dinner':'akşam yemeği', 'turkish':'Türk', 'people':'insanlar', 'often':'sık sık', 'eat':'yemek', 'with':'ile', 'meat':'et', 'this':'bu', 'tomato':'domates',
+      'soup':'çorba', 'delicious':'çok lezzetli', 'would':'would you like: ister misin', 'you':'sen, siz', 'orange':'portakal', 'juice':'meyve suyu', "i'm":'ben …-im (I am)',
+      'hungry':'aç', "let's":'hadi …-elim (let us)', 'lunch':'öğle yemeği', 'see':'görmek', 'the':'belirli tanımlık (Türkçede karşılığı yok)', 'menu':'menü', 'ready':'hazır',
+      'to':'-e, -a; -mek', 'order':'sipariş vermek', 'orders':'sipariş verir (order)', 'it':'o (cansız)', 'one':'bir', "o'clock":'saat (tam saat)', 'mert':'Mert (erkek ismi)',
+      'he':'o (erkek)', 'goes':'gider (go)', 'small':'küçük', 'cafe':'kafe', 'his':'onun (erkek)', 'sister':'kız kardeş', 'deniz':'Deniz (isim)', 'waiter':'garson',
+      'gives':'verir (give)', 'them':'onlara', 'asks':'sorar (ask)', 'yes':'evet', 'says':'der (say)', "doesn't":'yapmaz (does not)', 'she':'o (kadın)', 'salad':'salata',
+      'too':'de, da', 'drinks':'içecekler', 'water':'su', 'after':'-den sonra', 'meal':'yemek, öğün', 'they':'onlar', 'love':'çok sevmek', 'food':'yiyecek',
+      'there':'there are: var', 'lot':'a lot of: çok', 'of':'-in; a lot of: çok'
+    },
+    konu:{
+      baslik:'would like, some / any ve sayılabilen isimler',
+      aciklama:'Kafede ya da sofrada bir şey isterken, teklif ederken ve miktar söylerken kullanılır.',
+      kartlar:[
+        { baslik:'Sayılabilen / sayılamayan', p:'Sayılabilen isimler <b>a / an</b> ve çoğul alır. Sayılamayanlar (bread, water, rice, juice…) <b>a / an</b> ya da -s almaz.',
+          satir:[['Sayılabilen', '<em>an</em> egg, two egg<em>s</em>, <em>a</em> vegetable'], ['Sayılamayan', '<em>some</em> bread, <em>some</em> water, <em>some</em> rice']] },
+        { baslik:'some / any', p:'<b>some</b> olumlu cümlede ve teklifte; <b>any</b> olumsuz cümlede ve soruda.',
+          satir:[['Olumlu', 'There is <em>some</em> cheese.'], ['Olumsuz', 'There isn\'t <em>any</em> milk.'], ['Soru', 'Is there <em>any</em> juice?'], ['Teklif', 'Would you like <em>some</em> tea?']] },
+        { baslik:'would like (kibar istek)', p:'<b>I\'d like</b> = I would like, <b>want</b> kelimesinin kibar hâlidir.',
+          satir:[['İstek', '<em>I\'d like</em> a cheese sandwich, please.'], ['Teklif', '<em>Would you like</em> some soup? — Yes, please. / No, thank you.'], ['Bir şey isteme', '<em>Can I have</em> some water, please?']] },
+        { baslik:'How much / How many', p:'Sayılamayan için <b>How much</b>, sayılabilen (çoğul) için <b>How many</b>.',
+          satir:[['Sayılamayan', '<em>How much</em> bread do we need?'], ['Sayılabilen', '<em>How many</em> eggs do we need?']] }
+      ]
+    },
+    dilbilgisi:[
+      { tip:'secim', soru:"I'd like ___ apple, please.", dogru:'an', yanlis:['a','some'], tr:'Bir elma istiyorum, lütfen.', aciklama:'Sesli harfle başlayan sayılabilen isimden önce an.' },
+      { tip:'secim', soru:"There isn't ___ milk in the kitchen.", dogru:'any', yanlis:['some','a'], tr:'Mutfakta hiç süt yok.', aciklama:'Olumsuz cümlede any.' },
+      { tip:'secim', soru:'Would you like ___ tea? (teklif)', dogru:'some', yanlis:['any','a'], tr:'Biraz çay ister misin?', aciklama:'Teklifte some kullanılır.' },
+      { tip:'secim', soru:"I'd ___ a chicken sandwich, please.", dogru:'like', yanlis:['likes','liking'], tr:'Tavuklu bir sandviç istiyorum, lütfen.', aciklama:"I'd like + isim (kibar istek)." },
+      { tip:'secim', soru:'Can I ___ some water, please?', dogru:'have', yanlis:['has','having'], tr:'Biraz su alabilir miyim, lütfen?', aciklama:'Can I + yalın fiil?' },
+      { tip:'secim', soru:'How ___ eggs do you need?', dogru:'many', yanlis:['much','any'], tr:'Kaç yumurtaya ihtiyacın var?', aciklama:'Sayılabilen (çoğul) isimle How many.' },
+      { tip:'secim', soru:'How ___ bread do we have?', dogru:'much', yanlis:['many','a'], tr:'Ne kadar ekmeğimiz var?', aciklama:'Sayılamayan isimle How much.' },
+      { tip:'yaz', soru:'We need ___ vegetables for the soup. (biraz)', dogru:['some'], tr:'Çorba için biraz sebzeye ihtiyacımız var.', aciklama:'Olumlu cümlede some.' },
+      { tip:'yaz', soru:'Is there ___ cheese?', dogru:['any'], tr:'Hiç peynir var mı?', aciklama:'Soruda any.' },
+      { tip:'yaz', soru:'___ you like some juice?', dogru:['Would'], tr:'Biraz meyve suyu ister misin?', aciklama:'Teklif: Would you like…?' }
+    ],
+    okuma:{
+      baslik:'At the Cafe', avHedef:8,
+      paragraflar:[
+        "It is one o'clock and Mert is [hungry|hungry]. He goes to a small cafe with his sister, Deniz. The waiter gives them the [menu|menu]. 'Are you ready to [order|order]?' he asks.",
+        "'Yes, please. I'd like some tomato [soup|soup] and [chicken|chicken] with [rice|rice],' says Mert. Deniz doesn't eat meat. She would like a salad with [eggs|egg] and [cheese|cheese]. 'Can we have some [bread|bread] too?' she asks.",
+        "For drinks, Mert orders water and Deniz would like some orange [juice|juice]. After the meal, they have some [fruit|fruit]. Mert says, 'I love this cafe. The food is delicious and there are a lot of [vegetables|vegetable].'"
+      ],
+      ceviri:[
+        "Saat bir ve Mert aç. Kız kardeşi Deniz'le küçük bir kafeye gider. Garson onlara menüyü verir. \"Sipariş vermeye hazır mısınız?\" diye sorar.",
+        "\"Evet, lütfen. Domates çorbası ve pilavlı tavuk istiyorum,\" der Mert. Deniz et yemez. Yumurtalı ve peynirli bir salata ister. \"Biraz ekmek de alabilir miyiz?\" diye sorar.",
+        "İçecek olarak Mert su sipariş eder, Deniz de portakal suyu ister. Yemekten sonra biraz meyve yerler. Mert \"Bu kafeyi çok seviyorum. Yemekler çok lezzetli ve bol sebze var,\" der."
+      ]
+    },
+    anlama:[
+      { soru:'What time is it?', tr:'Saat kaç?', dogru:"One o'clock", yanlis:["Two o'clock","Eleven o'clock"], kanit:"It is one o'clock and Mert is hungry." },
+      { soru:'Who gives them the menu?', tr:'Onlara menüyü kim verir?', dogru:'The waiter', yanlis:['Deniz',"Mert's mother"], kanit:'The waiter gives them the menu.' },
+      { soru:'What does Mert want to eat?', tr:'Mert ne yemek ister?', dogru:'Tomato soup and chicken with rice', yanlis:['A salad with eggs','Fish and vegetables'], kanit:"I'd like some tomato soup and chicken with rice,' says Mert." },
+      { soru:'Deniz eats meat.', tr:'Deniz et yer.', dy:true, dogru:'False', kanit:"Deniz doesn't eat meat." },
+      { soru:'What does Deniz drink?', tr:'Deniz ne içer?', dogru:'Orange juice', yanlis:['Water','Tea'], kanit:'For drinks, Mert orders water and Deniz would like some orange juice.' },
+      { soru:'What do they have after the meal?', tr:'Yemekten sonra ne yerler?', dogru:'Some fruit', yanlis:['Some cake','Some coffee'], kanit:'After the meal, they have some fruit.' },
+      { soru:"Mert doesn't like the cafe.", tr:'Mert kafeyi sevmez.', dy:true, dogru:'False', kanit:"Mert says, 'I love this cafe." }
+    ],
+    ceviri:[
+      { tip:'yaz', tr:'Açım.', w:'hungry', dogru:["I'm hungry.", 'I am hungry.'] },
+      { tip:'yaz', tr:'Menüyü görebilir miyim, lütfen?', w:'menu', dogru:['Can I see the menu, please?', 'Can I see the menu?', 'Could I see the menu, please?', 'Could I see the menu?'] },
+      { tip:'yaz', tr:'Biraz portakal suyu istiyorum, lütfen.', w:'juice', dogru:["I'd like some orange juice, please.", 'I would like some orange juice, please.', "I'd like some orange juice.", 'I would like some orange juice.'] },
+      { tip:'yaz', tr:'Kahvaltıda iki yumurta yerim.', w:'egg', dogru:['I eat two eggs for breakfast.', 'I have two eggs for breakfast.', 'For breakfast, I eat two eggs.', 'For breakfast, I have two eggs.'] },
+      { tip:'yaz', tr:'Bu çorba çok lezzetli.', w:'soup', dogru:['This soup is delicious.', 'This soup is really delicious.', 'This soup is very good.', 'This soup is very tasty.'] },
+      { tip:'sirala', tr:'Sipariş vermeye hazır mısınız?', w:'order', parcalar:['Are', 'you', 'ready', 'to order'], dogru:['Are you ready to order?'] },
+      { tip:'sirala', tr:'Akşam yemeğinde tavuk ve pilav yeriz.', w:'chicken', parcalar:['We have', 'chicken', 'and rice', 'for dinner'], dogru:['We have chicken and rice for dinner.'] },
+      { tip:'sirala', tr:'Meyve sağlığın için iyidir.', w:'fruit', parcalar:['Fruit', 'is good', 'for', 'your health'], dogru:['Fruit is good for your health.'] }
+    ]
   }
+
 };
 /* Her kelime hangi üniteye ait? (rütbe sınavında birden çok üniteden soru gelir) */
 Object.entries(UNITS).forEach(([id, u]) => u.kelimeler.forEach(w => w.uid = id));
@@ -671,7 +1232,7 @@ function viewKelime(){
     <div class="cards" id="cards">${U.kelimeler.map((w, i) => `
       <button type="button" class="fc ${seen.has(w.id) ? 'seen' : ''}" data-id="${w.id}" aria-label="${esc(w.en)} kartını çevir">
         <span class="inner">
-          <span class="face front"><span class="no"><span>${i + 1} / ${U.kelimeler.length}</span>${pips(w)}</span><span class="en">${esc(w.en)}</span><span class="ex">${esc(w.ornek)}</span><span class="hint">Türkçesi için tıkla</span></span>
+          <span class="face front"><span class="no"><span>${i + 1} / ${U.kelimeler.length}${w.ox ? ` · <span class="ox" title="Oxford 3000 seviyesi">Oxford ${w.ox}</span>` : ''}</span>${pips(w)}</span><span class="en">${esc(w.en)}</span><span class="ex">${esc(w.ornek)}</span><span class="hint">Türkçesi için tıkla</span></span>
           <span class="face back"><span class="no"><span>${esc(w.en)}</span>${pips(w)}</span><span class="tr">${esc(w.tr)}</span><span class="ex">${esc(w.ornekTr)}</span><span class="hint">Geri çevirmek için tıkla</span></span>
         </span>
       </button>`).join('')}</div>
@@ -1018,7 +1579,8 @@ const plainOf = s => s.replace(/\[([^|\]]+)\|[^\]]+\]/g, '$1');
 function toksHtml(txt){
   return txt.split(/(\s+)/).map(t => {
     if(!t.trim()) return t;
-    const m = t.match(/^([^A-Za-z0-9']*)(.*?)([^A-Za-z0-9']*)$/);
+    // Baştaki/sondaki tırnak ve noktalama kelimeden ayrılır; o'clock, Tom's gibi içteki kesme işareti kalır
+    const m = t.match(/^([^A-Za-z0-9]*)(.*?)([^A-Za-z0-9]*)$/);
     return m[2] ? `${esc(m[1])}<button type="button" class="tok" data-k="${esc(m[2].toLowerCase())}">${esc(m[2])}</button>${esc(m[3])}` : esc(t);
   }).join('');
 }
@@ -1268,52 +1830,23 @@ function cumleQs(){
     const base = { w, dogru:[dogru], tam:w.ornek, tr:w.ornekTr, soru:blankSent };
     return i % 2 === 0
       ? Object.assign(base, { tip:'secim', ust:'Boşluğa hangisi gelmeli?', secenekler:shuffle([dogru, ...yanlis]) })
-      : Object.assign(base, { tip:'yaz', ust:'Boşluğu doğru biçimde yaz.', ipucu:`İpucu: <b>${esc(ipucu)}</b> · ${esc(w.tr)}` });
+      : Object.assign(base, { tip:'yaz', ust:'Boşluğu doğru biçimde yaz.', ipucu:`İpucu: <b>${esc(ipucu || (dogru[0] + '… (' + dogru.replace(/[^A-Za-z]/g, '').length + ' harf)'))}</b> · ${esc(w.tr)}` });
   });
 }
 
 /* ================= 3. bölüm: Dil bilgisi ================= */
 function viewDilbilgisi(){
+  // Konu anlatımı her ünitenin "konu" verisinden çizilir
+  const K = U.konu, nS = U.dilbilgisi.filter(q => q.tip === 'secim').length, nY = U.dilbilgisi.length - nS;
+  const kart = (k, i) => `<div class="rule${k.genis ? ' wide' : ''}"><h3><span class="n">${i + 1}</span> ${k.baslik}</h3>
+      ${k.p ? `<p>${k.p}</p>` : ''}
+      ${k.satir ? `<table>${k.satir.map(([a, b]) => `<tr><td>${a}</td><td>${b}</td></tr>`).join('')}</table>` : ''}
+      ${k.siklik ? `<div class="freq">${k.siklik.map(([en, tr, w]) => `<div><b>${en}</b><span>${tr}</span><i style="width:${w}%${w < 15 ? ';background:#3a4565' : ''}"></i></div>`).join('')}</div>` : ''}</div>`;
   $('#view').innerHTML = `
-    <div class="sec-head"><div><h2>${ic('grammar')} Dil bilgisi: Simple Present Tense (Geniş zaman)</h2><p>Her gün, her zaman yaptığımız işleri, alışkanlıkları ve rutinleri anlatırken kullanılır.</p></div>
+    <div class="sec-head"><div><h2>${ic('grammar')} Dil bilgisi: ${K.baslik}</h2><p>${K.aciklama}</p></div>
       <span class="pill ${secDone('dilbilgisi') ? 'ok' : 'gold'}">${secDone('dilbilgisi') ? 'Tamamlandı · en iyi %' + UD.bolumler.dilbilgisi.enIyi : 'Bu bölüm her zaman açık'}</span></div>
-    <div class="lesson">
-      <div class="rule"><h3><span class="n">1</span> Olumlu cümle</h3>
-        <p>I / You / We / They ile fiil <b>yalın</b> kalır. He / She / It ile fiile <b>-s</b> eklenir.</p>
-        <table>
-          <tr><td>I / You / We / They</td><td>I <em>wake</em> up at seven.</td></tr>
-          <tr><td>He / She / It</td><td>She <em>wakes</em> up at seven.</td></tr>
-        </table></div>
-      <div class="rule"><h3><span class="n">2</span> -s mi, -es mi?</h3>
-        <p>Çoğu fiile <b>-s</b> eklenir. -sh, -ch, -s, -x, -o ile bitenlere <b>-es</b> eklenir. <b>have</b> düzensizdir.</p>
-        <table>
-          <tr><td>start, finish… → </td><td>start<em>s</em>, finish<em>es</em></td></tr>
-          <tr><td>brush, watch, go, do → </td><td>brush<em>es</em>, watch<em>es</em>, go<em>es</em>, do<em>es</em></td></tr>
-          <tr><td>have → </td><td><em>has</em> (He has breakfast.)</td></tr>
-        </table></div>
-      <div class="rule"><h3><span class="n">3</span> Olumsuz cümle</h3>
-        <p><b>don't / doesn't</b> + yalın fiil. doesn't kullanınca fiile -s <b>eklenmez</b>.</p>
-        <table>
-          <tr><td>I / You / We / They</td><td>I <em>don't</em> have lunch at home.</td></tr>
-          <tr><td>He / She / It</td><td>He <em>doesn't</em> get up early.</td></tr>
-        </table></div>
-      <div class="rule"><h3><span class="n">4</span> Soru cümlesi</h3>
-        <p><b>Do / Does</b> + özne + yalın fiil?</p>
-        <table>
-          <tr><td>I / You / We / They</td><td><em>Do</em> you take a shower in the morning?</td></tr>
-          <tr><td>He / She / It</td><td><em>Does</em> she go to school by bus?</td></tr>
-          <tr><td>Kısa cevap</td><td>Yes, she does. / No, she doesn't.</td></tr>
-        </table></div>
-      <div class="rule wide"><h3><span class="n">5</span> Sıklık zarfları</h3>
-        <p>Bir işi ne sıklıkla yaptığımızı anlatır. <b>Ana fiilden önce</b> gelir: I <em>usually</em> go to bed at ten.</p>
-        <div class="freq">
-          <div><b>always</b><span>her zaman</span><i style="width:100%"></i></div>
-          <div><b>usually</b><span>genellikle</span><i style="width:75%"></i></div>
-          <div><b>sometimes</b><span>bazen</span><i style="width:45%"></i></div>
-          <div><b>never</b><span>asla, hiç</span><i style="width:8%;background:#3a4565"></i></div>
-        </div></div>
-    </div>
-    <div class="toolbar"><span class="muted">Mini alıştırma: 10 soru (7 şıklı, 3 yazmalı). Dil bilgisi becerin bu sorulardan hesaplanır.</span>
+    <div class="lesson">${K.kartlar.map(kart).join('')}</div>
+    <div class="toolbar"><span class="muted">Mini alıştırma: ${U.dilbilgisi.length} soru (${nS} şıklı, ${nY} yazmalı). Dil bilgisi becerin bu sorulardan hesaplanır.</span>
       <button class="btn btn-gold" type="button" id="startG">Mini alıştırmaya başla ${ic('arrow')}</button></div>`;
   $('#startG').addEventListener('click', () => startRun({ bolum:'dilbilgisi', ad:'Dil bilgisi', beceri:'dilbilgisi', baslik:'Dil bilgisi mini alıştırması', kelimeli:false, donusAd:'Konu anlatımına dön', sorular:grammarQs(), yeniden:grammarQs }));
 }
@@ -1339,11 +1872,12 @@ const examReady = () => P.rank < RANKS.length - 1 && P.tier === 1 && P.xp >= XP_
 const unitIdOf = u => Object.keys(UNITS).find(k => UNITS[k] === u);
 function examUnits(){
   const lv = RANK_LEVELS[P.rank], doneIds = new Set(P.uniteler.map(u => u.id || u));
-  const all = Object.entries(UNITS).filter(([, u]) => lv.includes(u.seviye));
+  const lvAll = Object.entries(UNITS).filter(([, u]) => lv.includes(u.seviye));
+  const all = lvAll.length ? lvAll : Object.entries(UNITS);   // bu seviyede henüz ünite yoksa mevcut bütün ünitelerden
   return { all, done:all.filter(([id]) => doneIds.has(id)), other:all.filter(([id]) => !doneIds.has(id)) };
 }
 /* Bir üniteden k soru: kelime, cümle, dil bilgisi, okuma ve çeviri sırayla dönerek */
-function unitMix(u, k, used){
+function unitMix(u, k, used, start = 0){
   const tag = (q, t) => Object.assign(q, { ust:`${t} · ${q.ust}`, unite:q.unite || u, tur:t });
   const words = shuffle(u.kelimeler.slice());
   const pick = () => { const w = words.find(x => !used.has(wordKey(x))); if(w) used.add(wordKey(w)); return w; };
@@ -1367,16 +1901,17 @@ function unitMix(u, k, used){
     ceviri(){ const c = cc++ % 2 === 0 ? (yaz.shift() || sir.shift()) : (sir.shift() || yaz.shift()); return c ? tag(ceviriQ(c, u), 'Çeviri') : null; }
   };
   const order = ['kelime', 'cumle', 'dilbilgisi', 'okuma', 'ceviri'], out = [];
-  let i = 0, guard = 0;
+  let i = start, guard = 0;   // start: türler bütün sınav boyunca dengeli dağılsın diye her ünite bir sonraki türden başlar
   while(out.length < k && guard++ < 200){ const q = make[order[i++ % order.length]](); if(q) out.push(q); }
   return out;
 }
 function examQs(){
   const { done, other } = examUnits(), used = new Set(), parts = [];
+  let offset = 0;
   const nDone = done.length && other.length ? Math.round(EXAM_N * EXAM_DONE_SHARE) : done.length ? EXAM_N : 0;
   const spread = (list, n) => shuffle(list.slice()).forEach(([, u], i, a) => {
     const k = Math.floor(n / a.length) + (i < n % a.length ? 1 : 0);
-    if(k) parts.push(...unitMix(u, k, used));
+    if(k){ parts.push(...unitMix(u, k, used, offset)); offset += k; }
   });
   if(nDone) spread(done, nDone);
   if(EXAM_N - nDone) spread(other, EXAM_N - nDone);
@@ -1402,7 +1937,7 @@ function viewExam(){
   const kaynak = done.length && other.length ? `Soruların yaklaşık %${EXAM_DONE_SHARE * 100}'i tamamladığın ünitelerden (${nm(done)}), kalanı bu seviyedeki diğer ünitelerden (${nm(other)}).`
     : done.length ? `Bütün sorular tamamladığın ünitelerden: ${nm(done)}.`
     : all.length ? `Bu seviyede henüz ünite tamamlamadın; sorular şu ünitelerden gelir: ${nm(all)}. Önce üniteyi bitirmen önerilir.` : 'Bu seviye için henüz ünite yok.';
-  const hist = P.sinavlar.filter(s => s.rank === P.rank).slice(-5).reverse();
+  const hist = [...P.sinavlar.filter(s => s.rank === P.rank), ...(P.denemeler || []).filter(s => s.rank === P.rank).map(s => Object.assign({ deneme:true }, s))].sort((a, b) => b.t - a.t).slice(0, 6);
   $('#view').innerHTML = `
     <div class="exam-hero">
       <div class="eh-rank">${emblem(P.rank, 96, P.tier)}<b>${esc(rankName(P))}</b><small>Şu anki rütben</small></div>
@@ -1413,34 +1948,45 @@ function viewExam(){
       : last ? `<div class="exam-state ok">${ic('trophy')}<span><b>Mitril en yüksek rütbe</b>Artık rütbe sınavı yok. Tebrikler!</span></div>`
       : `<div class="exam-state">${ic('lock')}<span><b>Sınav henüz kilitli</b>${P.tier > 1 ? `Sınav, ${RANKS[P.rank].ad} I kademesinde XP dolunca açılır. Şu an ${esc(rankName(P))} kademesindesin.` : `${need - P.xp} XP daha kazanınca açılır.`}</span>
           <div class="xpmini"><div class="bar"><i style="width:${Math.min(100, P.xp / need * 100)}%"></i></div><small>${esc(rankName(P))} · ${P.xp} / ${need} XP</small></div></div>`}
+    <div class="exam-state practice">${ic('target')}<span><b>Deneme sınavı</b>Her zaman açık. Gerçek sınavla aynı biçimde ${EXAM_N} soru; rütbeni ve XP'ni etkilemez. Sınava hazır olup olmadığını görmek için çöz.</span>
+      <button class="btn btn-line sm" type="button" id="startP">Deneme sınavı çöz ${ic('arrow')}</button></div>
     <div class="intro">
       <div>${ic('target')}<span><b>${EXAM_N} soru · geçme sınırı %${PASS * 100}</b>Kelime, cümle, dil bilgisi, okuma ve çeviri sorularından karışık.</span></div>
       <div>${ic('book')}<span><b>Soruların kaynağı</b>${kaynak}</span></div>
       <div>${ic('trophy')}<span><b>Geçersen</b>${last ? '—' : `${RANKS[P.rank + 1].ad} III rütbesine yükselirsin; XP sayacın yeni rütbede sıfırdan başlar.`}</span></div>
       <div>${ic('refresh')}<span><b>Geçemezsen</b>Rütben ve XP'n korunur. Hemen tekrar girebilirsin; zorlandığın konular gösterilir, istersen önce onları çalışırsın.</span></div>
     </div>
-    ${hist.length ? `<div class="hist"><b>Bu rütbedeki denemelerin</b>${hist.map(h => `<div class="row"><span>${new Date(h.t).toLocaleString('tr-TR', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</span><span>${h.dogru}/${h.toplam} · %${h.puan}</span><span class="pill ${h.gecti ? 'ok' : 'bad'}">${h.gecti ? 'Geçti' : 'Kaldı'}</span></div>`).join('')}</div>` : ''}
+    ${hist.length ? `<div class="hist"><b>Bu rütbedeki denemelerin</b>${hist.map(h => `<div class="row"><span>${new Date(h.t).toLocaleString('tr-TR', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</span><span>${h.dogru}/${h.toplam} · %${h.puan}</span><span class="pill ${h.deneme ? 'info' : h.gecti ? 'ok' : 'bad'}">${h.deneme ? 'Deneme' : h.gecti ? 'Geçti' : 'Kaldı'}</span></div>`).join('')}</div>` : ''}
     <div class="toolbar"><a class="btn btn-line" href="dashboard.html">${ic('back')} Panele dön</a>
       <button class="btn btn-gold" type="button" id="startE" ${ready ? '' : 'disabled'}>Sınava başla ${ic('arrow')}</button></div>`;
-  $('#startE').addEventListener('click', startExam);
+  $('#startE').addEventListener('click', () => startExam(false));
+  $('#startP').addEventListener('click', () => startExam(true));
 }
-function startExam(){
-  if(!examReady()) return viewExam();
+/* deneme = true: deneme sınavı (her zaman açık, rütbeyi ve XP'yi etkilemez) */
+function startExam(deneme){
+  deneme = deneme === true;
+  if(!deneme && !examReady()) return viewExam();
   window.onbeforeunload = e => { e.preventDefault(); e.returnValue = ''; };   // sınavın ortasında sayfadan çıkarken uyar
-  startRun({ bolum:'sinav', ad:'Rütbe sınavı', beceri:'kelime', baslik:`${rankName(P)} → ${RANKS[P.rank + 1].ad} III · Rütbe sınavı`, kelimeli:true,
+  const hedef = P.rank < RANKS.length - 1 ? RANKS[P.rank + 1].ad + ' III' : 'Zirve';
+  startRun({ bolum:deneme ? 'deneme' : 'sinav', ad:deneme ? 'Deneme sınavı' : 'Rütbe sınavı', deneme, beceri:'kelime', kelimeli:true,
+    baslik:deneme ? `Deneme sınavı · ${RANK_LEVELS[P.rank].join(' – ')} soruları` : `${rankName(P)} → ${hedef} · Rütbe sınavı`,
     sorular:examQs(), yeniden:examQs, ozelBitis:examFinish });
 }
 function examFinish(R){
   window.onbeforeunload = null;
   const n = R.sonuc.length, d = R.sonuc.filter(s => s.ok).length, pct = d / n, puan = Math.round(pct * 100), passed = pct >= PASS;
-  const fromName = rankName(P);
-  P.sinavlar.push({ rank:P.rank, puan, dogru:d, toplam:n, gecti:passed, t:Date.now() });
-  if(passed){ P.rank++; P.tier = 3; P.xp = 0; log(`Rütbe sınavı geçildi (%${puan}): ${fromName} → ${rankName(P)}`); }
-  else log(`Rütbe sınavı: %${puan} (geçme sınırı %${PASS * 100}) · ${fromName} korundu`);
+  const fromName = rankName(P), deneme = !!R.deneme, rankUp = passed && !deneme;
+  if(deneme){ P.denemeler = P.denemeler || []; P.denemeler.push({ rank:P.rank, puan, dogru:d, toplam:n, t:Date.now() }); log(`Deneme sınavı: %${puan} (${d}/${n})`); }
+  else {
+    P.sinavlar.push({ rank:P.rank, puan, dogru:d, toplam:n, gecti:passed, t:Date.now() });
+    if(passed){ P.rank++; P.tier = 3; P.xp = 0; log(`Rütbe sınavı geçildi (%${puan}): ${fromName} → ${rankName(P)}`); }
+    else log(`Rütbe sınavı: %${puan} (geçme sınırı %${PASS * 100}) · ${fromName} korundu`);
+  }
   taskProgress('test');   // rütbe değiştikten sonra: görev XP'si yeni rütbeye eklensin
   markStudy(); saveP();
   examFrame();
-  if(passed){ $('#uTitle').textContent = `${RANKS[P.rank - 1].ad} → ${RANKS[P.rank].ad}`; $('#uDesc').textContent = `Sınavı geçtin! Yeni rütben: ${rankName(P)}.`; $('#uLevel').textContent = 'Rütbe sınavı · sonuç'; }
+  if(deneme){ $('#uLevel').textContent = 'Deneme sınavı · sonuç'; $('#uDesc').textContent = 'Deneme sınavı rütbeni ve XP\'ni etkilemez.'; }
+  if(rankUp){ $('#uTitle').textContent = `${RANKS[P.rank - 1].ad} → ${RANKS[P.rank].ad}`; $('#uDesc').textContent = `Sınavı geçtin! Yeni rütben: ${rankName(P)}.`; $('#uLevel').textContent = 'Rütbe sınavı · sonuç'; }
   // Beceri dağılımı; zayıf alanlarda en çok yanlış yapılan ünite
   const by = {};
   R.sonuc.forEach(s => {
@@ -1459,11 +2005,12 @@ function examFinish(R){
   $('#view').innerHTML = `
     <div class="result">
       <div style="display:flex;justify-content:center">${emblem(P.rank, 96, P.tier)}</div>
-      <p class="muted" style="margin:.5rem 0 .2rem">${passed ? `Tebrikler! Artık <b style="color:var(--gold2)">${esc(rankName(P))}</b> rütbesindesin.` : `Bu sefer olmadı. Geçmek için en az %${PASS * 100} gerekiyor; ${esc(rankName(P))} rütben korunuyor.`}</p>
+      <p class="muted" style="margin:.5rem 0 .2rem">${deneme ? `<b style="color:var(--text)">Deneme sınavı sonucu.</b> Gerçek sınavda bu puanla ${passed ? '<b style="color:#8fe3bb">geçerdin</b>' : '<b style="color:#ffb0b0">geçemezdin</b>'} (sınır %${PASS * 100}). Rütben ve XP'n değişmedi.`
+        : passed ? `Tebrikler! Artık <b style="color:var(--gold2)">${esc(rankName(P))}</b> rütbesindesin.` : `Bu sefer olmadı. Geçmek için en az %${PASS * 100} gerekiyor; ${esc(rankName(P))} rütben korunuyor.`}</p>
       <div class="score">${d}<small> / ${n}</small></div>
       <div class="rgrid four">${Object.keys(BECERI_AD).filter(k => by[k]).map(k => `<div class="${by[k].d / by[k].t < PASS ? 'weakcell' : ''}"><b>${by[k].d}/${by[k].t}</b><span>${BECERI_AD[k]}</span></div>`).join('')}</div>
-      ${!passed && weak.length ? `<div class="weak"><h3>${ic('alert')} Zorlandığın konular</h3>
-        <p class="muted" style="margin:0 0 .6rem">İstersen önce bu bölümleri çalış, istersen hemen tekrar sınava gir. Seçim senin.</p>${weakHtml}</div>` : ''}
+      ${(!passed || deneme) && weak.length ? `<div class="weak"><h3>${ic('alert')} Zorlandığın konular</h3>
+        <p class="muted" style="margin:0 0 .6rem">${deneme ? 'Gerçek sınavdan önce bu bölümleri gözden geçirmeni öneririz.' : 'İstersen önce bu bölümleri çalış, istersen hemen tekrar sınava gir. Seçim senin.'}</p>${weakHtml}</div>` : ''}
       ${wrongW.length ? `
         <div class="wrong" id="wrongBox">
           <h3>Zorlandığın kelimeler (${wrongW.length})</h3>
@@ -1475,12 +2022,15 @@ function examFinish(R){
           </div>
         </div>` : ''}
       <div class="racts">
-        ${passed ? '' : `<button class="btn btn-gold" type="button" id="retry">${ic('refresh')} Hemen tekrar gir</button>`}
-        <a class="btn ${passed ? 'btn-gold' : 'btn-line'}" href="dashboard.html">Panele dön</a>
+        ${deneme ? `<button class="btn btn-gold" type="button" id="retryP">${ic('refresh')} Yeni deneme çöz</button>${examReady() ? `<button class="btn btn-line" type="button" id="realE">Gerçek sınava gir</button>` : ''}`
+          : passed ? '' : `<button class="btn btn-gold" type="button" id="retry">${ic('refresh')} Hemen tekrar gir</button>`}
+        <a class="btn ${rankUp ? 'btn-gold' : 'btn-line'}" href="dashboard.html">Panele dön</a>
         <button class="btn btn-ghost" type="button" id="toInfo">Sınav bilgileri</button>
       </div>
     </div>`;
-  if(!passed) $('#retry').addEventListener('click', startExam);
+  if($('#retry')) $('#retry').addEventListener('click', () => startExam(false));
+  if($('#retryP')) $('#retryP').addEventListener('click', () => startExam(true));
+  if($('#realE')) $('#realE').addEventListener('click', () => startExam(false));
   $('#toInfo').addEventListener('click', viewExam);
   if(wrongW.length){
     const box = $('#wrongBox');
@@ -1489,7 +2039,7 @@ function examFinish(R){
       if(!keys.length){ toast('Eklemek için en az bir kelime seç.', 'bad'); return; }
       keys.forEach(k => {
         const w = findWord(k); if(!w) return;
-        P.hataKutuphanesi.push({ id:'h' + rnd(8), en:w.en, tr:w.tr, not:`${UNITS[w.uid].seviye} · ${UNITS[w.uid].ad} · rütbe sınavı`, t:Date.now() });
+        P.hataKutuphanesi.push({ id:'h' + rnd(8), en:w.en, tr:w.tr, not:`${UNITS[w.uid].seviye} · ${UNITS[w.uid].ad} · ${deneme ? 'deneme sınavı' : 'rütbe sınavı'}`, t:Date.now() });
         if(!P.bilemedigi.includes(w.en.toLowerCase())) P.bilemedigi.push(w.en.toLowerCase());
       });
       log(`Hata kütüphanesine ${keys.length} kelime eklendi`); saveP();
@@ -1497,7 +2047,7 @@ function examFinish(R){
     });
     $('#noErr').addEventListener('click', () => { box.innerHTML = '<p style="margin:0">Tamam, hiçbir kelime eklenmedi.</p>'; });
   }
-  if(passed){
+  if(rankUp){
     $('#luEm').innerHTML = emblem(P.rank, 130, P.tier);
     $('#luTitle').textContent = `${RANKS[P.rank].ad} rütbesine yükseldin!`;
     $('#luSub').textContent = `${fromName} → ${rankName(P)} · Sınav puanın %${puan}`;

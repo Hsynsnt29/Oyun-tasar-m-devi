@@ -395,7 +395,7 @@ details.tbl th{color:var(--dim);font-weight:600}
       <section class="sec" data-sec="genel">
         <div class="page-head">
           <div><h1 id="hello"></h1><p id="helloSub"></p></div>
-          <a class="btn btn-gold" href="ders.html?u=a1-rutin">Öğrenmeye devam et <svg class="i"><use href="#arrow"/></svg></a>
+          <a class="btn btn-gold" id="continueBtn" href="ders.html?u=a1-rutin">Öğrenmeye devam et <svg class="i"><use href="#arrow"/></svg></a>
         </div>
 
         <div class="grid g-top">
@@ -445,7 +445,7 @@ details.tbl th{color:var(--dim);font-weight:600}
           <div class="ladder" id="ladder"></div>
         </div>
         <div class="card pad" style="margin-top:16px">
-          <div class="ch"><h2><svg class="i"><use href="#map"/></svg> Konular</h2><span class="pill info">Hazır ünite: A1 · Günlük rutinler</span></div>
+          <div class="ch"><h2><svg class="i"><use href="#map"/></svg> Konular</h2><span class="pill info">A1: 6 ünite hazır · önerilen sıra numaralı</span></div>
           <div class="lvtabs" id="lvtabs" role="tablist"></div>
           <div class="topics" id="topics"></div>
         </div>
@@ -454,7 +454,7 @@ details.tbl th{color:var(--dim);font-weight:600}
       <!-- ================= GELİŞİM RAPORU ================= -->
       <section class="sec" data-sec="rapor" hidden>
         <div class="page-head"><div><h1>Gelişim raporu</h1><p>Neleri öğrendiğin, nelerde zorlandığın ve son günlerdeki çalışman.</p></div>
-          <a class="btn btn-line" href="ders.html?u=a1-rutin">Derse git <svg class="i"><use href="#arrow"/></svg></a></div>
+          <a class="btn btn-line" id="repContinue" href="ders.html?u=a1-rutin">Derse git <svg class="i"><use href="#arrow"/></svg></a></div>
         <div class="grid g-mid" id="repTiles"></div>
         <div class="grid g-bot" style="margin-top:16px">
           <div class="card pad">
@@ -824,6 +824,7 @@ function renderShell(){
 
 /* ================= Genel bakış ================= */
 function renderGenel(){
+  $('#continueBtn').href = 'ders.html?u=' + nextUnit();
   ensureDaily();
   const h = new Date().getHours();
   $('#hello').textContent = `${h < 12 ? 'Günaydın' : h < 18 ? 'İyi günler' : 'İyi akşamlar'}, ${me.ad}!`;
@@ -905,9 +906,12 @@ function nearestAch(){
 }
 function invites(){
   const out = [], t = today();
-  const ud = (P.uniteDurum || {})['a1-rutin'], udone = ud ? Object.values(ud.bolumler || {}).filter(x => x.tamam).length : 0;
-  if(!udone && !P.uniteler.length) out.push({ icon:'map', href:'ders.html?u=a1-rutin', t:'İlk ünitene başlamaya ne dersin?', s:'A1 · Günlük rutinler seni bekliyor' });
-  else if(udone < 7 && !P.uniteler.length) out.push({ icon:'map', href:'ders.html?u=a1-rutin', t:'Kaldığın yerden devam etmeye ne dersin?', s:`A1 · Günlük rutinler · ${udone}/7 bölüm tamamlandı` });
+  const nu = nextUnit(), nd = unitSecDone(nu);
+  if(!unitDone(nu)){
+    if(!P.uniteler.length && !nd) out.push({ icon:'map', href:'ders.html?u=' + nu, t:'İlk ünitene başlamaya ne dersin?', s:UNIT_AD[nu] + ' seni bekliyor' });
+    else if(nd) out.push({ icon:'map', href:'ders.html?u=' + nu, t:'Kaldığın yerden devam etmeye ne dersin?', s:`${UNIT_AD[nu]} · ${nd}/7 bölüm tamamlandı` });
+    else out.push({ icon:'map', href:'ders.html?u=' + nu, t:'Sıradaki üniteye geçmeye hazır mısın?', s:UNIT_AD[nu] + ' seni bekliyor' });
+  }
   // Öğrenmesi yarım kalan ve 10 dakikadan uzun süredir tekrar edilmeyen kelimeler
   const ready = Object.values(P.kelimeler || {}).filter(r => r.dogru && r.dogru.length > 0 && r.dogru.length < 3 && Date.now() - r.dogru[r.dogru.length - 1].t > 10 * 60000).length;
   if(ready) out.push({ icon:'refresh', href:'#rapor', t:`${ready} kelimen tekrar için hazır.`, s:'Başka bir bölümde tekrar doğru bilirsen öğrenmeye bir adım daha yaklaşırsın.' });
@@ -923,7 +927,7 @@ function invites(){
 
 /* ================= Öğrenme yolu ================= */
 const LEVELS = [
-  { k:'A1', min:0, konular:[['Günlük rutinler','Sabah, okul, iş, saatler'],['Alışveriş','Market, fiyatlar, sayılar'],['Yiyecekler','Yemekler, içecekler, sipariş'],['Sosyal yaşam','Tanışma, arkadaşlar, davetler'],['Şehir ve ulaşım','Yerler, yol tarifi, otobüs'],['Ev ve yaşam','Odalar, eşyalar, aile']] },
+  { k:'A1', min:0, konular:[['Günlük rutinler','Sabah, okul, saatler · Present Simple'],['Alışveriş','Fiyatlar, kıyafetler · this / that, How much'],['Ev ve yaşam','Odalar, eşyalar · There is / There are'],['Şehir ve ulaşım','Yerler, yol tarifi · by bus / by train'],['Sosyal yaşam','Boş zaman, davetler · can, like + -ing'],['Yiyecekler','Kafe, sipariş · would like, some / any']] },
   { k:'A2', min:1, konular:[['Seyahat','Rezervasyon, bilet, otel'],['Sağlık','Doktor, eczane, şikayetler'],['Hava ve mevsimler','Tahmin, kıyafetler'],['Hobiler','Spor, müzik, film'],['Geçmiş deneyimler','Hafta sonu ne yaptın?'],['Telefon ve mesaj','Kısa yazışmalar']] },
   { k:'B1', min:3, konular:[['İş hayatı','Mülakat, toplantı, e-posta'],['Teknoloji','Uygulamalar, sosyal medya'],['Çevre','Geri dönüşüm, iklim'],['Haberler','Kısa haber metinleri'],['Kültür','Gelenekler, festivaller'],['Fikir bildirme','Katılıyorum / katılmıyorum']] },
   { k:'B2', min:5, konular:[['Tartışma metinleri','Avantaj ve dezavantaj'],['Resmî yazışma','Şikayet, başvuru'],['Bilim','Popüler bilim yazıları'],['Deyimler','Günlük deyimler']] },
@@ -945,7 +949,7 @@ function renderOgren(){
     </div>`;
     const done = Object.values((P.uniteDurum && P.uniteDurum[uid] && P.uniteDurum[uid].bolumler) || {}).filter(x => x.tamam).length;
     return `
-    <a class="topic open" href="ders.html?u=${uid}"><div class="tt"><b>${esc(a)}</b><span style="display:flex;gap:4px">${ilgi}<span class="pill ${done === 7 ? 'ok' : 'info'}">${done === 7 ? 'Tamamlandı' : done ? 'Devam et' : 'Başla'}</span></span></div>
+    <a class="topic open" href="ders.html?u=${uid}"><div class="tt"><b><span class="dim" style="font-weight:600">${UNIT_ORDER.indexOf(uid) + 1}.</span> ${esc(a)}</b><span style="display:flex;gap:4px">${ilgi}<span class="pill ${done === 7 ? 'ok' : 'info'}">${done === 7 ? 'Tamamlandı' : done ? 'Devam et' : 'Başla'}</span></span></div>
       <span class="d">${esc(b)}</span>
       <div class="xpbar" style="height:6px;margin-top:.4rem"><i style="width:${done / 7 * 100}%"></i></div>
       <span class="d" style="font-size:.78rem">${done} / 7 bölüm tamamlandı</span>
@@ -953,7 +957,14 @@ function renderOgren(){
   }).join('');
 }
 /* Hazır olan üniteler: seviye:konu → ders.html?u=... */
-const UNIT_IDS = { 'A1:Günlük rutinler':'a1-rutin' };
+const UNIT_IDS = { 'A1:Günlük rutinler':'a1-rutin', 'A1:Alışveriş':'a1-alisveris', 'A1:Ev ve yaşam':'a1-ev', 'A1:Şehir ve ulaşım':'a1-sehir', 'A1:Sosyal yaşam':'a1-sosyal', 'A1:Yiyecekler':'a1-yiyecek' };
+/* Önerilen ünite sırası (Headway Beginner ve MEB tema sırasına göre) */
+const UNIT_ORDER = ['a1-rutin', 'a1-alisveris', 'a1-ev', 'a1-sehir', 'a1-sosyal', 'a1-yiyecek'];
+const UNIT_AD = Object.fromEntries(Object.entries(UNIT_IDS).map(([k, v]) => [v, k.replace(':', ' · ')]));
+const unitDone = id => P.uniteler.some(u => (u.id || u) === id);
+const unitSecDone = id => { const ud = (P.uniteDurum || {})[id]; return ud ? Object.values(ud.bolumler || {}).filter(x => x.tamam).length : 0; };
+/* Sıradaki ünite: önce yarım kalan, yoksa önerilen sıradaki ilk bitmemiş ünite */
+function nextUnit(){ return UNIT_ORDER.find(id => !unitDone(id) && unitSecDone(id) > 0) || UNIT_ORDER.find(id => !unitDone(id)) || UNIT_ORDER[0]; }
 $('#lvtabs').addEventListener('click', e => { const b = e.target.closest('.lvtab'); if(b && !b.disabled){ lvSel = +b.dataset.i; renderOgren(); } });
 
 /* ================= Kütüphaneler ================= */
@@ -1199,6 +1210,7 @@ function wordRows(){
   });
 }
 function renderRapor(){
+  $('#repContinue').href = 'ders.html?u=' + nextUnit();
   const rows = wordRows();
   const learned = rows.filter(r => r.durum === 'ogrenildi'), learning = rows.filter(r => r.durum === 'ogreniliyor');
   const missed = rows.filter(r => r.yanlis > 0 && r.durum !== 'ogrenildi');
@@ -1257,9 +1269,9 @@ function renderRapor(){
   renderRepWords();
 
   // --- Rütbe sınavları ---
-  const ex = P.sinavlar.slice().reverse();
-  $('#repExams').innerHTML = ex.length ? ex.slice(0, 8).map(e => `<div class="act"><time>${fmtTime(e.t)}</time><span style="flex:1">${RANKS[e.rank].ad} → ${RANKS[Math.min(e.rank + 1, RANKS.length - 1)].ad} sınavı · ${e.dogru}/${e.toplam} (%${e.puan})</span><span class="pill ${e.gecti ? 'ok' : 'bad'}">${e.gecti ? 'Geçti' : 'Kaldı'}</span></div>`).join('')
-    : `<div class="empty">Henüz rütbe sınavına girmedin. Sınav, ${RANKS[P.rank].ad} I kademesinde XP dolunca açılır.</div>`;
+  const ex = [...P.sinavlar, ...(P.denemeler || []).map(d => Object.assign({ deneme:true }, d))].sort((a, b) => b.t - a.t);
+  $('#repExams').innerHTML = ex.length ? ex.slice(0, 8).map(e => `<div class="act"><time>${fmtTime(e.t)}</time><span style="flex:1">${e.deneme ? 'Deneme sınavı' : `${RANKS[e.rank].ad} → ${RANKS[Math.min(e.rank + 1, RANKS.length - 1)].ad} sınavı`} · ${e.dogru}/${e.toplam} (%${e.puan})</span><span class="pill ${e.deneme ? 'info' : e.gecti ? 'ok' : 'bad'}">${e.deneme ? 'Deneme' : e.gecti ? 'Geçti' : 'Kaldı'}</span></div>`).join('')
+    : `<div class="empty">Henüz rütbe sınavına girmedin. Sınav, ${RANKS[P.rank].ad} I kademesinde XP dolunca açılır; deneme sınavı ise her zaman açık.</div>`;
 
   // --- Üniteler ---
   const units = Object.entries(P.uniteDurum || {});
