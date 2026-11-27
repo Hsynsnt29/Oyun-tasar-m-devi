@@ -147,6 +147,49 @@ svg.i{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:2;stro
 .wordprog .row{display:flex;justify-content:space-between;align-items:center;padding:.45rem .2rem;border-top:1px solid rgba(255,255,255,.05);font-size:.9rem}
 .wordprog .row:first-child{border-top:0}
 
+/* Cümleler: okuma listesi */
+.sents{display:grid;gap:10px}
+.sent{padding:14px 16px;border-radius:12px;background:#0b1224;border:1px solid var(--line)}
+.sent .line{font-size:1.08rem;line-height:1.9}
+.tok{background:none;border:0;padding:0 .08rem;border-radius:5px;color:var(--text);font-size:inherit;border-bottom:1px dashed rgba(255,255,255,.18)}
+.tok:hover,.tok.on{background:rgba(116,182,255,.15)}
+.tok.hl{color:var(--gold2);font-weight:700;border-bottom-color:rgba(216,178,94,.6)}
+.tok.hl:hover,.tok.hl.on{background:rgba(216,178,94,.15)}
+.sent .gl{font-size:.86rem;color:var(--info);min-height:1.3em;margin-top:.15rem}
+.sent .gl b{color:var(--text)}
+.sent .tr{font-size:.86rem;color:var(--muted);margin-top:.25rem}
+.sent .row{display:flex;justify-content:space-between;align-items:center;gap:.6rem}
+.linkbtn{background:none;border:0;padding:0;color:var(--gold2);font-weight:600;font-size:.84rem}
+/* Yazmalı soru */
+.blank{display:inline-block;min-width:90px;border-bottom:2px solid var(--gold);margin:0 .2rem;color:var(--gold2)}
+.qsent{font-size:1.45rem;font-weight:700;margin:.35rem 0 .4rem;line-height:1.5}
+.qhint{color:var(--muted);font-size:.9rem;margin-bottom:1rem}
+.qhint b{color:var(--gold2)}
+.typed{display:flex;gap:8px}
+.typed input{flex:1;background:#0b1224;border:1.5px solid var(--line);border-radius:12px;padding:.8rem .95rem;outline:none;font-size:1.05rem}
+.typed input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(216,178,94,.13)}
+.typed input.good{border-color:var(--ok)}
+.typed input.bad{border-color:var(--bad)}
+.opts.three{grid-template-columns:1fr}
+/* Dil bilgisi anlatımı */
+.lesson{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:820px){.lesson{grid-template-columns:1fr}}
+.rule{padding:16px;border-radius:14px;background:#0b1224;border:1px solid var(--line)}
+.rule h3{margin:0 0 .5rem;font-size:1rem;display:flex;gap:.45rem;align-items:center}
+.rule h3 .n{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;background:rgba(216,178,94,.15);color:var(--gold2);font-size:.75rem}
+.rule p{margin:.2rem 0 .6rem;color:var(--muted);font-size:.9rem}
+.rule table{width:100%;border-collapse:collapse;font-size:.9rem}
+.rule td{padding:.4rem .3rem;border-top:1px solid rgba(255,255,255,.05);vertical-align:top}
+.rule td:first-child{color:var(--muted);width:42%}
+.rule em{font-style:normal;color:var(--gold2);font-weight:700}
+.rule.wide{grid-column:1/-1}
+.freq{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:600px){.freq{grid-template-columns:1fr 1fr}}
+.freq div{padding:10px;border-radius:10px;background:rgba(255,255,255,.03);text-align:center}
+.freq b{display:block;color:var(--gold2)}
+.freq span{font-size:.8rem;color:var(--muted)}
+.freq i{display:block;height:5px;border-radius:9px;background:linear-gradient(90deg,var(--gold),var(--gold2));margin:.4rem auto 0}
+
 /* Yakında bölümleri */
 .soon{text-align:center;padding:48px 20px}
 .soon .ic{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;margin:0 auto 12px;background:rgba(216,178,94,.1);border:1px solid rgba(216,178,94,.3);color:var(--gold2)}
@@ -284,8 +327,47 @@ const UNITS = {
       { id:'lunch',       en:'have lunch',       tr:'öğle yemeği yemek',     ornek:'We have lunch at twelve thirty.',       ornekTr:'On iki buçukta öğle yemeği yeriz.' },
       { id:'homework',    en:'do homework',      tr:'ödev yapmak',           ornek:'I do my homework in the evening.',      ornekTr:'Ödevimi akşam yaparım.' },
       { id:'go-bed',      en:'go to bed',        tr:'yatmak',                ornek:'My brother goes to bed at ten.',        ornekTr:'Erkek kardeşim saat onda yatar.' }
+    ],
+    /* 2. bölüm: Cümleler
+       id: [boşluğa gelen doğru kısım, yanlış seçenekler, ipucu (yalın hâl), cümlede vurgulanan ifade] */
+    cumleler:{
+      'wake-up':     ['wake up',     ['wakes up','waking up','to wake up'],         'wake up',     'wake up'],
+      'get-up':      ['gets up',     ['get up','getting up','to get up'],           'get up',      'gets up'],
+      'breakfast':   ['have',        ['has','having','to have'],                    'have',        'have breakfast'],
+      'brush-teeth': ['brushes',     ['brush','brushing','to brush'],               'brush',       'brushes his teeth'],
+      'shower':      ['take',        ['takes','taking','to take'],                  'take',        'take a shower'],
+      'dressed':     ['gets dressed',['get dressed','getting dressed','to get dressed'], 'get dressed', 'gets dressed'],
+      'go-school':   ['go',          ['goes','going','to go'],                      'go',          'go to school'],
+      'start':       ['start',       ['starts','starting','to start'],              'start',       'start'],
+      'finish':      ['finishes',    ['finish','finishing','to finish'],            'finish',      'finishes'],
+      'lunch':       ['have',        ['has','having','to have'],                    'have',        'have lunch'],
+      'homework':    ['do',          ['does','doing','to do'],                      'do',          'do my homework'],
+      'go-bed':      ['goes',        ['go','going','to go'],                        'go',          'goes to bed']
+    },
+    /* Cümlelerdeki tek tek kelimelerin anlamları (kelimeye tıklayınca gösterilir) */
+    sozluk:{
+      'i':'ben', 'wake':'uyanmak', 'up':'yukarı (wake up / get up içinde)', 'at':'-de, -da (saatte)', 'seven':'yedi', "o'clock":'saat (tam saat)',
+      'she':'o (kadın)', 'gets':'get: almak, olmak (he/she/it ile)', 'early':'erken', 'every':'her', 'day':'gün', 'we':'biz', 'have':'sahip olmak; (yemekle) yemek',
+      'breakfast':'kahvaltı', 'in':'içinde, -de', 'the':'belirli tanımlık (Türkçede karşılığı yok)', 'kitchen':'mutfak', 'he':'o (erkek)', 'brushes':'fırçalar',
+      'his':'onun (erkek)', 'teeth':'dişler (tekili: tooth)', 'after':'-den sonra', 'take':'almak', 'a':'bir', 'shower':'duş', 'morning':'sabah',
+      'dressed':'giyinmiş (get dressed: giyinmek)', 'quickly':'hızlıca', 'they':'onlar', 'go':'gitmek', 'to':'-e, -a', 'school':'okul', 'by':'ile (taşıtla)',
+      'bus':'otobüs', 'my':'benim', 'lessons':'dersler', 'start':'başlamak', 'nine':'dokuz', 'finishes':'biter (finish)', 'three':'üç', 'lunch':'öğle yemeği',
+      'twelve':'on iki', 'thirty':'otuz', 'do':'yapmak', 'homework':'ödev', 'evening':'akşam', 'brother':'erkek kardeş', 'goes':'gider (go)', 'bed':'yatak', 'ten':'on'
+    },
+    /* 3. bölüm: Dil bilgisi mini alıştırması */
+    dilbilgisi:[
+      { tip:'secim', soru:'She ___ at seven every day. (get up)', dogru:'gets up', yanlis:['get up','getting up'], tr:'O her gün yedide kalkar.', aciklama:'He / She / It ile fiile -s eklenir.' },
+      { tip:'secim', soru:'They ___ to school by bus. (go)', dogru:'go', yanlis:['goes','going'], tr:'Okula otobüsle giderler.', aciklama:'I / You / We / They ile fiil yalın kalır.' },
+      { tip:'secim', soru:'He ___ breakfast at home.', dogru:'has', yanlis:['have','haves'], tr:'Kahvaltıyı evde yapar.', aciklama:'have fiili he / she / it ile has olur.' },
+      { tip:'secim', soru:'My mother ___ the dishes after dinner. (wash)', dogru:'washes', yanlis:['washs','wash'], tr:'Annem akşam yemeğinden sonra bulaşıkları yıkar.', aciklama:'-sh, -ch, -s, -x, -o ile biten fiillere -es eklenir.' },
+      { tip:'secim', soru:'I ___ have lunch at home. (olumsuz)', dogru:"don't", yanlis:["doesn't",'not'], tr:'Öğle yemeğini evde yemem.', aciklama:"I / You / We / They ile olumsuz: don't + yalın fiil." },
+      { tip:'secim', soru:'___ she take a shower in the morning?', dogru:'Does', yanlis:['Do','Is'], tr:'Sabahları duş alır mı?', aciklama:'He / She / It ile soru: Does + özne + yalın fiil.' },
+      { tip:'secim', soru:'Hangi cümle doğru?', dogru:'I usually wake up at seven.', yanlis:['I wake up usually at seven.','Usually I at seven wake up.'], tr:'Genellikle yedide uyanırım.', aciklama:'Sıklık zarfları (always, usually, sometimes, never) ana fiilden önce gelir.' },
+      { tip:'yaz', soru:'He ___ TV in the evening. (watch)', dogru:['watches'], tr:'Akşam televizyon izler.', aciklama:'watch -ch ile bittiği için -es alır: watches.' },
+      { tip:'yaz', soru:'She ___ her homework after school. (do)', dogru:['does'], tr:'Ödevini okuldan sonra yapar.', aciklama:'do fiili he / she / it ile does olur.' },
+      { tip:'yaz', soru:'My brother ___ get up early. (olumsuz)', dogru:["doesn't","does not"], tr:'Erkek kardeşim erken kalkmaz.', aciklama:"He / She / It ile olumsuz: doesn't + yalın fiil (gets değil, get)." }
     ]
-    /* cümle, dil bilgisi, okuma, anlama, çeviri ve test içerikleri sonraki adımlarda eklenecek */
+    /* okuma, anlama, çeviri ve test içerikleri sonraki adımlarda eklenecek */
   }
 };
 const SECTIONS = [
@@ -572,7 +654,250 @@ function finishQuiz(){
 function soon(s){
   $('#view').innerHTML = `<div class="soon"><div class="ic">${ic(s.ikon)}</div><h2>${s.ad}</h2><p>Bu bölüm bir sonraki geliştirme adımında eklenecek. Şimdilik <a href="#kelime">Kelimeler</a> bölümünü çalışabilirsin.</p></div>`;
 }
-const VIEWS = { kelime:viewKelime };
+/* ================= Ortak alıştırma motoru (cümleler, dil bilgisi…) =================
+   Soru: { tip:'secim'|'yaz', ust, soru(HTML), ipucu(HTML), secenekler, dogru:[…], w (kelime, varsa), aciklama, tr } */
+let run = null;
+const norm = s => String(s).toLowerCase().replace(/[’`´']/g, '').replace(/[.!?,;:]/g, '').replace(/\s+/g, ' ').trim();
+function startRun(cfg){
+  const prevDone = secDone(cfg.bolum);
+  run = Object.assign({ i:0, sonuc:[], xp:0, sayilan:0, ogrenilen:[], prevDone }, cfg);
+  renderRun();
+}
+function renderRun(){
+  const q = run.sorular[run.i], n = run.sorular.length;
+  $('#view').innerHTML = `
+    <div class="quiz">
+      <div class="qtop"><span>${esc(run.baslik)}</span><span>Soru <b>${run.i + 1}</b> / ${n}</span></div>
+      <div class="bar"><i style="width:${run.i / n * 100}%"></i></div>
+      <div class="card qcard">
+        <p class="qask">${q.ust}</p>
+        <div class="qsent">${q.soru}</div>
+        ${q.ipucu ? `<div class="qhint">${q.ipucu}</div>` : ''}
+        ${q.tip === 'secim'
+          ? `<div class="opts ${q.secenekler.some(o => o.length > 22) ? 'three' : ''}" id="ropts">${q.secenekler.map((o, k) => `<button type="button" class="opt" data-v="${esc(o)}"><span class="k">${k + 1}</span>${esc(o)}</button>`).join('')}</div>`
+          : `<form class="typed" id="rtyped" autocomplete="off"><input id="rin" spellcheck="false" autocapitalize="off" placeholder="Cevabını yaz…" aria-label="Cevabın"><button class="btn btn-gold" type="submit">Kontrol et</button></form>`}
+        <div id="rfb"></div>
+        <div class="qnav"><button class="btn btn-gold" type="button" id="rnext" hidden>${run.i + 1 < n ? 'Sonraki soru' : 'Sonucu gör'} ${ic('arrow')}</button></div>
+      </div>
+      <p class="muted" style="text-align:center;font-size:.82rem;margin-top:10px">${q.tip === 'secim' ? 'İpucu: Klavyeden 1–' + q.secenekler.length + ' ile seçip Enter ile ilerleyebilirsin.' : 'Büyük/küçük harf ve nokta önemli değil.'}</p>
+    </div>`;
+  if(q.tip === 'secim') $('#ropts').addEventListener('click', e => { const b = e.target.closest('.opt'); if(b && !b.disabled) runAnswer(b.dataset.v); });
+  else {
+    $('#rtyped').addEventListener('submit', e => {
+      e.preventDefault();
+      const v = $('#rin').value;
+      if(!v.trim()){ $('#rin').classList.add('bad'); setTimeout(() => $('#rin').classList.remove('bad'), 600); return; }
+      runAnswer(v);
+    });
+    setTimeout(() => $('#rin').focus(), 30);
+  }
+  $('#rnext').addEventListener('click', () => { run.i++; run.i < run.sorular.length ? renderRun() : finishRun(); });
+}
+function runAnswer(given){
+  const q = run.sorular[run.i], ok = q.dogru.some(d => norm(d) === norm(given));
+  if(q.tip === 'secim') $$('#ropts .opt').forEach(b => { b.disabled = true; if(q.dogru.includes(b.dataset.v)) b.classList.add('good'); else if(b.dataset.v === given) b.classList.add('bad'); });
+  else { $('#rin').disabled = true; $('#rin').classList.add(ok ? 'good' : 'bad'); $('#rtyped button').disabled = true; }
+  let extra = '';
+  if(q.w){
+    const r = recordAnswer(q.w, ok, run.bolum, run.beceri);
+    if(ok && r.sayildi){ run.xp += 5; run.sayilan++; extra = `"${q.w.en}" öğrenme: ${learnedCount(q.w)}/${LEARN_COUNT} · +5 XP`; if(r.ogrenildi){ run.ogrenilen.push(q.w); extra += ' · Kelime öğrenildi!'; } }
+    else if(ok && r.neden === 'bolum') extra = 'Bu kelime bu bölümde zaten sayıldı.';
+    else if(ok && r.neden === 'sure') extra = `Bu kelimenin son sayılan doğrusundan beri 10 dakika geçmedi (${r.kalan} dk kaldı); öğrenmeye sayılmadı.`;
+    else if(ok && r.neden === 'zaten') extra = 'Bu kelimeyi zaten öğrendin.';
+  } else {
+    P.beceri[run.beceri].t++; if(ok) P.beceri[run.beceri].d++;
+    if(ok && !run.prevDone){ run.xp += 3; extra = '+3 XP'; }
+  }
+  run.sonuc.push({ q, ok, given });
+  $('#rfb').innerHTML = `<div class="fb ${ok ? 'good' : 'bad'}"><span class="fi">${ic(ok ? 'check' : 'x')}</span><div>
+    <b>${ok ? 'Doğru!' : `Yanlış. Doğru cevap: ${esc(q.dogru[0])}`}</b>
+    ${!ok && q.tip === 'yaz' ? `<small>Senin cevabın: ${esc(given)}</small>` : ''}
+    ${q.aciklama ? `<small>${esc(q.aciklama)}</small>` : ''}
+    ${q.tr ? `<small><i>${esc(q.tam || '')}</i>${q.tam ? ' — ' : ''}${esc(q.tr)}</small>` : ''}
+    ${extra ? `<div class="cnt">${esc(extra)}</div>` : ''}</div></div>`;
+  if(!ok) $('#rfb .fb').classList.add('shake');
+  markStudy(); saveP();
+  $('#rnext').hidden = false; $('#rnext').focus();
+}
+document.addEventListener('keydown', e => {
+  if(!run || !$('#ropts') || e.target.tagName === 'INPUT') return;
+  if(/^[1-9]$/.test(e.key)){ const b = $$('#ropts .opt')[+e.key - 1]; if(b && !b.disabled) b.click(); }
+});
+function finishRun(){
+  const R = run, n = R.sorular.length, d = R.sonuc.filter(s => s.ok).length, pct = d / n, passed = pct >= PASS;
+  const prev = UD.bolumler[R.bolum] || { tamam:false, enIyi:0, deneme:0 };
+  const firstPass = passed && !prev.tamam;
+  UD.bolumler[R.bolum] = { tamam: prev.tamam || passed, enIyi: Math.max(prev.enIyi || 0, Math.round(pct * 100)), deneme:(prev.deneme || 0) + 1, t:Date.now() };
+  taskProgress('test');
+  const bonus = firstPass ? 20 : 0;
+  if(firstPass) log(`${U.ad} · ${R.ad} bölümü tamamlandı`);
+  log(`${U.ad} · ${R.ad} alıştırması: ${d}/${n}`);
+  addXp(R.xp + bonus, `${U.ad} · ${R.ad.toLocaleLowerCase('tr')} alıştırması`);
+  saveP();
+  const idx = SECTIONS.findIndex(s => s.id === R.bolum);
+  const nextI = SECTIONS.findIndex((s, i) => i > idx && secOpen(i) && !secDone(s.id));
+  const wrongW = R.sonuc.filter(s => !s.ok && s.q.w).map(s => s.q.w).filter((w, i, a) => a.indexOf(w) === i);
+  const wrongQ = R.sonuc.filter(s => !s.ok && !s.q.w);
+  const inErr = w => P.hataKutuphanesi.some(h => h.en.toLowerCase() === w.en.toLowerCase());
+  run = null;
+  renderFrame(idx);
+  $('#view').innerHTML = `
+    <div class="result">
+      <div style="display:flex;justify-content:center">${emblem(P.rank, 80, P.tier)}</div>
+      <p class="muted" style="margin:.5rem 0 .2rem">${passed ? (firstPass ? 'Bölüm tamamlandı!' : 'Tebrikler, yine geçtin!') : 'Bölümü geçmek için en az %70 gerekiyor.'}</p>
+      <div class="score">${d}<small> / ${n}</small></div>
+      <div class="rgrid">
+        <div><b>%${Math.round(pct * 100)}</b><span>Başarı</span></div>
+        <div><b>+${R.xp + bonus}</b><span>XP${bonus ? ' (20 bölüm bonusu dahil)' : ''}</span></div>
+        <div><b>${R.kelimeli ? R.sayilan : d}</b><span>${R.kelimeli ? 'Öğrenmeye sayılan cevap' : 'Doğru cevap'}</span></div>
+      </div>
+      ${R.ogrenilen.length ? `<p class="pill ok" style="font-size:.85rem">Öğrenilen: ${R.ogrenilen.map(w => esc(w.en)).join(', ')}</p>` : ''}
+      ${wrongW.length ? `
+        <div class="wrong" id="wrongBox">
+          <h3>Zorlandığın kelimeler (${wrongW.length})</h3>
+          <p>Bu kelimeleri hata kütüphanene eklemek ister misin?</p>
+          <div class="wl" id="wl">${wrongW.map(w => `<label><input type="checkbox" value="${w.id}" ${inErr(w) ? 'disabled' : 'checked'}><b>${esc(w.en)}</b>${inErr(w) ? '<span class="in">zaten hata kütüphanende</span>' : ''}<span class="tr">${esc(w.tr)}</span></label>`).join('')}</div>
+          <div class="racts" style="justify-content:flex-start;margin-top:12px">
+            <button class="btn btn-gold sm" type="button" id="addErr">${ic('bug')} Seçilenleri ekle</button>
+            <button class="btn btn-ghost sm" type="button" id="noErr">Hayır, teşekkürler</button>
+          </div>
+        </div>` : ''}
+      ${wrongQ.length ? `
+        <div class="wrong" style="border-color:rgba(240,179,74,.4)">
+          <h3>Tekrar gözden geçir (${wrongQ.length})</h3>
+          <p>Yanlış yaptığın kurallar:</p>
+          <div class="wl">${wrongQ.map(s => `<label style="cursor:default;flex-wrap:wrap"><b>${esc(s.q.dogru[0])}</b><span class="in" style="margin-left:auto">${esc(s.q.aciklama || '')}</span></label>`).join('')}</div>
+        </div>` : ''}
+      ${!wrongW.length && !wrongQ.length ? '<p class="pill ok" style="font-size:.85rem;margin-top:8px">Hiç yanlışın yok, harika!</p>' : ''}
+      <div class="racts">
+        <button class="btn btn-line" type="button" id="again">${ic('refresh')} Tekrar dene</button>
+        <button class="btn btn-ghost" type="button" id="toStart">${esc(R.donusAd)}</button>
+        ${nextI > -1 ? `<a class="btn btn-gold" href="#${SECTIONS[nextI].id}">Sonraki bölüm: ${SECTIONS[nextI].ad} ${ic('arrow')}</a>` : ''}
+      </div>
+    </div>`;
+  $('#again').addEventListener('click', () => startRun(Object.assign({}, R, { sorular:R.yeniden() })));
+  $('#toStart').addEventListener('click', () => VIEWS[R.bolum](SECTIONS[idx]));
+  if(wrongW.length){
+    const box = $('#wrongBox');
+    $('#addErr').addEventListener('click', () => {
+      const ids = $$('#wl input:checked:not(:disabled)').map(x => x.value);
+      if(!ids.length){ toast('Eklemek için en az bir kelime seç.', 'bad'); return; }
+      ids.forEach(id => {
+        const w = U.kelimeler.find(x => x.id === id);
+        P.hataKutuphanesi.push({ id:'h' + rnd(8), en:w.en, tr:w.tr, not:`${U.seviye} · ${U.ad} · ${R.ad.toLocaleLowerCase('tr')}`, t:Date.now() });
+        if(!P.bilemedigi.includes(w.en.toLowerCase())) P.bilemedigi.push(w.en.toLowerCase());
+      });
+      log(`Hata kütüphanesine ${ids.length} kelime eklendi`); saveP();
+      box.innerHTML = `<h3>${ic('check')} ${ids.length} kelime hata kütüphanene eklendi</h3><p style="margin:0">Panelindeki <a href="dashboard.html#kutuphane?hata">Hata kütüphanesi</a> bölümünden tekrar edebilirsin.</p>`;
+    });
+    $('#noErr').addEventListener('click', () => { box.innerHTML = '<p style="margin:0">Tamam, hiçbir kelime eklenmedi. Yanlışların yine de kelime kaydında duruyor.</p>'; });
+  }
+}
+
+/* ================= 2. bölüm: Cümleler ================= */
+function tokenize(sentence, phrase){
+  // Cümleyi kelimelere böl; ünitenin ifadesini tek parça olarak vurgula
+  const i = sentence.toLowerCase().indexOf(phrase.toLowerCase());
+  const part = (txt) => txt.split(/(\s+)/).map(t => {
+    if(!t.trim()) return t;
+    const m = t.match(/^(.*?)([.,!?]*)$/), core = m[1], punct = m[2];
+    return `<button type="button" class="tok" data-k="${esc(core.toLowerCase())}">${esc(core)}</button>${punct}`;
+  }).join('');
+  if(i < 0) return part(sentence);
+  return part(sentence.slice(0, i)) + `<button type="button" class="tok hl" data-phrase="1">${esc(sentence.slice(i, i + phrase.length))}</button>` + part(sentence.slice(i + phrase.length));
+}
+function viewCumle(){
+  const v = $('#view');
+  v.innerHTML = `
+    <div class="sec-head"><div><h2>${ic('text')} Cümleler</h2><p>Kelimeleri cümle içinde gör. Herhangi bir kelimeye tıkla, anlamı altında çıksın. Altın renkli kısım ünitenin ifadesidir.</p></div>
+      <span class="pill ${secDone('cumle') ? 'ok' : ''}">${secDone('cumle') ? 'Tamamlandı · en iyi %' + UD.bolumler.cumle.enIyi : '12 cümle'}</span></div>
+    <div class="sents" id="sents">${U.kelimeler.map((w, i) => `
+      <div class="sent" data-w="${w.id}">
+        <div class="row"><div class="line">${tokenize(w.ornek, U.cumleler[w.id][3])}</div><button type="button" class="linkbtn" data-tr="${i}">Çeviri</button></div>
+        <div class="gl"></div>
+        <div class="tr" hidden>${esc(w.ornekTr)}</div>
+      </div>`).join('')}</div>
+    <div class="toolbar"><span class="muted">Alıştırmada cümlelerdeki boşlukları dolduracaksın: bazıları şıklı, bazıları yazmalı.</span>
+      <button class="btn btn-gold" type="button" id="startC">Alıştırmaya başla ${ic('arrow')}</button></div>`;
+  $('#sents').addEventListener('click', e => {
+    const t = e.target.closest('.tok'), tr = e.target.closest('[data-tr]');
+    if(tr){ const box = tr.closest('.sent').querySelector('.tr'); box.hidden = !box.hidden; tr.textContent = box.hidden ? 'Çeviri' : 'Gizle'; return; }
+    if(!t) return;
+    const s = t.closest('.sent'), w = U.kelimeler.find(x => x.id === s.dataset.w);
+    $$('.tok.on', s).forEach(x => x.classList.remove('on')); t.classList.add('on');
+    const mean = t.dataset.phrase ? `${w.en} = ${w.tr}` : (U.sozluk[t.dataset.k] || 'Sözlükte yok');
+    s.querySelector('.gl').innerHTML = `<b>${esc(t.textContent)}</b> → ${esc(mean)}`;
+  });
+  $('#startC').addEventListener('click', () => startRun({ bolum:'cumle', ad:'Cümleler', beceri:'kelime', baslik:'Cümle alıştırması', kelimeli:true, donusAd:'Cümlelere dön', sorular:cumleQs(), yeniden:cumleQs }));
+}
+function cumleQs(){
+  return shuffle(U.kelimeler.slice()).map((w, i) => {
+    const [dogru, yanlis, ipucu] = U.cumleler[w.id];
+    const blankSent = esc(w.ornek).replace(esc(dogru), '<span class="blank">&nbsp;</span>');
+    const base = { w, dogru:[dogru], tam:w.ornek, tr:w.ornekTr, soru:blankSent };
+    return i % 2 === 0
+      ? Object.assign(base, { tip:'secim', ust:'Boşluğa hangisi gelmeli?', secenekler:shuffle([dogru, ...yanlis]) })
+      : Object.assign(base, { tip:'yaz', ust:'Boşluğu doğru biçimde yaz.', ipucu:`İpucu: <b>${esc(ipucu)}</b> · ${esc(w.tr)}` });
+  });
+}
+
+/* ================= 3. bölüm: Dil bilgisi ================= */
+function viewDilbilgisi(){
+  $('#view').innerHTML = `
+    <div class="sec-head"><div><h2>${ic('grammar')} Dil bilgisi: Simple Present Tense (Geniş zaman)</h2><p>Her gün, her zaman yaptığımız işleri, alışkanlıkları ve rutinleri anlatırken kullanılır.</p></div>
+      <span class="pill ${secDone('dilbilgisi') ? 'ok' : 'gold'}">${secDone('dilbilgisi') ? 'Tamamlandı · en iyi %' + UD.bolumler.dilbilgisi.enIyi : 'Bu bölüm her zaman açık'}</span></div>
+    <div class="lesson">
+      <div class="rule"><h3><span class="n">1</span> Olumlu cümle</h3>
+        <p>I / You / We / They ile fiil <b>yalın</b> kalır. He / She / It ile fiile <b>-s</b> eklenir.</p>
+        <table>
+          <tr><td>I / You / We / They</td><td>I <em>wake</em> up at seven.</td></tr>
+          <tr><td>He / She / It</td><td>She <em>wakes</em> up at seven.</td></tr>
+        </table></div>
+      <div class="rule"><h3><span class="n">2</span> -s mi, -es mi?</h3>
+        <p>Çoğu fiile <b>-s</b> eklenir. -sh, -ch, -s, -x, -o ile bitenlere <b>-es</b> eklenir. <b>have</b> düzensizdir.</p>
+        <table>
+          <tr><td>start, finish… → </td><td>start<em>s</em>, finish<em>es</em></td></tr>
+          <tr><td>brush, watch, go, do → </td><td>brush<em>es</em>, watch<em>es</em>, go<em>es</em>, do<em>es</em></td></tr>
+          <tr><td>have → </td><td><em>has</em> (He has breakfast.)</td></tr>
+        </table></div>
+      <div class="rule"><h3><span class="n">3</span> Olumsuz cümle</h3>
+        <p><b>don't / doesn't</b> + yalın fiil. doesn't kullanınca fiile -s <b>eklenmez</b>.</p>
+        <table>
+          <tr><td>I / You / We / They</td><td>I <em>don't</em> have lunch at home.</td></tr>
+          <tr><td>He / She / It</td><td>He <em>doesn't</em> get up early.</td></tr>
+        </table></div>
+      <div class="rule"><h3><span class="n">4</span> Soru cümlesi</h3>
+        <p><b>Do / Does</b> + özne + yalın fiil?</p>
+        <table>
+          <tr><td>I / You / We / They</td><td><em>Do</em> you take a shower in the morning?</td></tr>
+          <tr><td>He / She / It</td><td><em>Does</em> she go to school by bus?</td></tr>
+          <tr><td>Kısa cevap</td><td>Yes, she does. / No, she doesn't.</td></tr>
+        </table></div>
+      <div class="rule wide"><h3><span class="n">5</span> Sıklık zarfları</h3>
+        <p>Bir işi ne sıklıkla yaptığımızı anlatır. <b>Ana fiilden önce</b> gelir: I <em>usually</em> go to bed at ten.</p>
+        <div class="freq">
+          <div><b>always</b><span>her zaman</span><i style="width:100%"></i></div>
+          <div><b>usually</b><span>genellikle</span><i style="width:75%"></i></div>
+          <div><b>sometimes</b><span>bazen</span><i style="width:45%"></i></div>
+          <div><b>never</b><span>asla, hiç</span><i style="width:8%;background:#3a4565"></i></div>
+        </div></div>
+    </div>
+    <div class="toolbar"><span class="muted">Mini alıştırma: 10 soru (7 şıklı, 3 yazmalı). Dil bilgisi becerin bu sorulardan hesaplanır.</span>
+      <button class="btn btn-gold" type="button" id="startG">Mini alıştırmaya başla ${ic('arrow')}</button></div>`;
+  $('#startG').addEventListener('click', () => startRun({ bolum:'dilbilgisi', ad:'Dil bilgisi', beceri:'dilbilgisi', baslik:'Dil bilgisi mini alıştırması', kelimeli:false, donusAd:'Konu anlatımına dön', sorular:grammarQs(), yeniden:grammarQs }));
+}
+function grammarQs(){
+  const all = U.dilbilgisi, sec = all.filter(q => q.tip === 'secim'), yaz = all.filter(q => q.tip === 'yaz');
+  // Önce şıklılar (karışık sırada), en sonda yazmalılar
+  return [...shuffle(sec.slice()), ...yaz].map(q => {
+    const soru = esc(q.soru).replace('___', '<span class="blank">&nbsp;</span>');
+    return q.tip === 'secim'
+      ? { tip:'secim', ust:'Doğru seçeneği işaretle.', soru, secenekler:shuffle([q.dogru, ...q.yanlis]), dogru:[q.dogru], aciklama:q.aciklama, tr:q.tr }
+      : { tip:'yaz', ust:'Boşluğu doğru biçimde yaz.', soru, dogru:q.dogru, aciklama:q.aciklama, tr:q.tr };
+  });
+}
+
+const VIEWS = { kelime:viewKelime, cumle:viewCumle, dilbilgisi:viewDilbilgisi };
 
 if(me && U){ ensureDaily(); saveP(); route(); }
 </script>
