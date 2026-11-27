@@ -552,6 +552,7 @@ details.tbl th{color:var(--dim);font-weight:600}
             <div class="ch"><h2><svg class="i"><use href="#download"/></svg> Veri yönetimi</h2></div>
             <div class="set-row"><div class="st"><b>Dışa Aktar</b><span>Bu tarayıcıdaki tüm LevelUp verilerini <code>veriler.txt</code> olarak indir.</span></div><div class="sa"><button class="btn btn-gold sm" id="btnExport" type="button"><svg class="i"><use href="#download"/></svg> Dışa Aktar</button></div></div>
             <div class="set-row"><div class="st"><b>İçe Aktar</b><span>Daha önce indirilen <code>veriler.txt</code> dosyasını geri yükle. Mevcut verilerin yerine geçer.</span></div><div class="sa"><button class="btn btn-line sm" id="btnImport" type="button"><svg class="i"><use href="#upload"/></svg> İçe Aktar</button><input type="file" id="importFile" accept=".txt,text/plain,application/json" hidden></div></div>
+            <div class="set-row"><div class="st"><b>Birleştirerek İçe Aktar</b><span>Başka bir cihazda açılmış kullanıcıları içeren <code>veriler.txt</code>'yi, buradaki kullanıcıları silmeden ekle.</span></div><div class="sa"><button class="btn btn-ghost sm" id="btnMerge" type="button"><svg class="i"><use href="#upload"/></svg> Birleştir</button><input type="file" id="mergeFile" accept=".txt,text/plain,application/json" hidden></div></div>
           </div>
           <div class="card pad">
             <div class="ch"><h2><svg class="i"><use href="#lock"/></svg> Güvenlik</h2></div>
@@ -1185,6 +1186,42 @@ $('#importFile').addEventListener('change', e => {
     };
     r.readAsText(f);
   }, false);
+});
+/* Birleştirerek içe aktar: başka bir cihazdan/tarayıcıdan indirilen veriler.txt'deki kullanıcıları
+   bu tarayıcıdaki kullanıcıları SİLMEDEN ekler (localStorage her cihazda ayrı durduğu için). */
+function mergeData(file, done){
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const d = JSON.parse(r.result), v = d && d.veriler;
+      if(!v || typeof v !== 'object' || !v.lue_users) throw new Error('biçim');
+      const gelen = JSON.parse(v.lue_users), users = JSON.parse(localStorage.getItem('lue_users') || '[]');
+      const eklenen = [], atlanan = [];
+      gelen.forEach(u => {
+        if(users.some(x => x.id === u.id)) return atlanan.push(u.kullaniciAdi + ' (zaten var)');
+        if(users.some(x => x.kullaniciAdi === u.kullaniciAdi || x.eposta === u.eposta)) return atlanan.push(u.kullaniciAdi + ' (aynı kullanıcı adı/e-posta başka hesapta)');
+        users.push(u); eklenen.push(u.kullaniciAdi);
+        const pk = 'lue_ilerleme_' + u.id;
+        if(v[pk]) localStorage.setItem(pk, String(v[pk]));
+      });
+      localStorage.setItem('lue_users', JSON.stringify(users));
+      done(true, eklenen, atlanan);
+    }catch(e){ done(false); }
+  };
+  r.onerror = () => done(false);
+  r.readAsText(file);
+}
+function mergeMsg(ok, eklenen, atlanan){
+  if(!ok) return ['Dosya okunamadı. Uygulamadan indirilen veriler.txt dosyasını seç.', 'bad'];
+  if(!eklenen.length) return ['Yeni kullanıcı eklenmedi' + (atlanan.length ? ': ' + atlanan.join(', ') : '.'), 'bad'];
+  return [`${eklenen.length} kullanıcı eklendi: ${eklenen.join(', ')}` + (atlanan.length ? ` · Atlanan: ${atlanan.join(', ')}` : ''), 'ok'];
+}
+$('#btnMerge').addEventListener('click', () => $('#mergeFile').click());
+$('#mergeFile').addEventListener('change', e => {
+  const f = e.target.files[0]; e.target.value = '';
+  if(!f) return;
+  saveP();
+  mergeData(f, (ok, ek, at) => { const [m, t] = mergeMsg(ok, ek, at); toast(m, t); if(ok && ek.length) renderSiralama(); });
 });
 $('#delBtn').addEventListener('click', () => {
   const close = modal(`<h3>Hesabı sil</h3><p>Bu işlem geri alınamaz. Onaylamak için kullanıcı adını (<b>${esc(me.kullaniciAdi)}</b>) yaz.</p>

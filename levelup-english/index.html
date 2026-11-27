@@ -320,12 +320,14 @@ footer a{color:var(--muted)}
       <div class="card data-box">
         <div>
           <h2 style="margin:0;font-size:1.3rem">Veri yönetimi</h2>
-          <p>Tüm hesaplar ve ilerlemeler yalnızca bu tarayıcıda saklanır. <b>Dışa Aktar</b> ile hepsini <code>veriler.txt</code> dosyasına indirebilir, <b>İçe Aktar</b> ile bu dosyayı geri yükleyebilirsin.</p>
+          <p>Tüm hesaplar ve ilerlemeler yalnızca bu tarayıcıda saklanır. <b>Dışa Aktar</b> ile hepsini <code>veriler.txt</code> dosyasına indirebilir, <b>İçe Aktar</b> ile bu dosyayı geri yükleyebilirsin. Başka bir cihazda açılmış kullanıcıları buradakileri silmeden eklemek için <b>Birleştirerek İçe Aktar</b>'ı kullan.</p>
         </div>
         <div class="data-acts">
           <button class="btn btn-gold" id="btnExport" type="button"><svg class="i"><use href="#download"/></svg> Dışa Aktar</button>
           <button class="btn btn-line" id="btnImport" type="button"><svg class="i"><use href="#upload"/></svg> İçe Aktar</button>
+          <button class="btn btn-ghost" id="btnMerge" type="button" title="Başka cihazdaki kullanıcıları, buradakileri silmeden ekler"><svg class="i"><use href="#upload"/></svg> Birleştirerek İçe Aktar</button>
           <input type="file" id="importFile" accept=".txt,text/plain,application/json" hidden>
+          <input type="file" id="mergeFile" accept=".txt,text/plain,application/json" hidden>
         </div>
       </div>
     </div>
@@ -534,6 +536,42 @@ $('#importFile').addEventListener('change', e => {
     if(ok){ toast(n + ' kayıt geri yüklendi'); renderLogin(); renderNav(); }
     else toast('Dosya okunamadı. Uygulamadan indirilen veriler.txt dosyasını seç.', 'bad');
   });
+});
+
+/* Birleştirerek içe aktar: başka bir cihazdan/tarayıcıdan indirilen veriler.txt'deki kullanıcıları
+   bu tarayıcıdaki kullanıcıları SİLMEDEN ekler (localStorage her cihazda ayrı durduğu için). */
+function mergeData(file, done){
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const d = JSON.parse(r.result), v = d && d.veriler;
+      if(!v || typeof v !== 'object' || !v.lue_users) throw new Error('biçim');
+      const gelen = JSON.parse(v.lue_users), users = JSON.parse(localStorage.getItem('lue_users') || '[]');
+      const eklenen = [], atlanan = [];
+      gelen.forEach(u => {
+        if(users.some(x => x.id === u.id)) return atlanan.push(u.kullaniciAdi + ' (zaten var)');
+        if(users.some(x => x.kullaniciAdi === u.kullaniciAdi || x.eposta === u.eposta)) return atlanan.push(u.kullaniciAdi + ' (aynı kullanıcı adı/e-posta başka hesapta)');
+        users.push(u); eklenen.push(u.kullaniciAdi);
+        const pk = 'lue_ilerleme_' + u.id;
+        if(v[pk]) localStorage.setItem(pk, String(v[pk]));
+      });
+      localStorage.setItem('lue_users', JSON.stringify(users));
+      done(true, eklenen, atlanan);
+    }catch(e){ done(false); }
+  };
+  r.onerror = () => done(false);
+  r.readAsText(file);
+}
+function mergeMsg(ok, eklenen, atlanan){
+  if(!ok) return ['Dosya okunamadı. Uygulamadan indirilen veriler.txt dosyasını seç.', 'bad'];
+  if(!eklenen.length) return ['Yeni kullanıcı eklenmedi' + (atlanan.length ? ': ' + atlanan.join(', ') : '.'), 'bad'];
+  return [`${eklenen.length} kullanıcı eklendi: ${eklenen.join(', ')}` + (atlanan.length ? ` · Atlanan: ${atlanan.join(', ')}` : ''), 'ok'];
+}
+$('#btnMerge').addEventListener('click', () => $('#mergeFile').click());
+$('#mergeFile').addEventListener('change', e => {
+  const f = e.target.files[0]; e.target.value = '';
+  if(!f) return;
+  mergeData(f, (ok, ek, at) => { const [m, t] = mergeMsg(ok, ek, at); toast(m, t); if(ok){ renderLogin(); renderNav(); } });
 });
 
 /* ================= Kullanıcı girişi ================= */
