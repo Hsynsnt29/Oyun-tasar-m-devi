@@ -641,7 +641,7 @@ function loginSuccess(u){
   $('#enterEm').innerHTML = p ? emblem(p.rank, 96, p.tier) : emblem(0, 96, 3);
   $('#enterName').textContent = 'Hoş geldin, ' + u.ad + '!';
   $('#enter').classList.add('show');
-  setTimeout(() => location.href = 'dashboard.html', 1100);
+  setTimeout(() => location.href = 'dashboard.html', 700);
 }
 
 renderNav();

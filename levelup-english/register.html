@@ -264,7 +264,7 @@ label.lbl{display:block;font-size:.86rem;font-weight:600;margin:.85rem 0 .35rem;
           <h1 id="stepTitle">Kayıt ol</h1>
           <p class="sub">E-posta adresinle başla. Doğrulama kodu bu adrese gönderilecek.</p>
           <label class="lbl" for="email">E-posta adresi</label>
-          <div class="inp"><input id="email" type="email" autocomplete="email" spellcheck="false" placeholder="ornek@eposta.com"></div>
+          <div class="inp"><input id="email" type="email" autocomplete="off" spellcheck="false" placeholder="ornek@eposta.com"></div>
           <p class="err" id="emailErr"></p>
           <div class="actions"><button class="btn btn-gold" type="button" data-next>Devam et <svg class="i"><use href="#arrow"/></svg></button></div>
           <div class="or">veya</div>
@@ -281,7 +281,7 @@ label.lbl{display:block;font-size:.86rem;font-weight:600;margin:.85rem 0 .35rem;
           <h1>Kullanıcı adını seç</h1>
           <p class="sub">Giriş ekranında ve sıralamada bu adla görüneceksin.</p>
           <label class="lbl" for="uname">Kullanıcı adı</label>
-          <div class="inp"><input id="uname" maxlength="16" spellcheck="false" placeholder="ornek: ali_42"></div>
+          <div class="inp"><input id="uname" autocomplete="off" maxlength="16" spellcheck="false" placeholder="ornek: ali_42"></div>
           <p class="hint">3–16 karakter; küçük harf, rakam, nokta ve alt çizgi.</p>
           <p class="err" id="unameErr"></p>
           <div class="actions"><button class="btn btn-line" type="button" data-back><svg class="i"><use href="#back"/></svg></button><button class="btn btn-gold" type="button" data-next>Devam et <svg class="i"><use href="#arrow"/></svg></button></div>
@@ -327,8 +327,8 @@ label.lbl{display:block;font-size:.86rem;font-weight:600;margin:.85rem 0 .35rem;
           <h1>Seni tanıyalım</h1>
           <p class="sub">Panelinde adınla karşılanacaksın.</p>
           <div class="two">
-            <div><label class="lbl" for="fname">Ad</label><div class="inp"><input id="fname" autocomplete="given-name" maxlength="30"></div></div>
-            <div><label class="lbl" for="lname">Soyad</label><div class="inp"><input id="lname" autocomplete="family-name" maxlength="30"></div></div>
+            <div><label class="lbl" for="fname">Ad</label><div class="inp"><input id="fname" autocomplete="off" maxlength="30"></div></div>
+            <div><label class="lbl" for="lname">Soyad</label><div class="inp"><input id="lname" autocomplete="off" maxlength="30"></div></div>
           </div>
           <p class="err" id="nameErr"></p>
           <div class="actions"><button class="btn btn-line" type="button" data-back><svg class="i"><use href="#back"/></svg></button><button class="btn btn-gold" type="button" data-next>Devam et <svg class="i"><use href="#arrow"/></svg></button></div>
@@ -551,7 +551,9 @@ function go(i){
   if(key === 'code') enterCodeStep();
   setTimeout(() => { const f = step.querySelector('input:not([type=checkbox]),.opt,.tag'); if(f) f.focus(); }, 40);
 }
+let autoNext = null;
 function next(){
+  clearTimeout(autoNext);
   const key = S.flow[S.i];
   const ok = VALIDATE[key] ? VALIDATE[key]() : true;
   if(!ok){ shake($(`.step[data-step="${key}"]`)); return; }
@@ -696,7 +698,9 @@ function checkCode(){
   }
   S.verified = true; $('#otp').classList.add('good'); $('#otp').disabled = true;
   $('#verified').hidden = false; updateTries(); clearInterval(resendTimer); $('#resend').hidden = true;
-  setTimeout(() => go(S.i + 1), 650);
+  // Kod doğruysa kendiliğinden ilerle; kullanıcı bu arada "Doğrula"ya basarsa iki kez ilerleme
+  clearTimeout(autoNext);
+  autoNext = setTimeout(() => { if(S.flow[S.i] === 'code') go(S.i + 1); }, 400);
   return true;
 }
 
