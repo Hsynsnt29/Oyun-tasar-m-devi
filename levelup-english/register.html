@@ -129,6 +129,8 @@ label.lbl{display:block;font-size:.86rem;font-weight:600;margin:.85rem 0 .35rem;
 .opts.row .opt{justify-content:center;text-align:center;flex-direction:column;gap:0}
 .opts.row .opt .dot{display:none}
 .check{display:flex;gap:.6rem;align-items:flex-start;margin-top:1rem;font-size:.9rem;color:var(--muted);cursor:pointer}
+.saved-box{justify-content:center;padding:.6rem .8rem;border-radius:12px;border:1.5px solid transparent;transition:border-color .2s,background .2s}
+.saved-box.need{border-color:var(--bad);background:rgba(240,114,114,.08);color:var(--text)}
 .check input{width:18px;height:18px;accent-color:var(--gold);margin-top:.15rem;flex:none}
 .tags{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
 .tag{display:flex;align-items:center;gap:.55rem;padding:.7rem .8rem;border:1.5px solid var(--line);border-radius:12px;background:#0b1224;text-align:left}
@@ -791,14 +793,15 @@ function showDone(u){
       <button class="btn btn-ghost sm" type="button" id="copyCodes"><svg class="i"><use href="#copy"/></svg> Kopyala</button>
       <button class="btn btn-ghost sm" type="button" id="dlCodes"><svg class="i"><use href="#download"/></svg> .txt indir</button>
     </div>
-    <label class="check" style="justify-content:center"><input type="checkbox" id="saved"> <span>Kodlarımı güvenli bir yere kaydettim.</span></label>` : `
+    <label class="check saved-box" id="savedBox"><input type="checkbox" id="saved"> <span>Kodlarımı güvenli bir yere kaydettim.</span></label>
+    <p class="err" id="savedErr" style="justify-content:center"></p>` : `
     <div class="notice"><svg class="i"><use href="#alert"/></svg><span>Hesabın <b>${esc(u.saglayici[0].toUpperCase() + u.saglayici.slice(1))}</b> ile bağlı. Giriş ekranında aynı hesapla devam etmen yeterli.</span></div>`;
   v.innerHTML = `
     <div class="em">${emblem(0, 110, 3)}</div>
     <h1>Hesabın hazır, ${esc(u.ad)}!</h1>
     <p class="sub">Rütben: <b style="color:var(--gold2)">Bakır III</b> · İlk başarımın açıldı: <b>Hoş geldin</b></p>
     ${codesHtml}
-    <div class="actions"><a class="btn btn-gold" id="toLogin" href="login.html" ${u.kurtarma.length ? 'aria-disabled="true" style="pointer-events:none;opacity:.5"' : ''}>Giriş yap <svg class="i"><use href="#arrow"/></svg></a></div>`;
+    <div class="actions"><a class="btn btn-gold" id="toLogin" href="login.html" ${u.kurtarma.length ? 'style="opacity:.6"' : ''}>Giriş yap <svg class="i"><use href="#arrow"/></svg></a></div>`;
   if(u.kurtarma.length){
     const txt = 'LevelUp English - Kurtarma kodları\nHesap: ' + u.eposta + '\n\n' + u.kurtarma.map(c => c.kod).join('\n') + '\n\nHer kod yalnızca bir kez kullanılabilir.';
     $('#copyCodes').onclick = () => {
@@ -810,7 +813,14 @@ function showDone(u){
       const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], { type:'text/plain;charset=utf-8' }));
       a.download = 'levelup-kurtarma-kodlari.txt'; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 400);
     };
-    $('#saved').onchange = e => { const l = $('#toLogin'); l.style.pointerEvents = e.target.checked ? '' : 'none'; l.style.opacity = e.target.checked ? '' : '.5'; l.setAttribute('aria-disabled', !e.target.checked); };
+    $('#saved').onchange = e => { $('#toLogin').style.opacity = e.target.checked ? '' : '.6'; $('#savedBox').classList.remove('need'); setErr('savedErr', ''); };
+    // Kutu işaretlenmeden girişe geçilmez ama kullanıcıya nedeni gösterilir
+    $('#toLogin').onclick = e => {
+      if($('#saved').checked) return;
+      e.preventDefault();
+      setErr('savedErr', 'Devam etmek için önce "Kodlarımı güvenli bir yere kaydettim" kutusunu işaretle.');
+      const b = $('#savedBox'); b.classList.add('need'); shake(b);
+    };
   }
 }
 
