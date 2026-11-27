@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ders — LevelUp English</title>
+<style>
+:root{
+  --bg:#0a0f1e;--card:#121a2f;--card2:#172139;--line:#243150;--line2:#33436a;
+  --text:#e8ecf6;--muted:#9aa6c2;--dim:#6c7997;
+  --gold:#d8b25e;--gold2:#f2d68f;--goldInk:#1d1607;
+  --ok:#45c48a;--bad:#f07272;--warn:#f0b34a;--info:#74b6ff;
+  --r:16px;--shadow:0 14px 40px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--text);font:15px/1.55 "Segoe UI",Inter,system-ui,-apple-system,Roboto,Arial,sans-serif;
+  background:radial-gradient(1100px 600px at 90% -10%,rgba(216,178,94,.08),transparent 60%),var(--bg)}
+a{color:var(--gold2);text-decoration:none}
+a:hover{text-decoration:underline}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+svg.i{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+[hidden]{display:none!important}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:1px solid transparent;border-radius:12px;padding:.65rem 1.05rem;font-weight:650;transition:transform .12s,filter .15s,background .15s,border-color .15s;text-decoration:none!important;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--goldInk);box-shadow:0 6px 18px rgba(216,178,94,.2)}
+.btn-gold:hover{filter:brightness(1.06)}
+.btn-line{background:transparent;border-color:var(--line2);color:var(--text)}
+.btn-line:hover{border-color:var(--gold);color:var(--gold2)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--text)}
+.btn-ghost:hover{background:rgba(255,255,255,.08)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;filter:none}
+.btn.sm{padding:.42rem .75rem;font-size:.86rem;border-radius:10px}
+
+.top{position:sticky;top:0;z-index:20;background:rgba(10,15,30,.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05)}
+.top .in{max-width:1100px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:1rem}
+.logo{display:flex;align-items:center;gap:.55rem;font-weight:800;font-size:1.05rem;color:var(--text)!important;text-decoration:none!important;white-space:nowrap}
+.logo b{color:var(--gold2)}
+.crumb{color:var(--muted);font-size:.9rem;display:flex;gap:.4rem;align-items:center}
+@media(max-width:700px){.crumb{display:none}}
+.me{margin-left:auto;display:flex;align-items:center;gap:.6rem;font-size:.86rem}
+.me .rk{color:var(--gold2);font-weight:700}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:var(--r)}
+.pad{padding:20px}
+.pill{display:inline-flex;align-items:center;gap:.3rem;font-size:.74rem;font-weight:650;padding:.15rem .55rem;border-radius:99px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+.pill.gold{color:var(--gold2);border-color:rgba(216,178,94,.45);background:rgba(216,178,94,.08)}
+.pill.ok{color:#8fe3bb;border-color:rgba(69,196,138,.45);background:rgba(69,196,138,.08)}
+.pill.bad{color:#ffb0b0;border-color:rgba(240,114,114,.45);background:rgba(240,114,114,.08)}
+.muted{color:var(--muted)}
+
+/* Ünite başlığı ve bölüm adımları */
+.uhead{display:flex;justify-content:space-between;gap:1rem;align-items:flex-end;flex-wrap:wrap;margin-bottom:16px}
+.uhead h1{margin:.3rem 0 .2rem;font-size:1.7rem;letter-spacing:-.3px}
+.uhead p{margin:0;color:var(--muted)}
+.uprog{min-width:220px}
+.uprog .t{display:flex;justify-content:space-between;font-size:.84rem;color:var(--muted);margin-bottom:.35rem}
+.uprog .t b{color:var(--gold2)}
+.bar{height:8px;border-radius:99px;background:#0b1224;overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#b98b35,var(--gold2));transition:width .4s}
+.steps{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:18px}
+@media(max-width:860px){.steps{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:480px){.steps{grid-template-columns:repeat(2,1fr)}}
+.st{display:flex;flex-direction:column;gap:.25rem;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#0b1224;color:var(--muted)!important;text-decoration:none!important;font-size:.84rem;position:relative}
+.st .n{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--dim)}
+.st b{color:var(--text);font-size:.9rem}
+.st:hover{border-color:var(--line2)}
+.st.cur{border-color:rgba(216,178,94,.65);box-shadow:0 0 0 3px rgba(216,178,94,.1)}
+.st.done .n{color:var(--ok)}
+.st.lock{opacity:.45;cursor:not-allowed}
+.st.lock b{color:var(--muted)}
+
+/* Kelime kartları */
+.sec-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:14px}
+.sec-head h2{margin:0;font-size:1.2rem;display:flex;align-items:center;gap:.5rem}
+.sec-head h2 svg{color:var(--gold2)}
+.sec-head p{margin:.2rem 0 0;color:var(--muted);font-size:.92rem}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:980px){.cards{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:430px){.cards{grid-template-columns:1fr}}
+.fc{display:block;width:100%;perspective:900px;height:178px;background:none;border:0;padding:0;text-align:left;color:inherit}
+.fc .inner{display:block;position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fc.flip .inner{transform:rotateY(180deg)}
+.fc .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:14px 15px;display:flex;flex-direction:column;border:1px solid var(--line);background:linear-gradient(180deg,#172139,#0f1730)}
+.fc .back{transform:rotateY(180deg);background:linear-gradient(180deg,#221c0e,#141024);border-color:rgba(216,178,94,.45)}
+.fc:hover .front{border-color:var(--line2)}
+.fc .no{font-size:.72rem;color:var(--dim);display:flex;justify-content:space-between;align-items:center}
+.fc .en{font-size:1.3rem;font-weight:750;margin:.35rem 0 .3rem;color:var(--text)}
+.fc .tr{font-size:1.2rem;font-weight:750;margin:.35rem 0 .3rem;color:var(--gold2)}
+.fc .ex{font-size:.83rem;color:var(--muted);font-style:italic;margin-top:auto}
+.fc .hint{font-size:.72rem;color:var(--dim);margin-top:.35rem}
+.fc.seen .front{border-color:rgba(69,196,138,.35)}
+.pips{display:inline-flex;gap:3px}
+.pips i{width:7px;height:7px;border-radius:50%;background:#26314f}
+.pips i.on{background:var(--ok)}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:16px}
+.note{display:flex;gap:.6rem;align-items:flex-start;padding:.8rem .9rem;border-radius:12px;background:rgba(116,182,255,.07);border:1px solid rgba(116,182,255,.25);font-size:.88rem;color:var(--muted);margin-bottom:14px}
+.note svg{color:var(--info);margin-top:.15rem}
+.note b{color:var(--text)}
+
+/* Alıştırma */
+.quiz{max-width:680px;margin:0 auto}
+.qtop{display:flex;justify-content:space-between;align-items:center;font-size:.86rem;color:var(--muted);margin-bottom:.5rem}
+.qcard{padding:26px;margin-top:14px}
+.qask{color:var(--muted);font-size:.9rem;margin:0}
+.qword{font-size:2rem;font-weight:800;margin:.3rem 0 1.1rem;letter-spacing:-.3px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:520px){.opts{grid-template-columns:1fr}}
+.opt{display:flex;gap:.7rem;align-items:center;padding:.85rem 1rem;border-radius:12px;border:1.5px solid var(--line);background:#0b1224;text-align:left;font-weight:600;transition:border-color .15s,background .15s}
+.opt:hover:not([disabled]){border-color:var(--line2)}
+.opt .k{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;background:rgba(255,255,255,.06);font-size:.75rem;color:var(--dim);flex:none}
+.opt.good{border-color:var(--ok);background:rgba(69,196,138,.1)}
+.opt.bad{border-color:var(--bad);background:rgba(240,114,114,.1)}
+.opt[disabled]{cursor:default}
+.fb{margin-top:16px;padding:14px;border-radius:12px;display:flex;gap:.7rem;align-items:flex-start}
+.fb.good{background:rgba(69,196,138,.08);border:1px solid rgba(69,196,138,.35)}
+.fb.bad{background:rgba(240,114,114,.08);border:1px solid rgba(240,114,114,.35)}
+.fb .fi{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none}
+.fb.good .fi{background:rgba(69,196,138,.2);color:var(--ok)}
+.fb.bad .fi{background:rgba(240,114,114,.2);color:var(--bad)}
+.fb b{display:block}
+.fb small{display:block;color:var(--muted);margin-top:.2rem}
+.fb .cnt{color:var(--gold2);font-size:.8rem;margin-top:.3rem}
+.qnav{display:flex;justify-content:flex-end;margin-top:16px}
+
+/* Sonuç */
+.result{max-width:720px;margin:0 auto;text-align:center}
+.score{font-size:3rem;font-weight:800;color:var(--gold2);line-height:1}
+.score small{font-size:1.2rem;color:var(--muted)}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.rgrid div{padding:12px;border-radius:12px;background:#0b1224;border:1px solid var(--line)}
+.rgrid b{display:block;font-size:1.3rem;color:var(--gold2)}
+.rgrid span{font-size:.8rem;color:var(--muted)}
+.wrong{text-align:left;margin-top:14px;padding:16px;border-radius:14px;background:#0b1224;border:1px solid rgba(240,114,114,.35)}
+.wrong h3{margin:0 0 .2rem;font-size:1rem}
+.wrong p{margin:0 0 .7rem;color:var(--muted);font-size:.88rem}
+.wl{display:grid;gap:6px}
+.wl label{display:flex;gap:.7rem;align-items:center;padding:.55rem .7rem;border-radius:10px;background:rgba(255,255,255,.03);cursor:pointer}
+.wl input{width:17px;height:17px;accent-color:var(--gold)}
+.wl .tr{color:var(--muted);margin-left:auto;font-size:.88rem}
+.wl .in{color:var(--dim);font-size:.78rem}
+.racts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.wordprog{text-align:left;margin-top:16px}
+.wordprog .row{display:flex;justify-content:space-between;align-items:center;padding:.45rem .2rem;border-top:1px solid rgba(255,255,255,.05);font-size:.9rem}
+.wordprog .row:first-child{border-top:0}
+
+/* Yakında bölümleri */
+.soon{text-align:center;padding:48px 20px}
+.soon .ic{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;margin:0 auto 12px;background:rgba(216,178,94,.1);border:1px solid rgba(216,178,94,.3);color:var(--gold2)}
+.soon .ic svg{width:28px;height:28px}
+.soon h2{margin:0 0 .3rem}
+.soon p{color:var(--muted);margin:0 auto;max-width:460px}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#1b2541;border:1px solid var(--line2);color:var(--text);padding:.7rem 1rem;border-radius:12px;box-shadow:var(--shadow);opacity:0;transition:.25s;z-index:100;display:flex;gap:.5rem;align-items:center;max-width:92vw}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok svg{color:var(--ok)}.toast.bad svg{color:var(--bad)}.toast.gold svg{color:var(--gold2)}
+.levelup{position:fixed;inset:0;background:rgba(5,8,18,.9);display:grid;place-items:center;z-index:95;opacity:0;pointer-events:none;transition:opacity .3s}
+.levelup.show{opacity:1;pointer-events:auto}
+.levelup .in{text-align:center;transform:scale(.7);transition:transform .45s cubic-bezier(.2,1.6,.4,1)}
+.levelup.show .in{transform:scale(1)}
+.levelup h3{font-size:1.7rem;margin:.6rem 0 .2rem;color:var(--gold2)}
+.levelup p{color:var(--muted);margin:0 0 1.2rem}
+.fade{animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 32 32"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2d68f"/><stop offset="1" stop-color="#b98b35"/></linearGradient></defs><path d="M16 2 28 7v9c0 7-5 12-12 14C9 28 4 23 4 16V7z" fill="url(#lg)"/><path d="M11 21V11h3v7.4h6V21z" fill="#1d1607"/><path d="m18 13 3-3 3 3" stroke="#1d1607" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="back" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+  <symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="book" viewBox="0 0 24 24"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-5a3 3 0 0 0-2 1"/><path d="M20 4v14h-6a2 2 0 0 0-1 .3"/></symbol>
+  <symbol id="text" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h10M4 18h7"/></symbol>
+  <symbol id="grammar" viewBox="0 0 24 24"><path d="M4 20 9 4h2l5 16M6 14h8"/><path d="M17 8h4M19 6v4"/></symbol>
+  <symbol id="read" viewBox="0 0 24 24"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></symbol>
+  <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="translate" viewBox="0 0 24 24"><path d="M4 5h8M8 3v2M10 5c-1 4-3 7-6 9M6 9c1 2 3 4 6 5"/><path d="m13 21 4-9 4 9M14.5 18h5"/></symbol>
+  <symbol id="trophy" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3a3 3 0 0 1-3 4M7 5H4a3 3 0 0 0 3 4"/></symbol>
+  <symbol id="refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></symbol>
+  <symbol id="bug" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="in">
+    <a class="logo" href="index.html"><svg width="26" height="26"><use href="#logo"/></svg><span>LevelUp <b>English</b></span></a>
+    <span class="crumb"><a href="dashboard.html">Panelim</a><svg class="i"><use href="#chev"/></svg><a href="dashboard.html#ogren">Öğrenme yolu</a><svg class="i"><use href="#chev"/></svg><span id="crumbUnit"></span></span>
+    <div class="me" id="me"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="uhead">
+    <div>
+      <span class="pill gold" id="uLevel"></span>
+      <h1 id="uTitle"></h1>
+      <p id="uDesc"></p>
+    </div>
+    <div class="uprog"><div class="t"><span>Ünite ilerlemesi</span><span><b id="uDone">0</b> / 7 bölüm</span></div><div class="bar"><i id="uBar"></i></div></div>
+  </div>
+  <nav class="steps" id="steps" aria-label="Ünite bölümleri"></nav>
+  <section class="card pad fade" id="view"></section>
+  <div style="margin-top:16px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">
+    <a class="btn btn-line sm" href="dashboard.html#ogren"><svg class="i"><use href="#back"/></svg> Öğrenme yoluna dön</a>
+    <a class="btn btn-ghost sm" href="dashboard.html#kutuphane?hata"><svg class="i"><use href="#bug"/></svg> Hata kütüphanem</a>
+  </div>
+</main>
+
+<div class="levelup" id="levelup" aria-live="assertive"><div class="in"><div id="luEm"></div><h3 id="luTitle"></h3><p id="luSub"></p><button class="btn btn-gold" type="button" id="luOk">Harika!</button></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ================= Ortak yardımcılar ================= */
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const K = { users:'lue_users', active:'lue_aktif' };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ic = id => `<svg class="i"><use href="#${id}"/></svg>`;
+const shuffle = a => { for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const rnd = n => Math.random().toString(36).slice(2, 2 + n);
+function loadUsers(){ try{ const v = JSON.parse(localStorage.getItem(K.users)); return Array.isArray(v) ? v : []; }catch(e){ return []; } }
+function cyrb53(str, seed = 0){
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for(let i = 0, ch; i < str.length; i++){ ch = str.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507); h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507); h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16);
+}
+function toast(msg, type = 'ok'){
+  const t = $('#toast');
+  t.className = 'toast ' + type;
+  t.innerHTML = `${ic(type === 'bad' ? 'alert' : type === 'gold' ? 'trophy' : 'check')}<span>${esc(msg)}</span>`;
+  requestAnimationFrame(() => t.classList.add('show'));
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 3200);
+}
+const today = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const daysBetween = (a, b) => Math.round((new Date(b) - new Date(a)) / 86400000);
+
+/* ================= Rütbeler ================= */
+const RANKS = [
+  { ad:'Bakır',  c1:'#f0a06a', c2:'#8a4a22' }, { ad:'Bronz',  c1:'#e2b27a', c2:'#7a5230' },
+  { ad:'Gümüş',  c1:'#f1f4f9', c2:'#7d8798' }, { ad:'Altın',  c1:'#ffe08a', c2:'#b8862b' },
+  { ad:'Platin', c1:'#d3fff5', c2:'#4f9c94' }, { ad:'Elmas',  c1:'#cde9ff', c2:'#3d7fd6' },
+  { ad:'Mitril', c1:'#d6fbff', c2:'#6d5cff' }
+];
+const ROMAN = ['', 'I', 'II', 'III'];
+const XP_TIER = [300, 400, 500, 600, 700, 800, 900];
+let svgSeq = 0;
+function emblem(i, size = 56, tier = 0){
+  const r = RANKS[i], id = 'em' + (svgSeq++);
+  const wings = i >= 5 ? `<path d="M10 20 2 14l3 14 7 4M54 20l8-6-3 14-7 4" fill="url(#${id})" opacity=".75"/>` : '';
+  const crown = i === 6 ? `<path d="M22 6l4 5 6-7 6 7 4-5v6H22z" fill="url(#${id})" stroke="rgba(255,255,255,.6)" stroke-width="1"/>` : '';
+  const center = tier ? `<text x="32" y="39" text-anchor="middle" font-size="15" font-weight="800" fill="#fff" font-family="Georgia,serif" stroke="rgba(0,0,0,.35)" stroke-width=".6">${ROMAN[tier]}</text>` : '';
+  return `<svg width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${r.c1}"/><stop offset="1" stop-color="${r.c2}"/></linearGradient></defs>${wings}<path d="M32 8 52 15v15c0 13-9 22-20 27C21 52 12 43 12 30V15Z" fill="url(#${id})" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/><path d="M32 14 46 19v11c0 9-6 16-14 20-8-4-14-11-14-20V19Z" fill="rgba(8,12,26,.42)"/>${crown}${center}</svg>`;
+}
+const rankName = p => `${RANKS[p.rank].ad} ${ROMAN[p.tier]}`;
+
+/* ================= Ünite içerikleri =================
+   Çeviriler sözlükten kontrol edilecek (ödev kuralı). */
+const UNITS = {
+  'a1-rutin': {
+    seviye:'A1', ad:'Günlük rutinler', ing:'Daily Routines',
+    aciklama:'Sabahtan akşama günlük aktiviteleri anlatmayı öğren.',
+    kelimeler:[
+      { id:'wake-up',     en:'wake up',          tr:'uyanmak',               ornek:'I wake up at seven o\'clock.',          ornekTr:'Saat yedide uyanırım.' },
+      { id:'get-up',      en:'get up',           tr:'(yataktan) kalkmak',    ornek:'She gets up early every day.',          ornekTr:'O her gün erken kalkar.' },
+      { id:'breakfast',   en:'have breakfast',   tr:'kahvaltı yapmak',       ornek:'We have breakfast in the kitchen.',     ornekTr:'Mutfakta kahvaltı yaparız.' },
+      { id:'brush-teeth', en:'brush your teeth', tr:'dişlerini fırçalamak',  ornek:'He brushes his teeth after breakfast.', ornekTr:'Kahvaltıdan sonra dişlerini fırçalar.' },
+      { id:'shower',      en:'take a shower',    tr:'duş almak',             ornek:'I take a shower in the morning.',       ornekTr:'Sabahları duş alırım.' },
+      { id:'dressed',     en:'get dressed',      tr:'giyinmek',              ornek:'She gets dressed quickly.',             ornekTr:'Hızlıca giyinir.' },
+      { id:'go-school',   en:'go to school',     tr:'okula gitmek',          ornek:'They go to school by bus.',             ornekTr:'Okula otobüsle giderler.' },
+      { id:'start',       en:'start',            tr:'başlamak',              ornek:'My lessons start at nine.',             ornekTr:'Derslerim dokuzda başlar.' },
+      { id:'finish',      en:'finish',           tr:'bitmek, bitirmek',      ornek:'School finishes at three o\'clock.',    ornekTr:'Okul saat üçte biter.' },
+      { id:'lunch',       en:'have lunch',       tr:'öğle yemeği yemek',     ornek:'We have lunch at twelve thirty.',       ornekTr:'On iki buçukta öğle yemeği yeriz.' },
+      { id:'homework',    en:'do homework',      tr:'ödev yapmak',           ornek:'I do my homework in the evening.',      ornekTr:'Ödevimi akşam yaparım.' },
+      { id:'go-bed',      en:'go to bed',        tr:'yatmak',                ornek:'My brother goes to bed at ten.',        ornekTr:'Erkek kardeşim saat onda yatar.' }
+    ]
+    /* cümle, dil bilgisi, okuma, anlama, çeviri ve test içerikleri sonraki adımlarda eklenecek */
+  }
+};
+const SECTIONS = [
+  { id:'kelime',     ad:'Kelimeler',   ikon:'book' },
+  { id:'cumle',      ad:'Cümleler',    ikon:'text' },
+  { id:'dilbilgisi', ad:'Dil bilgisi', ikon:'grammar', herZamanAcik:true },
+  { id:'okuma',      ad:'Okuma',       ikon:'read' },
+  { id:'anlama',     ad:'Anlama',      ikon:'target' },
+  { id:'ceviri',     ad:'Çeviri',      ikon:'translate' },
+  { id:'test',       ad:'Ünite testi', ikon:'trophy' }
+];
+const PASS = 0.7;                 // Bölümü geçmek için en az %70
+const LEARN_COUNT = 3;            // Kelime 3 doğru cevapla öğrenilir…
+const LEARN_GAP = 10 * 60 * 1000; // …farklı bölümlerde ve aralarında en az 10 dakika varsa
+
+/* ================= Oturum ve ilerleme ================= */
+const me = loadUsers().find(u => u.id === localStorage.getItem(K.active));
+if(!me) location.replace('index.html');
+const UID = new URLSearchParams(location.search).get('u') || 'a1-rutin';
+const U = UNITS[UID];
+if(me && !U) location.replace('dashboard.html#ogren');
+const PKEY = 'lue_ilerleme_' + (me ? me.id : '');
+let P = (() => { try{ return JSON.parse(localStorage.getItem(PKEY)); }catch(e){ return null; } })() || {};
+P = Object.assign({ rank:0, tier:3, xp:0, toplamXp:0, seri:0, sonCalisma:null, ogrenilen:[], bilemedigi:[], kutuphane:[], hataKutuphanesi:[],
+  beceri:{ kelime:{d:0,t:0}, dilbilgisi:{d:0,t:0}, okuma:{d:0,t:0}, ceviri:{d:0,t:0} }, uniteler:[], sinavlar:[], basarimlar:[], gunluk:null, hareketler:[],
+  sayac:{ gorev:0, tamGun:0, hatadanOgrenilen:0 } }, P);
+P.kelimeler = P.kelimeler || {};     // kelime bazında doğru/yanlış kaydı
+P.uniteDurum = P.uniteDurum || {};   // ünite ve bölüm durumu
+const UD = P.uniteDurum[UID] = P.uniteDurum[UID] || { basla:Date.now(), bolumler:{}, goruldu:[] };
+function saveP(){ localStorage.setItem(PKEY, JSON.stringify(P)); }
+function log(m){ P.hareketler.unshift({ t:Date.now(), m }); P.hareketler = P.hareketler.slice(0, 40); }
+function markStudy(){
+  const t = today(); if(P.sonCalisma === t) return;
+  P.seri = P.sonCalisma && daysBetween(P.sonCalisma, t) === 1 ? P.seri + 1 : 1; P.sonCalisma = t;
+}
+function addXp(n, why){
+  if(n <= 0) return;
+  const before = rankName(P), need = XP_TIER[P.rank];
+  P.toplamXp += n; P.xp += n;
+  let up = false;
+  while(P.tier > 1 && P.xp >= need){ P.xp -= need; P.tier--; up = true; }
+  if(P.tier === 1 && P.xp > need) P.xp = need;
+  log(`+${n} XP · ${why}`);
+  if(up){
+    log(`Kademe atlandı: ${before} → ${rankName(P)}`);
+    $('#luEm').innerHTML = emblem(P.rank, 130, P.tier); $('#luTitle').textContent = rankName(P) + ' oldun!';
+    $('#luSub').textContent = P.tier === 1 ? 'Bu kademede XP dolunca rütbe sınavı açılacak.' : 'Rütbende bir kademe yükseldin.';
+    $('#levelup').classList.add('show');
+  }
+}
+$('#luOk').addEventListener('click', () => $('#levelup').classList.remove('show'));
+
+/* Günlük görevler (dashboard ile aynı mantık) */
+const TASK_POOL = { ekle:{ hedef:3, xp:15, ad:'Kelime kütüphanene 3 kelime ekle' }, kelime:{ hedef:5, xp:20, ad:'Bir üniteden 5 yeni kelime öğren' }, okuma:{ hedef:1, xp:25, ad:'1 okuma metni tamamla' }, tekrar:{ hedef:3, xp:20, ad:'Hata kütüphanesinden 3 kelimeyi öğren' }, test:{ hedef:1, xp:15, ad:'1 alıştırma testi çöz' } };
+function ensureDaily(){
+  const t = today(); if(P.gunluk && P.gunluk.tarih === t) return;
+  const rest = ['kelime','okuma','tekrar','test'], seed = parseInt(cyrb53(t + me.id).slice(-6), 16);
+  const a = rest[seed % 4], b = rest[(seed + 1 + (seed >> 3) % 3) % 4];
+  P.gunluk = { tarih:t, gorevler:['ekle', a, b].map(id => ({ id, ilerleme:0, tamam:false })) };
+}
+function taskProgress(id, n = 1){
+  ensureDaily();
+  const g = P.gunluk.gorevler.find(x => x.id === id);
+  if(!g || g.tamam) return;
+  g.ilerleme = Math.min(TASK_POOL[id].hedef, g.ilerleme + n);
+  if(g.ilerleme >= TASK_POOL[id].hedef){
+    g.tamam = true; P.sayac.gorev++;
+    setTimeout(() => toast(`Günlük görev tamamlandı: +${TASK_POOL[id].xp} XP`, 'gold'), 600);
+    addXp(TASK_POOL[id].xp, 'Günlük görev: ' + TASK_POOL[id].ad);
+    if(P.gunluk.gorevler.every(x => x.tamam)){ P.sayac.tamGun++; log('Bugünün tüm görevleri tamamlandı'); }
+  }
+}
+
+/* Kelime öğrenme kuralı: 3 doğru, her biri farklı bölümde ve en az 10 dk arayla */
+function wordRec(w){ return P.kelimeler[UID + ':' + w.id] = P.kelimeler[UID + ':' + w.id] || { en:w.en, tr:w.tr, dogru:[], yanlis:0, sonYanlis:null }; }
+function learnedCount(w){ return Math.min(LEARN_COUNT, (P.kelimeler[UID + ':' + w.id]?.dogru || []).length); }
+function pips(w){ const n = learnedCount(w); return `<span class="pips" title="Öğrenme: ${n}/${LEARN_COUNT}">${[0,1,2].map(i => `<i class="${i < n ? 'on' : ''}"></i>`).join('')}</span>`; }
+/* Döner: { sayildi, ogrenildi, neden } */
+function recordAnswer(w, ok, bolum, beceri){
+  P.beceri[beceri].t++; if(ok) P.beceri[beceri].d++;
+  const r = wordRec(w);
+  if(!ok){ r.yanlis++; r.sonYanlis = Date.now(); return { sayildi:false }; }
+  if(r.dogru.length >= LEARN_COUNT) return { sayildi:false, neden:'zaten' };
+  if(r.dogru.some(d => d.b === bolum)) return { sayildi:false, neden:'bolum' };
+  const last = r.dogru[r.dogru.length - 1];
+  if(last && Date.now() - last.t < LEARN_GAP) return { sayildi:false, neden:'sure', kalan:Math.ceil((LEARN_GAP - (Date.now() - last.t)) / 60000) };
+  r.dogru.push({ t:Date.now(), b:bolum });
+  if(r.dogru.length === 1) taskProgress('kelime');
+  let ogrenildi = false;
+  if(r.dogru.length === LEARN_COUNT){
+    ogrenildi = true;
+    if(!P.ogrenilen.includes(w.en)) P.ogrenilen.push(w.en);
+    log('Kelime öğrenildi: ' + w.en);
+  }
+  return { sayildi:true, ogrenildi };
+}
+
+/* ================= Bölüm kilitleri ================= */
+const secDone = id => !!(UD.bolumler[id] && UD.bolumler[id].tamam);
+function secOpen(i){
+  const s = SECTIONS[i];
+  return i === 0 || s.herZamanAcik || secDone(s.id) || SECTIONS.slice(0, i).filter(x => !x.herZamanAcik).every(x => secDone(x.id));
+}
+function firstOpenUndone(){ const i = SECTIONS.findIndex((s, i) => secOpen(i) && !secDone(s.id) && !s.herZamanAcik); return i < 0 ? 0 : i; }
+
+/* ================= Çerçeve ================= */
+function renderFrame(cur){
+  $('#me').innerHTML = `${emblem(P.rank, 30, P.tier)}<span><span class="rk">${esc(rankName(P))}</span><br><span class="muted">${P.xp} / ${XP_TIER[P.rank]} XP</span></span>`;
+  $('#crumbUnit').textContent = U.ad;
+  $('#uLevel').textContent = U.seviye + ' · ' + U.ing;
+  $('#uTitle').textContent = U.ad;
+  $('#uDesc').textContent = U.aciklama;
+  const done = SECTIONS.filter(s => secDone(s.id)).length;
+  $('#uDone').textContent = done; $('#uBar').style.width = done / 7 * 100 + '%';
+  $('#steps').innerHTML = SECTIONS.map((s, i) => {
+    const open = secOpen(i), d = secDone(s.id);
+    return `<a class="st ${i === cur ? 'cur' : ''} ${d ? 'done' : ''} ${open ? '' : 'lock'}" href="${open ? '#' + s.id : '#'}" data-i="${i}" ${open ? '' : 'aria-disabled="true"'}>
+      <span class="n">${ic(d ? 'check' : open ? s.ikon : 'lock')} ${i + 1}. bölüm</span><b>${s.ad}</b></a>`;
+  }).join('');
+}
+$('#steps').addEventListener('click', e => {
+  const a = e.target.closest('.st'); if(!a) return;
+  if(a.classList.contains('lock')){ e.preventDefault(); toast('Bu bölüm, önceki bölümleri tamamlayınca açılır.', 'bad'); }
+});
+function route(){
+  const id = location.hash.slice(1);
+  let i = SECTIONS.findIndex(s => s.id === id);
+  if(i < 0 || !secOpen(i)) i = firstOpenUndone();
+  renderFrame(i);
+  const v = $('#view'); v.classList.remove('fade'); void v.offsetWidth; v.classList.add('fade');
+  (VIEWS[SECTIONS[i].id] || soon)(SECTIONS[i]);
+  window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', route);
+
+/* ================= 1. bölüm: Kelimeler ================= */
+let quiz = null;
+function viewKelime(){
+  const v = $('#view'), seen = new Set(UD.goruldu), all = seen.size >= U.kelimeler.length;
+  v.innerHTML = `
+    <div class="sec-head"><div><h2>${ic('book')} Kelimeler</h2><p>Kartın üstüne tıkla, Türkçesini ve örnek cümlenin çevirisini gör.</p></div>
+      <span class="pill ${all ? 'ok' : ''}" id="seenCount">${seen.size} / ${U.kelimeler.length} kart incelendi</span></div>
+    <div class="note">${ic('info')}<span>Her kelimenin altındaki üç nokta öğrenme durumunu gösterir. Bir kelime, <b>farklı bölümlerde</b> ve aralarında <b>en az 10 dakika</b> olacak şekilde <b>3 kez doğru</b> bilinince öğrenilmiş sayılır.</span></div>
+    <div class="cards" id="cards">${U.kelimeler.map((w, i) => `
+      <button type="button" class="fc ${seen.has(w.id) ? 'seen' : ''}" data-id="${w.id}" aria-label="${esc(w.en)} kartını çevir">
+        <span class="inner">
+          <span class="face front"><span class="no"><span>${i + 1} / ${U.kelimeler.length}</span>${pips(w)}</span><span class="en">${esc(w.en)}</span><span class="ex">${esc(w.ornek)}</span><span class="hint">Türkçesi için tıkla</span></span>
+          <span class="face back"><span class="no"><span>${esc(w.en)}</span>${pips(w)}</span><span class="tr">${esc(w.tr)}</span><span class="ex">${esc(w.ornekTr)}</span><span class="hint">Geri çevirmek için tıkla</span></span>
+        </span>
+      </button>`).join('')}</div>
+    <div class="toolbar">
+      <span class="muted" id="seenHint">${all ? 'Tüm kartları inceledin. Alıştırmaya hazırsın!' : 'Alıştırmaya geçmek için bütün kartları en az bir kez çevir.'}</span>
+      <button class="btn btn-gold" type="button" id="startQuiz" ${all ? '' : 'disabled'}>Alıştırmaya başla ${ic('arrow')}</button>
+    </div>`;
+  $('#cards').addEventListener('click', e => {
+    const c = e.target.closest('.fc'); if(!c) return;
+    c.classList.toggle('flip');
+    if(!UD.goruldu.includes(c.dataset.id)){
+      UD.goruldu.push(c.dataset.id); c.classList.add('seen'); saveP();
+      const n = UD.goruldu.length, all = n >= U.kelimeler.length;
+      $('#seenCount').textContent = `${n} / ${U.kelimeler.length} kart incelendi`;
+      $('#seenCount').classList.toggle('ok', all);
+      if(all){ $('#startQuiz').disabled = false; $('#seenHint').textContent = 'Tüm kartları inceledin. Alıştırmaya hazırsın!'; }
+    }
+  });
+  $('#startQuiz').addEventListener('click', startQuiz);
+}
+function startQuiz(){
+  const words = shuffle(U.kelimeler.slice());
+  quiz = { i:0, sonuc:[], xp:0, sayilan:0, ogrenilen:[],
+    sorular: words.map((w, i) => {
+      const dir = i % 2 ? 'tr2en' : 'en2tr', others = shuffle(U.kelimeler.filter(x => x !== w)).slice(0, 3);
+      return { w, dir, opts:shuffle([w, ...others]) };
+    }) };
+  renderQ();
+}
+function renderQ(){
+  const q = quiz.sorular[quiz.i], n = quiz.sorular.length, en2tr = q.dir === 'en2tr';
+  $('#view').innerHTML = `
+    <div class="quiz">
+      <div class="qtop"><span>Kelime alıştırması</span><span>Soru <b>${quiz.i + 1}</b> / ${n}</span></div>
+      <div class="bar"><i style="width:${quiz.i / n * 100}%"></i></div>
+      <div class="card qcard">
+        <p class="qask">${en2tr ? 'Bu ifadenin Türkçesi hangisi?' : 'Bu ifadenin İngilizcesi hangisi?'}</p>
+        <div class="qword">${esc(en2tr ? q.w.en : q.w.tr)}</div>
+        <div class="opts" id="opts">${q.opts.map((o, k) => `<button type="button" class="opt" data-id="${o.id}"><span class="k">${k + 1}</span>${esc(en2tr ? o.tr : o.en)}</button>`).join('')}</div>
+        <div id="fb"></div>
+        <div class="qnav"><button class="btn btn-gold" type="button" id="nextQ" hidden>${quiz.i + 1 < n ? 'Sonraki soru' : 'Sonucu gör'} ${ic('arrow')}</button></div>
+      </div>
+      <p class="muted" style="text-align:center;font-size:.82rem;margin-top:10px">İpucu: Klavyeden 1–4 ile seçip Enter ile ilerleyebilirsin.</p>
+    </div>`;
+  $('#opts').addEventListener('click', e => { const b = e.target.closest('.opt'); if(b && !b.disabled) answer(b.dataset.id); });
+  $('#nextQ').addEventListener('click', nextQ);
+}
+function answer(id){
+  const q = quiz.sorular[quiz.i], ok = id === q.w.id;
+  $$('#opts .opt').forEach(b => { b.disabled = true; if(b.dataset.id === q.w.id) b.classList.add('good'); else if(b.dataset.id === id) b.classList.add('bad'); });
+  const r = recordAnswer(q.w, ok, 'kelime', 'kelime');
+  quiz.sonuc.push({ w:q.w, ok });
+  let extra = '';
+  if(ok && r.sayildi){ quiz.xp += 5; quiz.sayilan++; extra = `Öğrenme: ${learnedCount(q.w)}/${LEARN_COUNT} · +5 XP`; if(r.ogrenildi){ quiz.ogrenilen.push(q.w); extra += ' · Kelime öğrenildi!'; } }
+  else if(ok && r.neden === 'bolum') extra = 'Bu kelime bu bölümde zaten sayıldı; sonraki bölümlerde tekrar doğru bilirsen ilerler.';
+  else if(ok && r.neden === 'sure') extra = `Son doğru cevabından bu yana 10 dakika geçmedi (${r.kalan} dk kaldı); bu cevap öğrenmeye sayılmadı.`;
+  else if(ok && r.neden === 'zaten') extra = 'Bu kelimeyi zaten öğrendin.';
+  $('#fb').innerHTML = `<div class="fb ${ok ? 'good' : 'bad'}"><span class="fi">${ic(ok ? 'check' : 'x')}</span><div>
+    <b>${ok ? 'Doğru!' : 'Yanlış. Doğru cevap: ' + esc(q.dir === 'en2tr' ? q.w.tr : q.w.en)}</b>
+    <small><i>${esc(q.w.ornek)}</i> — ${esc(q.w.ornekTr)}</small>${extra ? `<div class="cnt">${esc(extra)}</div>` : ''}</div></div>`;
+  if(!ok) $('#fb .fb').classList.add('shake');
+  markStudy(); saveP();
+  $('#nextQ').hidden = false; $('#nextQ').focus();
+}
+function nextQ(){ quiz.i++; if(quiz.i < quiz.sorular.length) renderQ(); else finishQuiz(); }
+document.addEventListener('keydown', e => {
+  if(!quiz || !$('#opts')) return;
+  if(/^[1-4]$/.test(e.key)){ const b = $$('#opts .opt')[+e.key - 1]; if(b && !b.disabled) b.click(); }
+});
+
+function finishQuiz(){
+  const n = quiz.sorular.length, d = quiz.sonuc.filter(s => s.ok).length, pct = d / n, passed = pct >= PASS;
+  const prev = UD.bolumler.kelime || { tamam:false, enIyi:0, deneme:0 };
+  const firstPass = passed && !prev.tamam;
+  UD.bolumler.kelime = { tamam: prev.tamam || passed, enIyi: Math.max(prev.enIyi || 0, Math.round(pct * 100)), deneme:(prev.deneme || 0) + 1, t:Date.now() };
+  taskProgress('test');
+  let bonus = 0;
+  if(firstPass){ bonus = 20; log(`${U.ad} · Kelimeler bölümü tamamlandı`); }
+  log(`${U.ad} · Kelime alıştırması: ${d}/${n}`);
+  addXp(quiz.xp + bonus, `${U.ad} · kelime alıştırması`);
+  saveP();
+  const wrong = quiz.sonuc.filter(s => !s.ok).map(s => s.w).filter((w, i, a) => a.indexOf(w) === i);
+  const inErr = w => P.hataKutuphanesi.some(h => h.en.toLowerCase() === w.en.toLowerCase());
+  renderFrame(0);
+  $('#view').innerHTML = `
+    <div class="result">
+      <div style="display:flex;justify-content:center">${emblem(P.rank, 80, P.tier)}</div>
+      <p class="muted" style="margin:.5rem 0 .2rem">${passed ? (firstPass ? 'Bölüm tamamlandı! Sıradaki bölüm açıldı.' : 'Tebrikler, yine geçtin!') : 'Bölümü geçmek için en az %70 gerekiyor.'}</p>
+      <div class="score">${d}<small> / ${n}</small></div>
+      <div class="rgrid">
+        <div><b>%${Math.round(pct * 100)}</b><span>Başarı</span></div>
+        <div><b>+${quiz.xp + bonus}</b><span>XP${bonus ? ' (20 bölüm bonusu dahil)' : ''}</span></div>
+        <div><b>${quiz.sayilan}</b><span>Öğrenmeye sayılan cevap</span></div>
+      </div>
+      ${quiz.ogrenilen.length ? `<p class="pill ok" style="font-size:.85rem">Öğrenilen: ${quiz.ogrenilen.map(w => esc(w.en)).join(', ')}</p>` : ''}
+      ${wrong.length ? `
+        <div class="wrong">
+          <h3>Zorlandığın kelimeler (${wrong.length})</h3>
+          <p>Bu kelimeleri hata kütüphanene eklemek ister misin? Eklediklerini daha sonra panelinden tekrar edebilirsin.</p>
+          <div class="wl" id="wl">${wrong.map(w => `<label><input type="checkbox" value="${w.id}" ${inErr(w) ? 'disabled' : 'checked'}><b>${esc(w.en)}</b>${inErr(w) ? '<span class="in">zaten hata kütüphanende</span>' : ''}<span class="tr">${esc(w.tr)}</span></label>`).join('')}</div>
+          <div class="racts" style="justify-content:flex-start;margin-top:12px">
+            <button class="btn btn-gold sm" type="button" id="addErr">${ic('bug')} Seçilenleri ekle</button>
+            <button class="btn btn-ghost sm" type="button" id="noErr">Hayır, teşekkürler</button>
+          </div>
+        </div>` : '<p class="pill ok" style="font-size:.85rem;margin-top:8px">Hiç yanlışın yok, harika!</p>'}
+      <div class="wordprog card pad" style="margin-top:16px">
+        <b>Kelimelerin öğrenme durumu</b>
+        ${U.kelimeler.map(w => `<div class="row"><span>${esc(w.en)} <span class="muted">— ${esc(w.tr)}</span></span><span style="display:flex;gap:.5rem;align-items:center">${(P.kelimeler[UID + ':' + w.id]?.yanlis || 0) ? `<span class="pill bad">${P.kelimeler[UID + ':' + w.id].yanlis} yanlış</span>` : ''}${pips(w)}</span></div>`).join('')}
+      </div>
+      <div class="racts">
+        <button class="btn btn-line" type="button" id="again">${ic('refresh')} Tekrar dene</button>
+        <a class="btn btn-ghost" href="#kelime" id="toCards">Kartlara dön</a>
+        ${secOpen(1) ? `<a class="btn btn-gold" href="#cumle">Sonraki bölüm: Cümleler ${ic('arrow')}</a>` : ''}
+      </div>
+    </div>`;
+  quiz = null;
+  $('#again').addEventListener('click', startQuiz);
+  $('#toCards').addEventListener('click', e => { e.preventDefault(); history.replaceState(null, '', '#kelime'); route(); });
+  if(wrong.length){
+    const box = $('.wrong');
+    $('#addErr').addEventListener('click', () => {
+      const ids = $$('#wl input:checked:not(:disabled)').map(x => x.value);
+      if(!ids.length){ toast('Eklemek için en az bir kelime seç.', 'bad'); return; }
+      ids.forEach(id => {
+        const w = U.kelimeler.find(x => x.id === id);
+        P.hataKutuphanesi.push({ id:'h' + rnd(8), en:w.en, tr:w.tr, not:`${U.seviye} · ${U.ad} · kelime alıştırması`, t:Date.now() });
+        if(!P.bilemedigi.includes(w.en.toLowerCase())) P.bilemedigi.push(w.en.toLowerCase());
+      });
+      log(`Hata kütüphanesine ${ids.length} kelime eklendi`); saveP();
+      box.innerHTML = `<h3>${ic('check')} ${ids.length} kelime hata kütüphanene eklendi</h3><p style="margin:0">Panelindeki <a href="dashboard.html#kutuphane?hata">Hata kütüphanesi</a> bölümünden tekrar edebilirsin.</p>`;
+    });
+    $('#noErr').addEventListener('click', () => { box.innerHTML = '<p style="margin:0">Tamam, hiçbir kelime eklenmedi. Yanlışların yine de kelime durumunda kayıtlı.</p>'; });
+  }
+}
+
+/* ================= Henüz hazır olmayan bölümler ================= */
+function soon(s){
+  $('#view').innerHTML = `<div class="soon"><div class="ic">${ic(s.ikon)}</div><h2>${s.ad}</h2><p>Bu bölüm bir sonraki geliştirme adımında eklenecek. Şimdilik <a href="#kelime">Kelimeler</a> bölümünü çalışabilirsin.</p></div>`;
+}
+const VIEWS = { kelime:viewKelime };
+
+if(me && U){ ensureDaily(); saveP(); route(); }
+</script>
+</body>
+</html>
