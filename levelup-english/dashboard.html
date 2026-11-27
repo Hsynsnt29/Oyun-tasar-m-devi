@@ -768,7 +768,7 @@ const ACH = [
   ['u25','Kâşif','25 ünite tamamla','map','Ünite',25,() => P.uniteler.length],
   ['e1','Sınav cesareti','İlk rütbe sınavını geç','trophy','Sınav',1,() => P.sinavlar.filter(s => s.gecti).length],
   ['e5','Sınav ustası','5 rütbe sınavı geç','trophy','Sınav',5,() => P.sinavlar.filter(s => s.gecti).length],
-  ['e100','Mükemmeliyetçi','Bir sınavdan %100 al','target','Sınav',1,() => P.sinavlar.some(s => s.puan === 100) ? 1 : 0],
+  ['e100','Mükemmeliyetçi','Bir sınavdan ya da ünite testinden %100 al','target','Sınav',1,() => P.sinavlar.some(s => s.puan === 100) || P.uniteler.some(u => u && u.puan === 100) ? 1 : 0],
   ['x500','Kıvılcım','Toplam 500 XP kazan','bolt','XP',500,() => P.toplamXp],
   ['x1000','Enerji dolu','Toplam 1.000 XP kazan','bolt','XP',1000,() => P.toplamXp],
   ['x5000','Güç merkezi','Toplam 5.000 XP kazan','bolt','XP',5000,() => P.toplamXp],
@@ -846,7 +846,7 @@ function renderGenel(){
       <span class="et"><b>Rütbe sınavı</b>${ready ? `XP doldu! Sınavı geçersen <b style="display:inline;color:var(--gold2)">${esc(nextName)}</b> olursun.` : P.tier === 1 ? `${need - P.xp} XP sonra sınav açılır.` : `${RANKS[P.rank].ad} I kademesinde XP dolunca açılır.`}</span>
       <button class="btn ${ready ? 'btn-gold' : 'btn-line'} sm" type="button" id="examBtn" ${ready ? '' : 'disabled'}>Sınava git</button>
     </div>`;
-  $('#examBtn').onclick = () => toast('Rütbe sınavları ders içerikleri eklendiğinde açılacak.', 'gold');
+  $('#examBtn').onclick = () => toast('Rütbe sınavı bir sonraki geliştirme adımında eklenecek. XP\'n korunuyor.', 'gold');
 
   // Görevler
   const gs = P.gunluk.gorevler, done = gs.filter(g => g.tamam).length;

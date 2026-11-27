@@ -62,7 +62,7 @@ svg.i{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:2;stro
 .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#b98b35,var(--gold2));transition:width .4s}
 .steps{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:18px}
 @media(max-width:860px){.steps{grid-template-columns:repeat(4,1fr)}}
-@media(max-width:480px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.steps{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:4px;scrollbar-width:thin}.steps .st{flex:0 0 128px;scroll-snap-align:start}}
 .st{display:flex;flex-direction:column;gap:.25rem;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#0b1224;color:var(--muted)!important;text-decoration:none!important;font-size:.84rem;position:relative}
 .st .n{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--dim)}
 .st b{color:var(--text);font-size:.9rem}
@@ -613,6 +613,8 @@ function renderFrame(cur){
     return `<a class="st ${i === cur ? 'cur' : ''} ${d ? 'done' : ''} ${open ? '' : 'lock'}" href="${open ? '#' + s.id : '#'}" data-i="${i}" ${open ? '' : 'aria-disabled="true"'}>
       <span class="n">${ic(d ? 'check' : open ? s.ikon : 'lock')} ${i + 1}. bölüm</span><b>${s.ad}</b></a>`;
   }).join('');
+  const curEl = $('#steps .st.cur');
+  if(curEl && $('#steps').scrollWidth > $('#steps').clientWidth) $('#steps').scrollLeft = curEl.offsetLeft - 20; // mobilde etkin bölümü görünür yap
 }
 $('#steps').addEventListener('click', e => {
   const a = e.target.closest('.st'); if(!a) return;
