@@ -501,7 +501,10 @@ function importData(file, done){
     try{
       const d = JSON.parse(r.result), v = d && d.veriler;
       if(!v || typeof v !== 'object') throw new Error('biçim');
-      localStorage.clear();
+      /* Yalnızca bu uygulamanın (lue_) kayıtları silinir: Chrome'da bilgisayardan açılan tüm sayfalar aynı
+         localStorage'ı paylaştığı için başka projelerin verileri korunur. */
+      const eski = []; for(let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); if(k.startsWith('lue_')) eski.push(k); }
+      eski.forEach(k => localStorage.removeItem(k));
       Object.keys(v).forEach(k => localStorage.setItem(k, String(v[k])));
       done(true, Object.keys(v).length);
     }catch(e){ done(false); }
@@ -536,7 +539,7 @@ $('#btnImport').addEventListener('click', () => $('#importFile').click());
 $('#importFile').addEventListener('change', e => {
   const f = e.target.files[0]; e.target.value = '';
   if(!f) return;
-  if(!confirm('İçe aktarılan dosya bu tarayıcıdaki TÜM LevelUp verilerinin yerine geçecek. Devam edilsin mi?')) return;
+  if(!confirm('İçe aktarılan dosya bu tarayıcıdaki TÜM LevelUp verilerinin yerine geçecek. Başka projelerin verilerine dokunulmaz. Devam edilsin mi?')) return;
   importData(f, (ok, n) => {
     if(ok){ sessionStorage.removeItem('lue_aktif'); toast(n + ' kayıt geri yüklendi'); renderLogin(); renderNav(); }
     else toast('Dosya okunamadı. Uygulamadan indirilen veriler.txt dosyasını seç.', 'bad');

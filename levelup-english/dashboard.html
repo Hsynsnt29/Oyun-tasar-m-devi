@@ -1177,13 +1177,16 @@ $('#btnImport').addEventListener('click', () => $('#importFile').click());
 $('#importFile').addEventListener('change', e => {
   const f = e.target.files[0]; e.target.value = '';
   if(!f) return;
-  confirmBox('Veriler içe aktarılsın mı?', 'Seçtiğin dosya bu tarayıcıdaki TÜM LevelUp verilerinin yerine geçecek.', 'İçe aktar', () => {
+  confirmBox('Veriler içe aktarılsın mı?', 'Seçtiğin dosya bu tarayıcıdaki TÜM LevelUp verilerinin yerine geçecek. Başka projelerin verilerine dokunulmaz.', 'İçe aktar', () => {
     const r = new FileReader();
     r.onload = () => {
       try{
         const d = JSON.parse(r.result), v = d && d.veriler;
         if(!v || typeof v !== 'object') throw new Error();
-        localStorage.clear();
+        /* Yalnızca bu uygulamanın (lue_) kayıtları silinir: Chrome'da bilgisayardan açılan tüm sayfalar aynı
+           localStorage'ı paylaştığı için başka projelerin verileri korunur. */
+        const eski = []; for(let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); if(k.startsWith('lue_')) eski.push(k); }
+        eski.forEach(k => localStorage.removeItem(k));
         Object.keys(v).forEach(k => localStorage.setItem(k, String(v[k])));
         sessionStorage.removeItem('lue_aktif');
         toast('Veriler geri yüklendi');
