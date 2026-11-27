@@ -512,10 +512,10 @@ const UNITS = {
        dogru: kabul edilen bütün cevaplar (alternatifler) */
     ceviri:[
       { tip:'yaz', tr:'Saat yedide uyanırım.', w:'wake-up', dogru:["I wake up at seven o'clock.", 'I wake up at seven.', 'I wake up at 7.', "I wake up at 7 o'clock."] },
-      { tip:'yaz', tr:'Sabahları duş alırım.', w:'shower', dogru:['I take a shower in the morning.', 'In the morning, I take a shower.', 'I have a shower in the morning.', 'In the morning, I have a shower.', 'I shower in the morning.'] },
+      { tip:'yaz', tr:'Sabahları duş alırım.', w:'shower', dogru:['I take a shower in the morning.', 'In the morning, I take a shower.', 'I have a shower in the morning.', 'In the morning, I have a shower.', 'I shower in the morning.', 'I take a shower in the mornings.', 'I have a shower in the mornings.'] },
       { tip:'yaz', tr:'O, kahvaltıdan sonra dişlerini fırçalar.', w:'brush-teeth', dogru:['He brushes his teeth after breakfast.', 'She brushes her teeth after breakfast.', 'After breakfast, he brushes his teeth.', 'After breakfast, she brushes her teeth.'], not:'Türkçedeki "o" kadın da erkek de olabilir; he ya da she kabul edilir.' },
       { tip:'yaz', tr:'Okula otobüsle gideriz.', w:'go-school', dogru:['We go to school by bus.', 'We take the bus to school.'] },
-      { tip:'yaz', tr:'Akşam ödevimi yaparım.', w:'homework', dogru:['I do my homework in the evening.', 'In the evening, I do my homework.'] },
+      { tip:'yaz', tr:'Akşam ödevimi yaparım.', w:'homework', dogru:['I do my homework in the evening.', 'In the evening, I do my homework.', 'I do my homework in the evenings.'] },
       { tip:'sirala', tr:'Genellikle saat onda yatarım.', w:'go-bed', parcalar:['I', 'usually', 'go to bed', 'at ten'], dogru:['I usually go to bed at ten.', 'Usually I go to bed at ten.'] },
       { tip:'sirala', tr:'O, mutfakta kahvaltı yapar.', w:'breakfast', parcalar:['She', 'has', 'breakfast', 'in the kitchen'], dogru:['She has breakfast in the kitchen.', 'In the kitchen, she has breakfast.'] },
       { tip:'sirala', tr:'Derslerim dokuzda başlar.', w:'start', parcalar:['My', 'lessons', 'start', 'at nine'], dogru:['My lessons start at nine.'] }
@@ -622,7 +622,7 @@ const UNITS = {
     ceviri:[
       { tip:'yaz', tr:'Bu çanta ne kadar?', w:'bag', dogru:['How much is this bag?', 'How much does this bag cost?', 'What is the price of this bag?'] },
       { tip:'yaz', tr:'Kartla ödeyebilir miyim?', w:'pay', dogru:['Can I pay by card?', 'Could I pay by card?', 'May I pay by card?', 'Can I pay with a card?', 'Could I pay with a card?'] },
-      { tip:'yaz', tr:'Bu ayakkabılar çok ucuz.', w:'cheap', dogru:['These shoes are very cheap.', 'These shoes are really cheap.'] },
+      { tip:'yaz', tr:'Bu ayakkabılar çok ucuz.', w:'cheap', dogru:['These shoes are very cheap.', 'These shoes are really cheap.', 'These shoes are so cheap.'] },
       { tip:'yaz', tr:'Pazardan meyve alırız.', w:'market', dogru:['We buy fruit at the market.', 'We buy fruit from the market.'] },
       { tip:'yaz', tr:'O ceket çok pahalı.', w:'expensive', dogru:['That jacket is very expensive.', 'That jacket is too expensive.', 'That jacket is really expensive.', 'That jacket is so expensive.', "That jacket's very expensive."] },
       { tip:'sirala', tr:'Kıyafetlerini internetten alır.', w:'clothes', parcalar:['She', 'buys', 'her clothes', 'online'], dogru:['She buys her clothes online.'] },
@@ -727,7 +727,7 @@ const UNITS = {
       { soru:'Where are the flowers?', tr:'Çiçekler nerede?', dogru:'In front of the door', yanlis:['In the bathroom','On the table'], kanit:"There isn't a garden, but there are some flowers in front of the door." }
     ],
     ceviri:[
-      { tip:'yaz', tr:'Evimizde üç yatak odası var.', w:'bedroom', dogru:['There are three bedrooms in our house.', 'Our house has three bedrooms.'] },
+      { tip:'yaz', tr:'Evimizde üç yatak odası var.', w:'bedroom', dogru:['There are three bedrooms in our house.', 'Our house has three bedrooms.', 'We have three bedrooms in our house.'] },
       { tip:'yaz', tr:'Mutfakta bir masa var.', w:'table', dogru:['There is a table in the kitchen.', "There's a table in the kitchen.", 'The kitchen has a table.'] },
       { tip:'yaz', tr:'Kedi yatağın altında.', w:'bed', dogru:['The cat is under the bed.', "The cat's under the bed."] },
       { tip:'yaz', tr:'Banyo mutfağın yanında.', w:'bathroom', dogru:['The bathroom is next to the kitchen.', "The bathroom's next to the kitchen."] },
@@ -836,7 +836,7 @@ const UNITS = {
     ceviri:[
       { tip:'yaz', tr:'İstasyonda sola dön.', w:'left', dogru:['Turn left at the station.'] },
       { tip:'yaz', tr:'Buralarda bir hastane var mı?', w:'near', dogru:['Is there a hospital near here?', 'Is there a hospital nearby?', 'Is there a hospital around here?'] },
-      { tip:'yaz', tr:'Babam işe trenle gider.', w:'train', dogru:['My father goes to work by train.', 'My dad goes to work by train.'] },
+      { tip:'yaz', tr:'Babam işe trenle gider.', w:'train', dogru:['My father goes to work by train.', 'My dad goes to work by train.', 'My father takes the train to work.', 'My dad takes the train to work.'] },
       { tip:'yaz', tr:'Müze bankanın karşısında.', w:'museum', dogru:['The museum is opposite the bank.', "The museum's opposite the bank."] },
       { tip:'yaz', tr:'Taksiye binelim.', w:'taxi', dogru:["Let's take a taxi.", 'Let us take a taxi.', "Let's get a taxi."] },
       { tip:'sirala', tr:'Parkta sağa dön.', w:'right', parcalar:['Turn', 'right', 'at', 'the park'], dogru:['Turn right at the park.', 'At the park, turn right.'] },
@@ -945,9 +945,9 @@ const UNITS = {
     ceviri:[
       { tip:'yaz', tr:'Yüzemem.', w:'swim', dogru:["I can't swim.", 'I cannot swim.', 'I can not swim.'] },
       { tip:'yaz', tr:'Partime gelmek ister misin?', w:'party', dogru:['Would you like to come to my party?', 'Do you want to come to my party?'] },
-      { tip:'yaz', tr:'Hafta sonu arkadaşlarımla buluşurum.', w:'meet', dogru:['I meet my friends at the weekend.', 'At the weekend, I meet my friends.', 'I meet my friends on the weekend.', 'On the weekend, I meet my friends.', 'I meet my friends at weekends.', 'I meet my friends on weekends.', 'On weekends, I meet my friends.', 'I meet with my friends at the weekend.'] },
+      { tip:'yaz', tr:'Hafta sonu arkadaşlarımla buluşurum.', w:'meet', dogru:['I meet my friends at the weekend.', 'At the weekend, I meet my friends.', 'I meet my friends on the weekend.', 'On the weekend, I meet my friends.', 'I meet my friends at weekends.', 'I meet my friends on weekends.', 'On weekends, I meet my friends.', 'At weekends, I meet my friends.', 'I meet with my friends at the weekend.'] },
       { tip:'yaz', tr:'Doğum günüm mayısta.', w:'birthday', dogru:['My birthday is in May.', "My birthday's in May."] },
-      { tip:'yaz', tr:'Bu akşam sinemaya gidelim.', w:'cinema', dogru:["Let's go to the cinema tonight.", "Tonight, let's go to the cinema.", "Let's go to the cinema this evening.", "Let's go to the cinema tonight!"] },
+      { tip:'yaz', tr:'Bu akşam sinemaya gidelim.', w:'cinema', dogru:["Let's go to the cinema tonight.", "Tonight, let's go to the cinema.", "Let's go to the cinema this evening.", "Let's go to the cinema tonight!", "Let's go to the movies tonight."] },
       { tip:'sirala', tr:'Kız kardeşim çok iyi dans edebilir.', w:'dance', parcalar:['My sister', 'can', 'dance', 'very well'], dogru:['My sister can dance very well.'] },
       { tip:'sirala', tr:'Boş zamanımda kitap okurum.', w:'free-time', parcalar:['In my', 'free time', 'I', 'read books'], dogru:['In my free time, I read books.', 'I read books in my free time.'] },
       { tip:'sirala', tr:'Her pazar büyükanne ve büyükbabamızı ziyaret ederiz.', w:'visit', parcalar:['We', 'visit', 'our grandparents', 'every Sunday'], dogru:['We visit our grandparents every Sunday.', 'Every Sunday we visit our grandparents.'] }
@@ -1019,14 +1019,14 @@ const UNITS = {
     },
     dilbilgisi:[
       { tip:'secim', soru:"I'd like ___ apple, please.", dogru:'an', yanlis:['a','many'], tr:'Bir elma istiyorum, lütfen.', aciklama:'Sesli harfle başlayan sayılabilen isimden önce an.' },
-      { tip:'secim', soru:"There isn't ___ milk in the kitchen.", dogru:'any', yanlis:['some','a'], tr:'Mutfakta hiç süt yok.', aciklama:'Olumsuz cümlede any.' },
+      { tip:'secim', soru:'Is there ___ milk in the kitchen?', dogru:'any', yanlis:['many','a'], tr:'Mutfakta hiç süt var mı?', aciklama:'Soruda any.' },
       { tip:'secim', soru:'Would you like ___ tea? (teklif)', dogru:'some', yanlis:['an','many'], tr:'Biraz çay ister misin?', aciklama:'Teklifte some kullanılır.' },
       { tip:'secim', soru:"I'd ___ a chicken sandwich, please.", dogru:'like', yanlis:['likes','liking'], tr:'Tavuklu bir sandviç istiyorum, lütfen.', aciklama:"I'd like + isim (kibar istek)." },
       { tip:'secim', soru:'Can I ___ some water, please?', dogru:'have', yanlis:['has','having'], tr:'Biraz su alabilir miyim, lütfen?', aciklama:'Can I + yalın fiil?' },
       { tip:'secim', soru:'How ___ eggs do you need?', dogru:'many', yanlis:['much','any'], tr:'Kaç yumurtaya ihtiyacın var?', aciklama:'Sayılabilen (çoğul) isimle How many.' },
       { tip:'secim', soru:'How ___ bread do we have?', dogru:'much', yanlis:['many','a'], tr:'Ne kadar ekmeğimiz var?', aciklama:'Sayılamayan isimle How much.' },
       { tip:'yaz', soru:'We need ___ vegetables for the soup. (biraz)', dogru:['some'], tr:'Çorba için biraz sebzeye ihtiyacımız var.', aciklama:'Olumlu cümlede some.' },
-      { tip:'yaz', soru:'Is there ___ cheese?', dogru:['any'], tr:'Hiç peynir var mı?', aciklama:'Soruda any.' },
+      { tip:'yaz', soru:"We don't have ___ cheese. (hiç)", dogru:['any'], tr:'Hiç peynirimiz yok.', aciklama:'Olumsuz cümlede any.' },
       { tip:'yaz', soru:'___ you like some juice?', dogru:['Would'], tr:'Biraz meyve suyu ister misin?', aciklama:'Teklif: Would you like…?' }
     ],
     okuma:{
@@ -1054,9 +1054,9 @@ const UNITS = {
     ceviri:[
       { tip:'yaz', tr:'Açım.', w:'hungry', dogru:["I'm hungry.", 'I am hungry.'] },
       { tip:'yaz', tr:'Menüyü görebilir miyim, lütfen?', w:'menu', dogru:['Can I see the menu, please?', 'Can I see the menu?', 'Could I see the menu, please?', 'Could I see the menu?', 'May I see the menu, please?', 'May I see the menu?'] },
-      { tip:'yaz', tr:'Biraz portakal suyu istiyorum, lütfen.', w:'juice', dogru:["I'd like some orange juice, please.", 'I would like some orange juice, please.', "I'd like some orange juice.", 'I would like some orange juice.'] },
+      { tip:'yaz', tr:'Biraz portakal suyu istiyorum, lütfen.', w:'juice', dogru:["I'd like some orange juice, please.", 'I would like some orange juice, please.', "I'd like some orange juice.", 'I would like some orange juice.', 'I want some orange juice, please.', 'I want some orange juice.'] },
       { tip:'yaz', tr:'Kahvaltıda iki yumurta yerim.', w:'egg', dogru:['I eat two eggs for breakfast.', 'I have two eggs for breakfast.', 'For breakfast, I eat two eggs.', 'For breakfast, I have two eggs.', 'I eat 2 eggs for breakfast.', 'I have 2 eggs for breakfast.'] },
-      { tip:'yaz', tr:'Bu çorba çok lezzetli.', w:'soup', dogru:['This soup is delicious.', 'This soup is really delicious.', 'This soup is very good.', 'This soup is very tasty.', 'This soup is so delicious.', 'This soup is very delicious.'] },
+      { tip:'yaz', tr:'Bu çorba çok lezzetli.', w:'soup', dogru:['This soup is delicious.', 'This soup is really delicious.', 'This soup is very good.', 'This soup is very tasty.', 'This soup is so delicious.'], not:'delicious zaten "çok lezzetli" demektir; "very delicious" yerine "really delicious" ya da "very tasty" denir.' },
       { tip:'sirala', tr:'Sipariş vermeye hazır mısınız?', w:'order', parcalar:['Are', 'you', 'ready', 'to order'], dogru:['Are you ready to order?'] },
       { tip:'sirala', tr:'Akşam yemeğinde tavuk ve pilav yeriz.', w:'chicken', parcalar:['We have', 'chicken', 'and rice', 'for dinner'], dogru:['We have chicken and rice for dinner.', 'For dinner, we have chicken and rice.'] },
       { tip:'sirala', tr:'Meyve sağlığın için iyidir.', w:'fruit', parcalar:['Fruit', 'is good', 'for', 'your health'], dogru:['Fruit is good for your health.'] }
@@ -1384,6 +1384,14 @@ function soon(s){
 let run = null;
 const norm = s => String(s).toLowerCase().replace(/[’`´']/g, '').replace(/[.!?,;:"“”]/g, '').replace(/\s+/g, ' ').trim();
 const toks = s => norm(s).split(' ').filter(Boolean);
+/* Cevap karşılaştırması: kesme işareti silindikten sonra kısaltmalar açılır, 0–20 arası rakamlar yazıya çevrilir.
+   Böylece "I'm hungry" = "I am hungry", "can't" = "cannot" = "can not", "at 7" = "at seven" kabul edilir. */
+const EXPAND = { im:'i am', youre:'you are', theyre:'they are', hes:'he is', shes:'she is', its:'it is', thats:'that is', theres:'there is',
+  whats:'what is', wheres:'where is', heres:'here is', lets:'let us', dont:'do not', doesnt:'does not', didnt:'did not', isnt:'is not',
+  arent:'are not', wasnt:'was not', werent:'were not', havent:'have not', hasnt:'has not', wont:'will not', wouldnt:'would not',
+  couldnt:'could not', shouldnt:'should not', cant:'can not', cannot:'can not', id:'i would', youd:'you would', theyd:'they would' };
+const NUMW = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+const normAns = s => toks(s).map(t => EXPAND[t] || (/^\d+$/.test(t) && NUMW[+t]) || t).join(' ');
 /* İki kelime dizisinin en uzun ortak alt dizisi: hangi kelimeler eşleşti? */
 function lcsMatch(a, b){
   const m = a.length, n = b.length, dp = Array.from({ length:m + 1 }, () => new Array(n + 1).fill(0));
@@ -1415,7 +1423,7 @@ function renderRun(){
   else input = `<div class="order" id="order"><div class="ans" id="oans" aria-label="Cevabın"></div>
       <div class="pool" id="opool">${q.karisik.map(p => `<button type="button" class="chipw">${esc(p)}</button>`).join('')}</div>
       <div class="oacts"><button type="button" class="btn btn-ghost sm" id="oclear">${ic('refresh')} Temizle</button><button type="button" class="btn btn-gold" id="ocheck">Kontrol et</button></div></div>`;
-  const tipNote = { secim:`İpucu: Klavyeden 1–${q.secenekler ? q.secenekler.length : 3} ile seçip Enter ile ilerleyebilirsin.`, yaz:'Büyük/küçük harf, nokta ve kesme işareti önemli değil.', sirala:'Parçalara sırayla tıkla. Yanlış yere koyduğun parçaya tekrar tıklarsan geri döner.' }[q.tip];
+  const tipNote = { secim:`İpucu: Klavyeden 1–${q.secenekler ? q.secenekler.length : 3} ile seçip Enter ile ilerleyebilirsin.`, yaz:'Büyük/küçük harf, nokta ve kesme işareti önemli değil. Kısaltmalar (I\'m / I am) ve rakamlar (7 / seven) da kabul edilir.', sirala:'Parçalara sırayla tıkla. Yanlış yere koyduğun parçaya tekrar tıklarsan geri döner.' }[q.tip];
   const quiz = `
     <div class="quiz">
       <div class="qtop"><span>${esc(run.baslik)}</span><span>Soru <b>${run.i + 1}</b> / ${n}</span></div>
@@ -1459,7 +1467,7 @@ function renderRun(){
   $('#rnext').addEventListener('click', () => { run.i++; run.i < run.sorular.length ? renderRun() : finishRun(); });
 }
 function runAnswer(given){
-  const q = run.sorular[run.i], ok = q.dogru.some(d => norm(d) === norm(given)), bec = q.beceri || run.beceri;
+  const q = run.sorular[run.i], ok = q.dogru.some(d => normAns(d) === normAns(given)), bec = q.beceri || run.beceri;
   if(q.tip === 'secim') $$('#ropts .opt').forEach(b => { b.disabled = true; if(q.dogru.includes(b.dataset.v)) b.classList.add('good'); else if(b.dataset.v === given) b.classList.add('bad'); });
   else if(q.tip === 'yaz'){ $('#rin').disabled = true; $('#rin').classList.add(ok ? 'good' : 'bad'); $('#rtyped button').disabled = true; }
   else { $$('#order .chipw').forEach(c => c.disabled = true); $('#order').classList.add(ok ? 'good' : 'bad'); $('#oclear').disabled = $('#ocheck').disabled = true; }
@@ -1488,7 +1496,7 @@ function runAnswer(given){
   let detail = '';
   if(!ok && q.diff){ const d = diffHtml(given, q.dogru); detail = `<div class="diff">Senin cevabın: ${d.ua}<br>Doğru cevap: ${d.ca}</div>`; }
   else if(!ok && q.tip === 'yaz') detail = `<small>Senin cevabın: ${esc(given)}</small>`;
-  const others = ok && q.dogru.length > 1 ? q.dogru.filter(d => norm(d) !== norm(given)).slice(0, 2) : [];
+  const others = ok && q.dogru.length > 1 ? q.dogru.filter(d => normAns(d) !== normAns(given)).slice(0, 2) : [];
   $('#rfb').innerHTML = `<div class="fb ${ok ? 'good' : 'bad'}"><span class="fi">${ic(ok ? 'check' : 'x')}</span><div>
     <b>${ok ? 'Doğru!' : `Yanlış. Doğru cevap: ${esc(q.dogru[0])}`}</b>
     ${detail}
