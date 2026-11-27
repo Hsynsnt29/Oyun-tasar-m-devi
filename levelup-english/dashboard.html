@@ -441,7 +441,7 @@ details.tbl th{color:var(--dim);font-weight:600}
       <section class="sec" data-sec="ogren" hidden>
         <div class="page-head"><div><h1>Öğrenme yolu</h1><p>Önce seviyeni seç, sonra o seviyedeki konulardan birini çalış.</p></div></div>
         <div class="card pad">
-          <div class="ch"><h2><svg class="i"><use href="#shield"/></svg> Rütbe merdiveni</h2><span class="pill gold" id="ladderNow"></span></div>
+          <div class="ch"><h2><svg class="i"><use href="#shield"/></svg> Rütbe merdiveni</h2><span style="display:flex;gap:6px;align-items:center"><span class="pill gold" id="ladderNow"></span><a class="btn btn-line xs" href="ders.html?sinav">Rütbe sınavı</a></span></div>
           <div class="ladder" id="ladder"></div>
         </div>
         <div class="card pad" style="margin-top:16px">
@@ -478,6 +478,10 @@ details.tbl th{color:var(--dim);font-weight:600}
         <div class="card pad" style="margin-top:16px">
           <div class="ch"><h2><svg class="i"><use href="#map"/></svg> Ünite ilerlemesi</h2></div>
           <div id="repUnits"></div>
+        </div>
+        <div class="card pad" style="margin-top:16px">
+          <div class="ch"><h2><svg class="i"><use href="#shield"/></svg> Rütbe sınavları</h2><a class="more" href="ders.html?sinav">Sınav sayfası</a></div>
+          <div id="repExams"></div>
         </div>
       </section>
 
@@ -677,7 +681,7 @@ function markStudy(){
 }
 
 /* ================= XP ve rütbe ================= */
-function examReady(){ return P.tier === 1 && P.xp >= XP_TIER[P.rank]; }
+function examReady(){ return P.rank < RANKS.length - 1 && P.tier === 1 && P.xp >= XP_TIER[P.rank]; }
 function addXp(n, why){
   if(n <= 0) return;
   const before = rankName(P), need = XP_TIER[P.rank];
@@ -844,9 +848,8 @@ function renderGenel(){
     <div class="exam ${ready ? 'ready' : ''}">
       <span class="ei">${ic(ready ? 'trophy' : 'lock')}</span>
       <span class="et"><b>Rütbe sınavı</b>${ready ? `XP doldu! Sınavı geçersen <b style="display:inline;color:var(--gold2)">${esc(nextName)}</b> olursun.` : P.tier === 1 ? `${need - P.xp} XP sonra sınav açılır.` : `${RANKS[P.rank].ad} I kademesinde XP dolunca açılır.`}</span>
-      <button class="btn ${ready ? 'btn-gold' : 'btn-line'} sm" type="button" id="examBtn" ${ready ? '' : 'disabled'}>Sınava git</button>
+      <a class="btn ${ready ? 'btn-gold' : 'btn-line'} sm" href="ders.html?sinav">${ready ? 'Sınava gir' : 'Sınav bilgisi'}</a>
     </div>`;
-  $('#examBtn').onclick = () => toast('Rütbe sınavı bir sonraki geliştirme adımında eklenecek. XP\'n korunuyor.', 'gold');
 
   // Görevler
   const gs = P.gunluk.gorevler, done = gs.filter(g => g.tamam).length;
@@ -1252,6 +1255,11 @@ function renderRapor(){
   const F = [['hepsi','Hepsi', rows.length], ['ogrenildi','Öğrenildi', learned.length], ['ogreniliyor','Öğrenilmekte', learning.length], ['bilemedigi','Bilemediklerim', missed.length]];
   $('#repFilters').innerHTML = F.map(([k, n, c]) => `<button type="button" class="filt" data-f="${k}" aria-pressed="${repFilter === k}">${n} (${c})</button>`).join('');
   renderRepWords();
+
+  // --- Rütbe sınavları ---
+  const ex = P.sinavlar.slice().reverse();
+  $('#repExams').innerHTML = ex.length ? ex.slice(0, 8).map(e => `<div class="act"><time>${fmtTime(e.t)}</time><span style="flex:1">${RANKS[e.rank].ad} → ${RANKS[Math.min(e.rank + 1, RANKS.length - 1)].ad} sınavı · ${e.dogru}/${e.toplam} (%${e.puan})</span><span class="pill ${e.gecti ? 'ok' : 'bad'}">${e.gecti ? 'Geçti' : 'Kaldı'}</span></div>`).join('')
+    : `<div class="empty">Henüz rütbe sınavına girmedin. Sınav, ${RANKS[P.rank].ad} I kademesinde XP dolunca açılır.</div>`;
 
   // --- Üniteler ---
   const units = Object.entries(P.uniteDurum || {});

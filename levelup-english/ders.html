@@ -254,6 +254,29 @@ details.mtxt .reader p{font-size:.95rem;line-height:1.85}
 .weak h3 svg{color:var(--warn)}
 .weak a{margin:.25rem .3rem 0 0}
 
+/* Rütbe sınavı */
+.exam-hero{display:flex;align-items:center;justify-content:center;gap:28px;padding:6px 0 18px;flex-wrap:wrap}
+.eh-rank{display:flex;flex-direction:column;align-items:center;gap:.15rem;text-align:center}
+.eh-rank svg{filter:drop-shadow(0 8px 18px rgba(0,0,0,.5))}
+.eh-rank b{font-size:1.08rem}
+.eh-rank small{color:var(--dim);font-size:.78rem}
+.eh-rank.dimmed svg{filter:grayscale(.75) brightness(.65)}
+.eh-arrow{color:var(--gold2)}
+.eh-arrow svg{width:30px;height:30px}
+.exam-state{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;padding:14px 16px;border-radius:14px;background:#0b1224;border:1px solid var(--line);margin-bottom:12px;color:var(--muted);font-size:.92rem}
+.exam-state > svg{width:22px;height:22px;color:var(--dim)}
+.exam-state > span{flex:1;min-width:200px}
+.exam-state b{display:block;color:var(--text)}
+.exam-state.ok{border-color:rgba(216,178,94,.6);background:linear-gradient(90deg,rgba(216,178,94,.12),#0b1224)}
+.exam-state.ok > svg{color:var(--gold2)}
+.exam-state .xpmini{flex:1 1 100%}
+.exam-state .xpmini small{color:var(--dim);font-size:.78rem}
+.hist{margin-top:14px;padding:14px 16px;border-radius:12px;background:#0b1224;border:1px solid var(--line);font-size:.9rem}
+.hist .row{display:flex;justify-content:space-between;align-items:center;gap:.6rem;padding:.45rem 0;border-top:1px solid rgba(255,255,255,.05);color:var(--muted)}
+.hist b{display:block;margin-bottom:.3rem}
+.weakrow{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;padding:.55rem 0;border-top:1px solid rgba(255,255,255,.06)}
+.weakrow .btn{margin:.15rem 0 .15rem .3rem}
+
 /* Yakında bölümleri */
 .soon{text-align:center;padding:48px 20px}
 .soon .ic{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;margin:0 auto 12px;background:rgba(216,178,94,.1);border:1px solid rgba(216,178,94,.3);color:var(--gold2)}
@@ -475,6 +498,10 @@ const UNITS = {
     ]
   }
 };
+/* Her kelime hangi üniteye ait? (rütbe sınavında birden çok üniteden soru gelir) */
+Object.entries(UNITS).forEach(([id, u]) => u.kelimeler.forEach(w => w.uid = id));
+const wordKey = w => (w.uid || UID) + ':' + w.id;
+function findWord(key){ const [uid, id] = key.split(':'); return UNITS[uid] && UNITS[uid].kelimeler.find(x => x.id === id); }
 const SECTIONS = [
   { id:'kelime',     ad:'Kelimeler',   ikon:'book' },
   { id:'cumle',      ad:'Cümleler',    ikon:'text' },
@@ -491,9 +518,11 @@ const LEARN_GAP = 10 * 60 * 1000; // …farklı bölümlerde ve aralarında en a
 /* ================= Oturum ve ilerleme ================= */
 const me = loadUsers().find(u => u.id === localStorage.getItem(K.active));
 if(!me) location.replace('index.html');
-const UID = new URLSearchParams(location.search).get('u') || 'a1-rutin';
-const U = UNITS[UID];
-if(me && !U) location.replace('dashboard.html#ogren');
+const QS = new URLSearchParams(location.search);
+const EXAM = QS.has('sinav');                       // ders.html?sinav → rütbe sınavı
+const UID = EXAM ? null : (QS.get('u') || 'a1-rutin');
+const U = EXAM ? null : UNITS[UID];
+if(me && !EXAM && !U) location.replace('dashboard.html#ogren');
 const PKEY = 'lue_ilerleme_' + (me ? me.id : '');
 let P = (() => { try{ return JSON.parse(localStorage.getItem(PKEY)); }catch(e){ return null; } })() || {};
 P = Object.assign({ rank:0, tier:3, xp:0, toplamXp:0, seri:0, sonCalisma:null, ogrenilen:[], bilemedigi:[], kutuphane:[], hataKutuphanesi:[],
@@ -501,7 +530,7 @@ P = Object.assign({ rank:0, tier:3, xp:0, toplamXp:0, seri:0, sonCalisma:null, o
   sayac:{ gorev:0, tamGun:0, hatadanOgrenilen:0 } }, P);
 P.kelimeler = P.kelimeler || {};     // kelime bazında doğru/yanlış kaydı
 P.uniteDurum = P.uniteDurum || {};   // ünite ve bölüm durumu
-const UD = P.uniteDurum[UID] = P.uniteDurum[UID] || { basla:Date.now(), bolumler:{}, goruldu:[] };
+const UD = U ? (P.uniteDurum[UID] = P.uniteDurum[UID] || { basla:Date.now(), bolumler:{}, goruldu:[] }) : { bolumler:{}, goruldu:[], av:[] };
 if(U){ UD.ad = U.ad; UD.seviye = U.seviye; } // gelişim raporunda ünite adını göstermek için
 function saveP(){ localStorage.setItem(PKEY, JSON.stringify(P)); }
 function log(m){ P.hareketler.unshift({ t:Date.now(), m }); P.hareketler = P.hareketler.slice(0, 40); }
@@ -555,8 +584,8 @@ function taskProgress(id, n = 1){
 }
 
 /* Kelime öğrenme kuralı: 3 doğru, her biri farklı bölümde ve en az 10 dk arayla */
-function wordRec(w){ return P.kelimeler[UID + ':' + w.id] = P.kelimeler[UID + ':' + w.id] || { en:w.en, tr:w.tr, dogru:[], yanlis:0, sonYanlis:null }; }
-function learnedCount(w){ return Math.min(LEARN_COUNT, (P.kelimeler[UID + ':' + w.id]?.dogru || []).length); }
+function wordRec(w){ const k = wordKey(w); return P.kelimeler[k] = P.kelimeler[k] || { en:w.en, tr:w.tr, dogru:[], yanlis:0, sonYanlis:null }; }
+function learnedCount(w){ return Math.min(LEARN_COUNT, (P.kelimeler[wordKey(w)]?.dogru || []).length); }
 function pips(w){ const n = learnedCount(w); return `<span class="pips" title="Öğrenme: ${n}/${LEARN_COUNT}">${[0,1,2].map(i => `<i class="${i < n ? 'on' : ''}"></i>`).join('')}</span>`; }
 /* Döner: { sayildi, ogrenildi, neden } */
 function recordAnswer(w, ok, bolum, beceri){
@@ -830,7 +859,7 @@ function renderRun(){
         <div class="qsent ${q.trSoru ? 'trq' : ''}">${q.soru}</div>
         ${q.ipucu ? `<div class="qhint">${q.ipucu}</div>` : ''}
         ${q.gizliIpucu ? `<div class="qhint"><button type="button" class="linkbtn" id="hintBtn">${ic('info')} İpucu göster</button><span id="hintTxt" hidden>${q.gizliIpucu}</span></div>` : ''}
-        ${q.metinGoster ? `<details class="mtxt"><summary>Okuma metnini göster</summary>${readerHtml({ phrases:'none' })}</details>` : ''}
+        ${q.metinGoster ? `<details class="mtxt"><summary>Okuma metnini göster</summary>${readerHtml({ phrases:'none', unit:q.unite })}</details>` : ''}
         ${input}
         <div id="rfb"></div>
         <div class="qnav"><button class="btn btn-gold" type="button" id="rnext" hidden>${run.i + 1 < n ? 'Sonraki soru' : 'Sonucu gör'} ${ic('arrow')}</button></div>
@@ -839,7 +868,7 @@ function renderRun(){
     </div>`;
   $('#view').innerHTML = run.yan ? `<div class="split"><aside class="card pad textpanel" id="tpanel">${run.yan()}</aside>${quiz}</div>` : quiz;
   if(run.yan) bindReader($('#tpanel'));
-  if(q.metinGoster) bindReader($('details.mtxt'));
+  if(q.metinGoster) bindReader($('details.mtxt'), { unit:q.unite });
   if(q.gizliIpucu) $('#hintBtn').addEventListener('click', () => { $('#hintTxt').hidden = false; $('#hintBtn').hidden = true; });
   if(q.tip === 'secim') $('#ropts').addEventListener('click', e => { const b = e.target.closest('.opt'); if(b && !b.disabled) runAnswer(b.dataset.v); });
   else if(q.tip === 'yaz'){
@@ -911,6 +940,7 @@ document.addEventListener('keydown', e => {
   if(/^[1-9]$/.test(e.key)){ const b = $$('#ropts .opt')[+e.key - 1]; if(b && !b.disabled) b.click(); }
 });
 function finishRun(){
+  if(run.ozelBitis){ const R = run; run = null; return R.ozelBitis(R); } // rütbe sınavının kendi sonuç ekranı
   const R = run, n = R.sonuc.length, d = R.sonuc.filter(s => s.ok).length, pct = d / n, passed = pct >= PASS;
   const prev = UD.bolumler[R.bolum] || { tamam:false, enIyi:0, deneme:0 };
   const firstPass = passed && !prev.tamam;
@@ -994,7 +1024,7 @@ function toksHtml(txt){
 }
 /* phrases: 'found' (yalnızca bulunanlar altın renkli), 'all' (hepsi), 'none' */
 function readerHtml(o = {}){
-  const R = U.okuma, av = UD.av || [];
+  const unit = o.unit || U, R = unit.okuma, av = unit === U ? (UD.av || []) : [];
   let si = 0;
   const paras = R.paragraflar.map(p => '<p>' + p.split(/(?<=[.!?])\s+/).map(s => `<span class="snt" data-i="${si++}">${
     s.split(/(\[[^\]]+\])/).map(part => {
@@ -1005,20 +1035,21 @@ function readerHtml(o = {}){
     }).join('')}</span>`).join(' ') + '</p>').join('');
   const words = R.paragraflar.map(plainOf).join(' ').split(/\s+/).length;
   return `<div class="reader"><div class="glossbar" aria-live="polite">Bir kelimeye tıkla, anlamı burada görünsün.</div>
-    <h3>${esc(R.baslik)}</h3><div class="by">${U.seviye} · ${esc(U.ad)} · ${words} kelime</div>${paras}</div>`;
+    <h3>${esc(R.baslik)}</h3><div class="by">${unit.seviye} · ${esc(unit.ad)} · ${words} kelime</div>${paras}</div>`;
 }
 function bindReader(root, o = {}){
   if(!root) return;
+  const unit = o.unit || U;
   root.addEventListener('click', e => {
     const t = e.target.closest('.tok'); if(!t || !root.contains(t)) return;
     root.querySelectorAll('.tok.on').forEach(x => x.classList.remove('on')); t.classList.add('on');
     const ph = t.closest('.ph'), bar = root.querySelector('.glossbar');
     let html;
     if(ph){
-      const w = U.kelimeler.find(x => x.id === ph.dataset.w);
+      const w = unit.kelimeler.find(x => x.id === ph.dataset.w);
       html = `<span class="u">${esc(ph.textContent)}</span> → ${esc(w.tr)} <span class="pill gold">ünite ifadesi</span>`;
       if(o.onPhrase) o.onPhrase(ph.dataset.w);
-    } else html = `<b>${esc(t.textContent)}</b> → ${esc(U.sozluk[t.dataset.k] || 'Bu kelime sözlükte yok')}`;
+    } else html = `<b>${esc(t.textContent)}</b> → ${esc(unit.sozluk[t.dataset.k] || 'Bu kelime sözlükte yok')}`;
     if(bar) bar.innerHTML = html;
   });
 }
@@ -1083,10 +1114,10 @@ function viewOkuma(){
 }
 
 /* ================= 5. bölüm: Anlama ================= */
-function anlamaQ(a){
+function anlamaQ(a, unit = U){
   return a.dy
-    ? { tip:'secim', ust:'Metne göre bu cümle doğru mu, yanlış mı?', soru:esc(a.soru), secenekler:['True', 'False'], dogru:[a.dogru], kanit:a.kanit, tr:a.tr, trSoru:false, aciklama:a.aciklama, beceri:'okuma', ipucu:`<span class="muted">${esc(a.tr)}</span> · True = Doğru, False = Yanlış` }
-    : { tip:'secim', ust:'Metne göre doğru cevabı seç.', soru:esc(a.soru), secenekler:shuffle([a.dogru, ...a.yanlis]), dogru:[a.dogru], kanit:a.kanit, aciklama:a.aciklama, beceri:'okuma', ipucu:`<span class="muted">${esc(a.tr)}</span>` };
+    ? { unite:unit, tip:'secim', ust:'Metne göre bu cümle doğru mu, yanlış mı?', soru:esc(a.soru), secenekler:['True', 'False'], dogru:[a.dogru], kanit:a.kanit, tr:a.tr, trSoru:false, aciklama:a.aciklama, beceri:'okuma', ipucu:`<span class="muted">${esc(a.tr)}</span> · True = Doğru, False = Yanlış` }
+    : { unite:unit, tip:'secim', ust:'Metne göre doğru cevabı seç.', soru:esc(a.soru), secenekler:shuffle([a.dogru, ...a.yanlis]), dogru:[a.dogru], kanit:a.kanit, aciklama:a.aciklama, beceri:'okuma', ipucu:`<span class="muted">${esc(a.tr)}</span>` };
 }
 function anlamaQs(){ return U.anlama.map(a => Object.assign(anlamaQ(a), { tr:null })); }
 function viewAnlama(){
@@ -1114,8 +1145,8 @@ function viewAnlama(){
 }
 
 /* ================= 6. bölüm: Çeviri ================= */
-function ceviriQ(c){
-  const w = U.kelimeler.find(x => x.id === c.w);
+function ceviriQ(c, unit = U){
+  const w = unit.kelimeler.find(x => x.id === c.w);
   if(c.tip === 'sirala'){
     let k = shuffle(c.parcalar.slice()), tries = 0;
     while(k.join(' ') === c.parcalar.join(' ') && tries++ < 10) k = shuffle(k);
@@ -1298,9 +1329,187 @@ function grammarQs(){
   return [...shuffle(all.filter(q => q.tip === 'secim')), ...all.filter(q => q.tip === 'yaz')].map(grammarQ);
 }
 
+/* ================= Rütbe sınavı (ders.html?sinav) =================
+   Kullanıcı kararları: 20 soru, geçme sınırı %70; sorular karışık ama tamamlanan ünitelerden ağırlıklı;
+   kalan öğrenci hemen tekrar girebilir, zorlandığı konulara yönlendirilir ama seçim onundur. */
+const EXAM_N = 20;
+const EXAM_DONE_SHARE = 0.7;   // tamamlanan ünitelerden gelen soru payı (diğer üniteler de varsa)
+const RANK_LEVELS = [['A1'], ['A1','A2'], ['A2','B1'], ['B1'], ['B1','B2'], ['B2'], ['B2','C1']];
+const examReady = () => P.rank < RANKS.length - 1 && P.tier === 1 && P.xp >= XP_TIER[P.rank];
+const unitIdOf = u => Object.keys(UNITS).find(k => UNITS[k] === u);
+function examUnits(){
+  const lv = RANK_LEVELS[P.rank], doneIds = new Set(P.uniteler.map(u => u.id || u));
+  const all = Object.entries(UNITS).filter(([, u]) => lv.includes(u.seviye));
+  return { all, done:all.filter(([id]) => doneIds.has(id)), other:all.filter(([id]) => !doneIds.has(id)) };
+}
+/* Bir üniteden k soru: kelime, cümle, dil bilgisi, okuma ve çeviri sırayla dönerek */
+function unitMix(u, k, used){
+  const tag = (q, t) => Object.assign(q, { ust:`${t} · ${q.ust}`, unite:q.unite || u, tur:t });
+  const words = shuffle(u.kelimeler.slice());
+  const pick = () => { const w = words.find(x => !used.has(wordKey(x))); if(w) used.add(wordKey(w)); return w; };
+  const yaz = shuffle(u.ceviri.filter(c => c.tip === 'yaz')), sir = shuffle(u.ceviri.filter(c => c.tip === 'sirala'));
+  const gram = shuffle(u.dilbilgisi.slice()), anl = shuffle(u.anlama.slice());
+  let kc = 0, cc = 0;
+  const make = {
+    kelime(){
+      const w = pick(); if(!w) return null;
+      const others = shuffle(u.kelimeler.filter(x => x !== w)).slice(0, 3), en2tr = kc++ % 2 === 0;
+      return tag({ tip:'secim', ust:en2tr ? 'Türkçesi hangisi?' : 'İngilizcesi hangisi?', soru:esc(en2tr ? w.en : w.tr),
+        secenekler:shuffle([en2tr ? w.tr : w.en, ...others.map(x => en2tr ? x.tr : x.en)]), dogru:[en2tr ? w.tr : w.en], w, beceri:'kelime', tam:w.ornek, tr:w.ornekTr }, 'Kelime');
+    },
+    cumle(){
+      const w = pick(); if(!w) return null;
+      const [d, y] = u.cumleler[w.id];
+      return tag({ tip:'secim', ust:'Boşluğa hangisi gelmeli?', soru:blankSent(w.ornek, d), secenekler:shuffle([d, ...y]), dogru:[d], w, beceri:'kelime', tam:w.ornek, tr:w.ornekTr }, 'Cümle');
+    },
+    dilbilgisi(){ const g = gram.shift(); return g ? tag(grammarQ(g), 'Dil bilgisi') : null; },
+    okuma(){ const a = anl.shift(); return a ? tag(Object.assign(anlamaQ(a, u), { metinGoster:true }), 'Okuma') : null; },
+    ceviri(){ const c = cc++ % 2 === 0 ? (yaz.shift() || sir.shift()) : (sir.shift() || yaz.shift()); return c ? tag(ceviriQ(c, u), 'Çeviri') : null; }
+  };
+  const order = ['kelime', 'cumle', 'dilbilgisi', 'okuma', 'ceviri'], out = [];
+  let i = 0, guard = 0;
+  while(out.length < k && guard++ < 200){ const q = make[order[i++ % order.length]](); if(q) out.push(q); }
+  return out;
+}
+function examQs(){
+  const { done, other } = examUnits(), used = new Set(), parts = [];
+  const nDone = done.length && other.length ? Math.round(EXAM_N * EXAM_DONE_SHARE) : done.length ? EXAM_N : 0;
+  const spread = (list, n) => shuffle(list.slice()).forEach(([, u], i, a) => {
+    const k = Math.floor(n / a.length) + (i < n % a.length ? 1 : 0);
+    if(k) parts.push(...unitMix(u, k, used));
+  });
+  if(nDone) spread(done, nDone);
+  if(EXAM_N - nDone) spread(other, EXAM_N - nDone);
+  // Sınav okunaklı ilerlesin: önce kelime ve cümle, sonra dil bilgisi, okuma, çeviri
+  const sira = { 'Kelime':0, 'Cümle':1, 'Dil bilgisi':2, 'Okuma':3, 'Çeviri':4 };
+  return parts.sort((a, b) => sira[a.tur] - sira[b.tur]);
+}
+function examFrame(){
+  const last = P.rank === RANKS.length - 1;
+  document.title = 'Rütbe sınavı — LevelUp English';
+  $('#crumbUnit').textContent = 'Rütbe sınavı';
+  $('#steps').hidden = true; $('.uprog').hidden = true;
+  $('#me').innerHTML = `${emblem(P.rank, 30, P.tier)}<span><span class="rk">${esc(rankName(P))}</span><br><span class="muted">${P.xp} / ${XP_TIER[P.rank]} XP</span></span>`;
+  $('#uLevel').textContent = 'Rütbe sınavı · ' + RANK_LEVELS[P.rank].join(' – ');
+  $('#uTitle').textContent = last ? 'Mitril: en yüksek rütbe' : `${RANKS[P.rank].ad} → ${RANKS[P.rank + 1].ad}`;
+  $('#uDesc').textContent = last ? 'Zirvedesin. Ünitelerle çalışmaya devam edebilirsin.' : `Sınavı geçersen ${RANKS[P.rank + 1].ad} III rütbesine yükselirsin.`;
+}
+function viewExam(){
+  examFrame();
+  const ready = examReady(), last = P.rank === RANKS.length - 1, need = XP_TIER[P.rank];
+  const { all, done, other } = examUnits();
+  const nm = list => list.map(([, u]) => `${u.seviye} · ${esc(u.ad)}`).join(', ');
+  const kaynak = done.length && other.length ? `Soruların yaklaşık %${EXAM_DONE_SHARE * 100}'i tamamladığın ünitelerden (${nm(done)}), kalanı bu seviyedeki diğer ünitelerden (${nm(other)}).`
+    : done.length ? `Bütün sorular tamamladığın ünitelerden: ${nm(done)}.`
+    : all.length ? `Bu seviyede henüz ünite tamamlamadın; sorular şu ünitelerden gelir: ${nm(all)}. Önce üniteyi bitirmen önerilir.` : 'Bu seviye için henüz ünite yok.';
+  const hist = P.sinavlar.filter(s => s.rank === P.rank).slice(-5).reverse();
+  $('#view').innerHTML = `
+    <div class="exam-hero">
+      <div class="eh-rank">${emblem(P.rank, 96, P.tier)}<b>${esc(rankName(P))}</b><small>Şu anki rütben</small></div>
+      <div class="eh-arrow">${ic('arrow')}</div>
+      <div class="eh-rank ${ready ? '' : 'dimmed'}">${last ? emblem(6, 96, 0) : emblem(P.rank + 1, 96, 3)}<b>${last ? 'Zirve' : RANKS[P.rank + 1].ad + ' III'}</b><small>${last ? 'En yüksek rütbe' : 'Hedef rütbe'}</small></div>
+    </div>
+    ${ready ? `<div class="exam-state ok">${ic('trophy')}<span><b>Sınava girmeye hazırsın!</b>${RANKS[P.rank].ad} I kademesinde XP'ni doldurdun.</span></div>`
+      : last ? `<div class="exam-state ok">${ic('trophy')}<span><b>Mitril en yüksek rütbe</b>Artık rütbe sınavı yok. Tebrikler!</span></div>`
+      : `<div class="exam-state">${ic('lock')}<span><b>Sınav henüz kilitli</b>${P.tier > 1 ? `Sınav, ${RANKS[P.rank].ad} I kademesinde XP dolunca açılır. Şu an ${esc(rankName(P))} kademesindesin.` : `${need - P.xp} XP daha kazanınca açılır.`}</span>
+          <div class="xpmini"><div class="bar"><i style="width:${Math.min(100, P.xp / need * 100)}%"></i></div><small>${esc(rankName(P))} · ${P.xp} / ${need} XP</small></div></div>`}
+    <div class="intro">
+      <div>${ic('target')}<span><b>${EXAM_N} soru · geçme sınırı %${PASS * 100}</b>Kelime, cümle, dil bilgisi, okuma ve çeviri sorularından karışık.</span></div>
+      <div>${ic('book')}<span><b>Soruların kaynağı</b>${kaynak}</span></div>
+      <div>${ic('trophy')}<span><b>Geçersen</b>${last ? '—' : `${RANKS[P.rank + 1].ad} III rütbesine yükselirsin; XP sayacın yeni rütbede sıfırdan başlar.`}</span></div>
+      <div>${ic('refresh')}<span><b>Geçemezsen</b>Rütben ve XP'n korunur. Hemen tekrar girebilirsin; zorlandığın konular gösterilir, istersen önce onları çalışırsın.</span></div>
+    </div>
+    ${hist.length ? `<div class="hist"><b>Bu rütbedeki denemelerin</b>${hist.map(h => `<div class="row"><span>${new Date(h.t).toLocaleString('tr-TR', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</span><span>${h.dogru}/${h.toplam} · %${h.puan}</span><span class="pill ${h.gecti ? 'ok' : 'bad'}">${h.gecti ? 'Geçti' : 'Kaldı'}</span></div>`).join('')}</div>` : ''}
+    <div class="toolbar"><a class="btn btn-line" href="dashboard.html">${ic('back')} Panele dön</a>
+      <button class="btn btn-gold" type="button" id="startE" ${ready ? '' : 'disabled'}>Sınava başla ${ic('arrow')}</button></div>`;
+  $('#startE').addEventListener('click', startExam);
+}
+function startExam(){
+  if(!examReady()) return viewExam();
+  window.onbeforeunload = e => { e.preventDefault(); e.returnValue = ''; };   // sınavın ortasında sayfadan çıkarken uyar
+  startRun({ bolum:'sinav', ad:'Rütbe sınavı', beceri:'kelime', baslik:`${rankName(P)} → ${RANKS[P.rank + 1].ad} III · Rütbe sınavı`, kelimeli:true,
+    sorular:examQs(), yeniden:examQs, ozelBitis:examFinish });
+}
+function examFinish(R){
+  window.onbeforeunload = null;
+  const n = R.sonuc.length, d = R.sonuc.filter(s => s.ok).length, pct = d / n, puan = Math.round(pct * 100), passed = pct >= PASS;
+  const fromName = rankName(P);
+  P.sinavlar.push({ rank:P.rank, puan, dogru:d, toplam:n, gecti:passed, t:Date.now() });
+  if(passed){ P.rank++; P.tier = 3; P.xp = 0; log(`Rütbe sınavı geçildi (%${puan}): ${fromName} → ${rankName(P)}`); }
+  else log(`Rütbe sınavı: %${puan} (geçme sınırı %${PASS * 100}) · ${fromName} korundu`);
+  taskProgress('test');   // rütbe değiştikten sonra: görev XP'si yeni rütbeye eklensin
+  markStudy(); saveP();
+  examFrame();
+  if(passed){ $('#uTitle').textContent = `${RANKS[P.rank - 1].ad} → ${RANKS[P.rank].ad}`; $('#uDesc').textContent = `Sınavı geçtin! Yeni rütben: ${rankName(P)}.`; $('#uLevel').textContent = 'Rütbe sınavı · sonuç'; }
+  // Beceri dağılımı; zayıf alanlarda en çok yanlış yapılan ünite
+  const by = {};
+  R.sonuc.forEach(s => {
+    const b = by[s.bec] = by[s.bec] || { d:0, t:0, u:{} };
+    b.t++; if(s.ok) b.d++;
+    else { const uid = s.q.w ? s.q.w.uid : unitIdOf(s.q.unite); if(uid) b.u[uid] = (b.u[uid] || 0) + 1; }
+  });
+  const weak = Object.keys(BECERI_AD).filter(k => by[k] && by[k].d / by[k].t < PASS);
+  const weakHtml = weak.map(k => {
+    const uid = Object.keys(by[k].u).sort((a, b) => by[k].u[b] - by[k].u[a])[0] || Object.keys(UNITS)[0], u = UNITS[uid];
+    return `<div class="weakrow"><span><b>${BECERI_AD[k]}</b> <span class="muted">${by[k].d}/${by[k].t} doğru · ${u.seviye} · ${esc(u.ad)}</span></span>
+      <span>${BECERI_BOLUM[k].map(([sec, ad]) => `<a class="btn btn-ghost sm" href="ders.html?u=${uid}#${sec}">${ad}</a>`).join('')}</span></div>`;
+  }).join('');
+  const wrongW = R.sonuc.filter(s => !s.ok && s.q.w).map(s => s.q.w).filter((w, i, a) => a.indexOf(w) === i);
+  const inErr = w => P.hataKutuphanesi.some(h => h.en.toLowerCase() === w.en.toLowerCase());
+  $('#view').innerHTML = `
+    <div class="result">
+      <div style="display:flex;justify-content:center">${emblem(P.rank, 96, P.tier)}</div>
+      <p class="muted" style="margin:.5rem 0 .2rem">${passed ? `Tebrikler! Artık <b style="color:var(--gold2)">${esc(rankName(P))}</b> rütbesindesin.` : `Bu sefer olmadı. Geçmek için en az %${PASS * 100} gerekiyor; ${esc(rankName(P))} rütben korunuyor.`}</p>
+      <div class="score">${d}<small> / ${n}</small></div>
+      <div class="rgrid four">${Object.keys(BECERI_AD).filter(k => by[k]).map(k => `<div class="${by[k].d / by[k].t < PASS ? 'weakcell' : ''}"><b>${by[k].d}/${by[k].t}</b><span>${BECERI_AD[k]}</span></div>`).join('')}</div>
+      ${!passed && weak.length ? `<div class="weak"><h3>${ic('alert')} Zorlandığın konular</h3>
+        <p class="muted" style="margin:0 0 .6rem">İstersen önce bu bölümleri çalış, istersen hemen tekrar sınava gir. Seçim senin.</p>${weakHtml}</div>` : ''}
+      ${wrongW.length ? `
+        <div class="wrong" id="wrongBox">
+          <h3>Zorlandığın kelimeler (${wrongW.length})</h3>
+          <p>Bu kelimeleri hata kütüphanene eklemek ister misin?</p>
+          <div class="wl" id="wl">${wrongW.map(w => `<label><input type="checkbox" value="${esc(wordKey(w))}" ${inErr(w) ? 'disabled' : 'checked'}><b>${esc(w.en)}</b>${inErr(w) ? '<span class="in">zaten hata kütüphanende</span>' : ''}<span class="tr">${esc(w.tr)}</span></label>`).join('')}</div>
+          <div class="racts" style="justify-content:flex-start;margin-top:12px">
+            <button class="btn btn-gold sm" type="button" id="addErr">${ic('bug')} Seçilenleri ekle</button>
+            <button class="btn btn-ghost sm" type="button" id="noErr">Hayır, teşekkürler</button>
+          </div>
+        </div>` : ''}
+      <div class="racts">
+        ${passed ? '' : `<button class="btn btn-gold" type="button" id="retry">${ic('refresh')} Hemen tekrar gir</button>`}
+        <a class="btn ${passed ? 'btn-gold' : 'btn-line'}" href="dashboard.html">Panele dön</a>
+        <button class="btn btn-ghost" type="button" id="toInfo">Sınav bilgileri</button>
+      </div>
+    </div>`;
+  if(!passed) $('#retry').addEventListener('click', startExam);
+  $('#toInfo').addEventListener('click', viewExam);
+  if(wrongW.length){
+    const box = $('#wrongBox');
+    $('#addErr').addEventListener('click', () => {
+      const keys = $$('#wl input:checked:not(:disabled)').map(x => x.value);
+      if(!keys.length){ toast('Eklemek için en az bir kelime seç.', 'bad'); return; }
+      keys.forEach(k => {
+        const w = findWord(k); if(!w) return;
+        P.hataKutuphanesi.push({ id:'h' + rnd(8), en:w.en, tr:w.tr, not:`${UNITS[w.uid].seviye} · ${UNITS[w.uid].ad} · rütbe sınavı`, t:Date.now() });
+        if(!P.bilemedigi.includes(w.en.toLowerCase())) P.bilemedigi.push(w.en.toLowerCase());
+      });
+      log(`Hata kütüphanesine ${keys.length} kelime eklendi`); saveP();
+      box.innerHTML = `<h3>${ic('check')} ${keys.length} kelime hata kütüphanene eklendi</h3><p style="margin:0">Panelindeki <a href="dashboard.html#kutuphane?hata">Hata kütüphanesi</a> bölümünden tekrar edebilirsin.</p>`;
+    });
+    $('#noErr').addEventListener('click', () => { box.innerHTML = '<p style="margin:0">Tamam, hiçbir kelime eklenmedi.</p>'; });
+  }
+  if(passed){
+    $('#luEm').innerHTML = emblem(P.rank, 130, P.tier);
+    $('#luTitle').textContent = `${RANKS[P.rank].ad} rütbesine yükseldin!`;
+    $('#luSub').textContent = `${fromName} → ${rankName(P)} · Sınav puanın %${puan}`;
+    $('#levelup').classList.add('show');
+  }
+  window.scrollTo(0, 0);
+}
+
 const VIEWS = { kelime:viewKelime, cumle:viewCumle, dilbilgisi:viewDilbilgisi, okuma:viewOkuma, anlama:viewAnlama, ceviri:viewCeviri, test:viewTest };
 
 if(me && U){ ensureDaily(); saveP(); route(); }
+else if(me && EXAM){ ensureDaily(); saveP(); viewExam(); }
 </script>
 </body>
 </html>
