@@ -1157,7 +1157,7 @@ function ceviriQ(c, unit = U){
 }
 function ceviriQs(){
   const all = U.ceviri;
-  return [...shuffle(all.filter(c => c.tip === 'yaz')), ...shuffle(all.filter(c => c.tip === 'sirala'))].map(ceviriQ);
+  return [...shuffle(all.filter(c => c.tip === 'yaz')), ...shuffle(all.filter(c => c.tip === 'sirala'))].map(c => ceviriQ(c));
 }
 function viewCeviri(){
   const done = secDone('ceviri'), nY = U.ceviri.filter(c => c.tip === 'yaz').length, nS = U.ceviri.length - nY;
