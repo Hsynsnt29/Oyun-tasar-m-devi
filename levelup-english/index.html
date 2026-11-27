@@ -350,6 +350,11 @@ footer a{color:var(--muted)}
 <div class="toast" id="toast" role="status"></div>
 
 <script>
+/* Aktif kullanıcı: her sekme kendi kullanıcısını sessionStorage'da tutar (aynı anda iki sekmede iki kişi çalışabilsin);
+   hocanın tarifindeki gibi localStorage'a da yazılır, yeni açılan sekme oradan devam eder. Boş değer = bu sekmede çıkış yapıldı. */
+function getActive(){ const s = sessionStorage.getItem('lue_aktif'); return s !== null ? (s || null) : localStorage.getItem('lue_aktif'); }
+function setActive(id){ sessionStorage.setItem('lue_aktif', id); localStorage.setItem('lue_aktif', id); }
+function clearActive(){ const id = getActive(); sessionStorage.setItem('lue_aktif', ''); if(localStorage.getItem('lue_aktif') === id) localStorage.removeItem('lue_aktif'); }
 /* ================= Ortak yardımcılar ================= */
 const $ = (s, r = document) => r.querySelector(s);
 const K = { users: 'lue_users', active: 'lue_aktif', fail: 'lue_giris_hata' };
@@ -533,7 +538,7 @@ $('#importFile').addEventListener('change', e => {
   if(!f) return;
   if(!confirm('İçe aktarılan dosya bu tarayıcıdaki TÜM LevelUp verilerinin yerine geçecek. Devam edilsin mi?')) return;
   importData(f, (ok, n) => {
-    if(ok){ toast(n + ' kayıt geri yüklendi'); renderLogin(); renderNav(); }
+    if(ok){ sessionStorage.removeItem('lue_aktif'); toast(n + ' kayıt geri yüklendi'); renderLogin(); renderNav(); }
     else toast('Dosya okunamadı. Uygulamadan indirilen veriler.txt dosyasını seç.', 'bad');
   });
 });
@@ -576,7 +581,7 @@ $('#mergeFile').addEventListener('change', e => {
 
 /* ================= Kullanıcı girişi ================= */
 function activeUser(){
-  const id = localStorage.getItem(K.active);
+  const id = getActive();
   return id ? loadUsers().find(u => u.id === id) || null : null;
 }
 function rankText(p){ return p ? `${RANKS[p.rank].ad} ${ROMAN[p.tier]} · ${p.xp} XP` : 'Bakır III · 0 XP'; }
@@ -602,7 +607,7 @@ function renderLogin(){
         <a class="btn btn-gold full" href="dashboard.html">Panele git <svg class="i"><use href="#arrow"/></svg></a>
         <button class="btn btn-line full" type="button" id="switchAcc"><svg class="i"><use href="#logout"/></svg> Farklı hesapla giriş yap</button>
       </div></div>`;
-    $('#switchAcc').onclick = () => { localStorage.removeItem(K.active); renderLogin(); renderNav(); };
+    $('#switchAcc').onclick = () => { clearActive(); renderLogin(); renderNav(); };
     return;
   }
   const users = loadUsers();
@@ -673,7 +678,7 @@ function onLogin(e){
 function loginSuccess(u){
   const users = loadUsers(), x = users.find(z => z.id === u.id);
   x.sonGiris = Date.now(); saveUsers(users);
-  localStorage.setItem(K.active, u.id);
+  setActive(u.id);
   sessionStorage.removeItem(K.fail);
   const p = loadProg(u.id);
   $('#enterEm').innerHTML = p ? emblem(p.rank, 96, p.tier) : emblem(0, 96, 3);

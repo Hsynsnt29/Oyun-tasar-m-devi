@@ -354,6 +354,11 @@ details.mtxt .reader p{font-size:.95rem;line-height:1.85}
 <div class="toast" id="toast" role="status"></div>
 
 <script>
+/* Aktif kullanıcı: her sekme kendi kullanıcısını sessionStorage'da tutar (aynı anda iki sekmede iki kişi çalışabilsin);
+   hocanın tarifindeki gibi localStorage'a da yazılır, yeni açılan sekme oradan devam eder. Boş değer = bu sekmede çıkış yapıldı. */
+function getActive(){ const s = sessionStorage.getItem('lue_aktif'); return s !== null ? (s || null) : localStorage.getItem('lue_aktif'); }
+function setActive(id){ sessionStorage.setItem('lue_aktif', id); localStorage.setItem('lue_aktif', id); }
+function clearActive(){ const id = getActive(); sessionStorage.setItem('lue_aktif', ''); if(localStorage.getItem('lue_aktif') === id) localStorage.removeItem('lue_aktif'); }
 /* ================= Ortak yardımcılar ================= */
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const K = { users:'lue_users', active:'lue_aktif' };
@@ -1077,7 +1082,7 @@ const LEARN_COUNT = 3;            // Kelime 3 doğru cevapla öğrenilir…
 const LEARN_GAP = 10 * 60 * 1000; // …farklı bölümlerde ve aralarında en az 10 dakika varsa
 
 /* ================= Oturum ve ilerleme ================= */
-const me = loadUsers().find(u => u.id === localStorage.getItem(K.active));
+const me = loadUsers().find(u => u.id === getActive());
 if(!me) location.replace('index.html');
 const QS = new URLSearchParams(location.search);
 const EXAM = QS.has('sinav');                       // ders.html?sinav → rütbe sınavı

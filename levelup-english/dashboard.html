@@ -572,6 +572,11 @@ details.tbl th{color:var(--dim);font-weight:600}
 <div class="toast" id="toast" role="status"></div>
 
 <script>
+/* Aktif kullanıcı: her sekme kendi kullanıcısını sessionStorage'da tutar (aynı anda iki sekmede iki kişi çalışabilsin);
+   hocanın tarifindeki gibi localStorage'a da yazılır, yeni açılan sekme oradan devam eder. Boş değer = bu sekmede çıkış yapıldı. */
+function getActive(){ const s = sessionStorage.getItem('lue_aktif'); return s !== null ? (s || null) : localStorage.getItem('lue_aktif'); }
+function setActive(id){ sessionStorage.setItem('lue_aktif', id); localStorage.setItem('lue_aktif', id); }
+function clearActive(){ const id = getActive(); sessionStorage.setItem('lue_aktif', ''); if(localStorage.getItem('lue_aktif') === id) localStorage.removeItem('lue_aktif'); }
 /* ================= Ortak yardımcılar ================= */
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const K = { users:'lue_users', active:'lue_aktif' };
@@ -651,9 +656,9 @@ function avatarSvg(avId, size = 40){
 const rankName = p => `${RANKS[p.rank].ad} ${ROMAN[p.tier]}`;
 
 /* ================= Oturum ve veri ================= */
-const ACTIVE_ID = localStorage.getItem(K.active);
+const ACTIVE_ID = getActive();
 let me = loadUsers().find(u => u.id === ACTIVE_ID);
-if(!me){ localStorage.removeItem(K.active); location.replace('index.html'); }
+if(!me){ clearActive(); location.replace('index.html'); }
 const PKEY = 'lue_ilerleme_' + (me ? me.id : '');
 function defaultProg(){
   return { rank:0, tier:3, xp:0, toplamXp:0, seri:0, sonCalisma:null, ogrenilen:[], bilemedigi:[], kutuphane:[], hataKutuphanesi:[],
@@ -813,7 +818,7 @@ function openMenu(){ $('#sb').classList.add('open'); $('#scrim').hidden = false;
 function closeMenu(){ $('#sb').classList.remove('open'); $('#scrim').hidden = true; }
 $('#menuBtn').addEventListener('click', openMenu);
 $('#scrim').addEventListener('click', closeMenu);
-function logout(){ localStorage.removeItem(K.active); location.href = 'index.html'; }
+function logout(){ clearActive(); location.href = 'index.html'; }
 $('#logoutBtn').addEventListener('click', logout);
 $('#switchBtn').addEventListener('click', logout);
 
@@ -1180,6 +1185,7 @@ $('#importFile').addEventListener('change', e => {
         if(!v || typeof v !== 'object') throw new Error();
         localStorage.clear();
         Object.keys(v).forEach(k => localStorage.setItem(k, String(v[k])));
+        sessionStorage.removeItem('lue_aktif');
         toast('Veriler geri yüklendi');
         setTimeout(() => location.reload(), 700);
       }catch(err){ toast('Dosya okunamadı. Uygulamadan indirilen veriler.txt dosyasını seç.', 'bad'); }
@@ -1230,7 +1236,7 @@ $('#delBtn').addEventListener('click', () => {
   $('#delOk').onclick = () => {
     if($('#delIn').value.trim().toLowerCase() !== me.kullaniciAdi) return setErr('delErr', 'Kullanıcı adı eşleşmiyor.');
     saveUsers(loadUsers().filter(u => u.id !== me.id));
-    localStorage.removeItem(PKEY); localStorage.removeItem(K.active);
+    localStorage.removeItem(PKEY); clearActive();
     close(); location.href = 'index.html';
   };
 });

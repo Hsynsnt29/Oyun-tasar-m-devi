@@ -289,6 +289,11 @@ label.lbl{display:block;font-size:.86rem;font-weight:600;margin:.85rem 0 .35rem;
 <div class="toast" id="toast" role="status"></div>
 
 <script>
+/* Aktif kullanıcı: her sekme kendi kullanıcısını sessionStorage'da tutar (aynı anda iki sekmede iki kişi çalışabilsin);
+   hocanın tarifindeki gibi localStorage'a da yazılır, yeni açılan sekme oradan devam eder. Boş değer = bu sekmede çıkış yapıldı. */
+function getActive(){ const s = sessionStorage.getItem('lue_aktif'); return s !== null ? (s || null) : localStorage.getItem('lue_aktif'); }
+function setActive(id){ sessionStorage.setItem('lue_aktif', id); localStorage.setItem('lue_aktif', id); }
+function clearActive(){ const id = getActive(); sessionStorage.setItem('lue_aktif', ''); if(localStorage.getItem('lue_aktif') === id) localStorage.removeItem('lue_aktif'); }
 /* ================= Ortak yardımcılar ================= */
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const K = { users:'lue_users', active:'lue_aktif', fail:'lue_giris_hata' };
@@ -440,7 +445,7 @@ $$('[data-eye]').forEach(b => b.addEventListener('click', () => {
 
 /* Şu an giriş yapmış biri varsa */
 function renderActive(){
-  const id = localStorage.getItem(K.active), u = id && loadUsers().find(x => x.id === id);
+  const id = getActive(), u = id && loadUsers().find(x => x.id === id);
   $('#activeBanner').innerHTML = u ? `<div class="banner">${avatarSvg(u.avatar, 34)}<span class="bt"><b>${esc(u.kullaniciAdi)}</b> şu an giriş yapmış durumda. Başka bir hesapla da giriş yapabilirsin.</span><span class="ba"><a class="btn btn-gold sm" href="dashboard.html">Panele dön</a></span></div>` : '';
 }
 
@@ -481,7 +486,7 @@ $('#loginForm').addEventListener('submit', e => {
 function loginSuccess(u){
   const users = loadUsers(), x = users.find(z => z.id === u.id);
   x.sonGiris = Date.now(); saveUsers(users);
-  localStorage.setItem(K.active, u.id);
+  setActive(u.id);
   sessionStorage.removeItem(K.fail);
   const p = loadProg(u.id);
   $('#enterEm').innerHTML = p ? emblem(p.rank, 96, p.tier) : emblem(0, 96, 3);
