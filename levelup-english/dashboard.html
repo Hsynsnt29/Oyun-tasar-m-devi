@@ -213,6 +213,39 @@ label.lbl{display:block;font-size:.8rem;font-weight:600;margin:0 0 .3rem;color:#
 .iconbtn:hover{color:var(--bad);border-color:rgba(240,114,114,.35)}
 .iconbtn.go:hover{color:var(--ok);border-color:rgba(69,196,138,.35)}
 
+/* ---------- Gelişim raporu ---------- */
+.word.rep{grid-template-columns:minmax(110px,1fr) minmax(140px,1.2fr) minmax(0,1.7fr) 300px}
+.word.rep .wa{justify-content:flex-end}
+@media(max-width:1000px){.word.rep{grid-template-columns:1fr 1fr}.word.rep .ex,.word.rep .wa{grid-column:1/-1;justify-content:flex-start}}
+.chart{position:relative;padding:6px 0 0 36px}
+.plot{position:relative;height:190px;border-bottom:1px solid var(--line2)}
+.gline{position:absolute;left:0;right:0;border-top:1px dashed rgba(255,255,255,.07)}
+.gline span{position:absolute;left:-36px;top:-.65em;width:30px;text-align:right;font-size:.72rem;color:var(--dim)}
+.cols{position:absolute;inset:0;display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.col{position:relative;display:flex;align-items:flex-end;justify-content:center;border-radius:8px 8px 0 0;outline:none}
+.col:hover,.col:focus-visible{background:rgba(255,255,255,.035)}
+.bv{width:56%;max-width:44px;background:#bf9440;border-radius:4px 4px 0 0;transition:filter .15s}
+.col:hover .bv,.col:focus-visible .bv{filter:brightness(1.2)}
+.vl{position:absolute;left:0;right:0;text-align:center;font-size:.76rem;font-weight:700;color:var(--text)}
+.xlabels{display:grid;grid-template-columns:repeat(7,1fr);font-size:.75rem;color:var(--dim);text-align:center;margin-top:6px}
+.xlabels .now{color:var(--text);font-weight:700}
+.ctip{position:absolute;pointer-events:none;background:#1b2541;border:1px solid var(--line2);border-radius:10px;padding:.45rem .65rem;font-size:.8rem;white-space:nowrap;transform:translate(-50%,calc(-100% - 8px));box-shadow:var(--shadow);z-index:3;color:var(--text)}
+.ctip b{color:var(--gold2)}
+.chart-empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--dim);font-size:.88rem;text-align:center;padding:0 20px}
+details.tbl{margin-top:12px;font-size:.86rem}
+details.tbl summary{cursor:pointer;color:var(--muted)}
+details.tbl table{width:100%;border-collapse:collapse;margin-top:8px}
+details.tbl th,details.tbl td{padding:.35rem .5rem;border-top:1px solid rgba(255,255,255,.06);text-align:left}
+details.tbl th{color:var(--dim);font-weight:600}
+.unitrow{display:grid;grid-template-columns:minmax(160px,1fr) 2.2fr auto;gap:14px;align-items:center;padding:12px 14px;border-radius:12px;background:#0b1224;border:1px solid var(--line);margin-top:8px}
+@media(max-width:800px){.unitrow{grid-template-columns:1fr}}
+.unitrow b{display:block}
+.unitrow small{color:var(--dim)}
+.secdots{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.secdots span{font-size:.7rem;text-align:center;padding:.3rem .2rem;border-radius:7px;background:rgba(255,255,255,.04);color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.secdots span.on{background:rgba(69,196,138,.14);color:#8fe3bb}
+.secdots span b{display:block;font-size:.72rem;color:inherit}
+
 /* ---------- Başarımlar ---------- */
 .ach-sum{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
 .ach-sum .big{font-size:2.2rem;font-weight:800;color:var(--gold2)}
@@ -325,6 +358,7 @@ label.lbl{display:block;font-size:.8rem;font-weight:600;margin:0 0 .3rem;color:#
   <symbol id="translate" viewBox="0 0 24 24"><path d="M4 5h8M8 3v2M10 5c-1 4-3 7-6 9M6 9c1 2 3 4 6 5"/><path d="m13 21 4-9 4 9M14.5 18h5"/></symbol>
   <symbol id="grammar" viewBox="0 0 24 24"><path d="M4 20 9 4h2l5 16M6 14h8"/><path d="M17 8h4M19 6v4"/></symbol>
   <symbol id="calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
   <symbol id="hand" viewBox="0 0 24 24"><path d="M7 11V5a2 2 0 0 1 4 0v5M11 10V4a2 2 0 0 1 4 0v6M15 10V6a2 2 0 0 1 4 0v8a8 8 0 0 1-8 8 7 7 0 0 1-6-3l-2.5-4a2 2 0 0 1 3.4-2L7 15"/></symbol>
 </svg>
 
@@ -335,6 +369,7 @@ label.lbl{display:block;font-size:.8rem;font-weight:600;margin:0 0 .3rem;color:#
     <nav aria-label="Panel menüsü">
       <a href="#genel" data-nav="genel"><svg class="i"><use href="#home"/></svg> Genel bakış</a>
       <a href="#ogren" data-nav="ogren"><svg class="i"><use href="#map"/></svg> Öğrenme yolu</a>
+      <a href="#rapor" data-nav="rapor"><svg class="i"><use href="#chart"/></svg> Gelişim raporu</a>
       <a href="#kutuphane" data-nav="kutuphane"><svg class="i"><use href="#library"/></svg> Kütüphaneler <span class="cnt" id="navLib">0</span></a>
       <a href="#basarimlar" data-nav="basarimlar"><svg class="i"><use href="#trophy"/></svg> Başarımlar <span class="cnt" id="navAch">0</span></a>
       <a href="#siralama" data-nav="siralama"><svg class="i"><use href="#podium"/></svg> Sıralama</a>
@@ -376,7 +411,7 @@ label.lbl{display:block;font-size:.8rem;font-weight:600;margin:0 0 .3rem;color:#
 
         <div class="grid g-bot" style="margin-top:16px">
           <div class="card pad">
-            <div class="ch"><h2><svg class="i"><use href="#bulb"/></svg> Beceri analizi</h2><span class="pill">Uygulama içi performans</span></div>
+            <div class="ch"><h2><svg class="i"><use href="#bulb"/></svg> Beceri analizi</h2><a class="more" href="#rapor">Gelişim raporu</a></div>
             <div id="skills"></div>
           </div>
           <div class="card pad">
@@ -413,6 +448,36 @@ label.lbl{display:block;font-size:.8rem;font-weight:600;margin:0 0 .3rem;color:#
           <div class="ch"><h2><svg class="i"><use href="#map"/></svg> Konular</h2><span class="pill info">Hazır ünite: A1 · Günlük rutinler</span></div>
           <div class="lvtabs" id="lvtabs" role="tablist"></div>
           <div class="topics" id="topics"></div>
+        </div>
+      </section>
+
+      <!-- ================= GELİŞİM RAPORU ================= -->
+      <section class="sec" data-sec="rapor" hidden>
+        <div class="page-head"><div><h1>Gelişim raporu</h1><p>Neleri öğrendiğin, nelerde zorlandığın ve son günlerdeki çalışman.</p></div>
+          <a class="btn btn-line" href="ders.html?u=a1-rutin">Derse git <svg class="i"><use href="#arrow"/></svg></a></div>
+        <div class="grid g-mid" id="repTiles"></div>
+        <div class="grid g-bot" style="margin-top:16px">
+          <div class="card pad">
+            <div class="ch"><h2><svg class="i"><use href="#chart"/></svg> Son 7 gün · kazanılan XP</h2><span class="pill" id="weekSum"></span></div>
+            <div id="weekChart"></div>
+          </div>
+          <div class="card pad">
+            <div class="ch"><h2><svg class="i"><use href="#bulb"/></svg> Beceriler</h2><span class="pill">Doğru / toplam soru</span></div>
+            <div id="repSkills"></div>
+          </div>
+        </div>
+        <div class="card pad" style="margin-top:16px">
+          <div class="ch"><h2><svg class="i"><use href="#book"/></svg> Kelime durumu</h2><span class="pill" id="wordSum"></span></div>
+          <p class="muted" style="margin:-6px 0 12px;font-size:.88rem">Bir kelime; farklı bölümlerde ve aralarında en az 10 dakika olacak şekilde <b>3 kez doğru</b> bilinince öğrenilmiş sayılır. Yanlış yaptığın kelimeler "Bilemediklerim" altında görünür.</p>
+          <div class="toolbar" style="margin-top:0">
+            <div class="filters" id="repFilters"></div>
+            <div class="search inp"><svg class="i"><use href="#search"/></svg><input id="repSearch" placeholder="Kelime ara…"></div>
+          </div>
+          <div class="words" id="repWords"></div>
+        </div>
+        <div class="card pad" style="margin-top:16px">
+          <div class="ch"><h2><svg class="i"><use href="#map"/></svg> Ünite ilerlemesi</h2></div>
+          <div id="repUnits"></div>
         </div>
       </section>
 
@@ -597,6 +662,13 @@ function saveP(){ localStorage.setItem(PKEY, JSON.stringify(P)); }
 function saveMe(){ const users = loadUsers(), i = users.findIndex(u => u.id === me.id); if(i > -1){ users[i] = me; saveUsers(users); } }
 function log(m){ P.hareketler.unshift({ t:Date.now(), m }); P.hareketler = P.hareketler.slice(0, 40); }
 /* Bugün çalışıldı: seri hesabı */
+/* Günlük istatistik: { 'YYYY-AA-GG': { xp, d, t } } (ders.html ile aynı) */
+function dayStat(){
+  P.gunlukIst = P.gunlukIst || {};
+  const t = today(), o = P.gunlukIst[t] = P.gunlukIst[t] || { xp:0, d:0, t:0 };
+  const keys = Object.keys(P.gunlukIst).sort(); while(keys.length > 60) delete P.gunlukIst[keys.shift()];
+  return o;
+}
 function markStudy(){
   const t = today();
   if(P.sonCalisma === t) return;
@@ -609,7 +681,7 @@ function examReady(){ return P.tier === 1 && P.xp >= XP_TIER[P.rank]; }
 function addXp(n, why){
   if(n <= 0) return;
   const before = rankName(P), need = XP_TIER[P.rank];
-  P.toplamXp += n; P.xp += n;
+  P.toplamXp += n; P.xp += n; dayStat().xp += n;
   let up = false;
   while(P.tier > 1 && P.xp >= need){ P.xp -= need; P.tier--; up = true; }
   if(P.tier === 1 && P.xp > need) P.xp = need; // Kademe I'de XP dolunca sınav beklenir
@@ -721,7 +793,7 @@ function checkAch(silent){
 }
 
 /* ================= Gezinme ================= */
-const SECS = ['genel','ogren','kutuphane','basarimlar','siralama','profil','ayarlar'];
+const SECS = ['genel','ogren','rapor','kutuphane','basarimlar','siralama','profil','ayarlar'];
 function route(){
   const [name, q] = location.hash.slice(1).split('?');
   const sec = SECS.includes(name) ? name : 'genel';
@@ -830,7 +902,12 @@ function nearestAch(){
 }
 function invites(){
   const out = [], t = today();
-  if(!P.uniteler.length) out.push({ icon:'map', href:'ders.html?u=a1-rutin', t:'İlk ünitene başlamaya ne dersin?', s:'A1 · Günlük rutinler seni bekliyor' });
+  const ud = (P.uniteDurum || {})['a1-rutin'], udone = ud ? Object.values(ud.bolumler || {}).filter(x => x.tamam).length : 0;
+  if(!udone && !P.uniteler.length) out.push({ icon:'map', href:'ders.html?u=a1-rutin', t:'İlk ünitene başlamaya ne dersin?', s:'A1 · Günlük rutinler seni bekliyor' });
+  else if(udone < 7 && !P.uniteler.length) out.push({ icon:'map', href:'ders.html?u=a1-rutin', t:'Kaldığın yerden devam etmeye ne dersin?', s:`A1 · Günlük rutinler · ${udone}/7 bölüm tamamlandı` });
+  // Öğrenmesi yarım kalan ve 10 dakikadan uzun süredir tekrar edilmeyen kelimeler
+  const ready = Object.values(P.kelimeler || {}).filter(r => r.dogru && r.dogru.length > 0 && r.dogru.length < 3 && Date.now() - r.dogru[r.dogru.length - 1].t > 10 * 60000).length;
+  if(ready) out.push({ icon:'refresh', href:'#rapor', t:`${ready} kelimen tekrar için hazır.`, s:'Başka bir bölümde tekrar doğru bilirsen öğrenmeye bir adım daha yaklaşırsın.' });
   if(P.sonCalisma && daysBetween(P.sonCalisma, t) >= 3) out.push({ icon:'refresh', href:'#kutuphane', t:'Bir süredir çalışmadın.', s:`Son çalışman ${daysBetween(P.sonCalisma, t)} gün önceydi. Birkaç kelimeyi hatırlamaya ne dersin?` });
   if(P.hataKutuphanesi.length) out.push({ icon:'bug', href:'#kutuphane?hata', t:`Hata kütüphanende ${P.hataKutuphanesi.length} kelime seni bekliyor.`, s:'Birkaçını tekrar etmeye ne dersin?' });
   const old = P.kutuphane.filter(w => w.durum !== 'ogrendim' && daysBetween(today(new Date(w.t)), t) >= 3).length;
@@ -1107,13 +1184,124 @@ $('#delBtn').addEventListener('click', () => {
   };
 });
 
+/* ================= Gelişim raporu ================= */
+const SEC_ADLARI = [['kelime','Kelimeler'],['cumle','Cümleler'],['dilbilgisi','Dil bilgisi'],['okuma','Okuma'],['anlama','Anlama'],['ceviri','Çeviri'],['test','Test']];
+const BEC_ADLARI = [['kelime','Kelime bilgisi'],['dilbilgisi','Dil bilgisi'],['okuma','Okuduğunu anlama'],['ceviri','Çeviri']];
+let repFilter = 'hepsi';
+const wordState = r => (r.dogru || []).length >= 3 ? 'ogrenildi' : (r.dogru || []).length ? 'ogreniliyor' : 'yeni';
+function wordRows(){
+  return Object.entries(P.kelimeler || {}).map(([key, r]) => {
+    const uid = key.split(':')[0], ud = (P.uniteDurum || {})[uid] || {};
+    return Object.assign({ key, uid, unite:(ud.seviye ? ud.seviye + ' · ' : '') + (ud.ad || uid), durum:wordState(r) }, r);
+  });
+}
+function renderRapor(){
+  const rows = wordRows();
+  const learned = rows.filter(r => r.durum === 'ogrenildi'), learning = rows.filter(r => r.durum === 'ogreniliyor');
+  const missed = rows.filter(r => r.yanlis > 0 && r.durum !== 'ogrenildi');
+  const tot = Object.values(P.beceri).reduce((a, b) => ({ d:a.d + b.d, t:a.t + b.t }), { d:0, t:0 });
+  $('#repTiles').innerHTML = [
+    [learned.length, 'Öğrenilen kelime', '3/3 doğru cevap'],
+    [learning.length, 'Öğrenilmekte', '1–2 doğru cevap'],
+    [missed.length, 'Bilemediğin kelime', 'Yanlış yapıp henüz öğrenmediğin'],
+    [tot.t >= 10 ? Math.round(tot.d / tot.t * 100) + '<small>%</small>' : '—', 'Genel doğruluk', tot.t ? `${tot.d} / ${tot.t} soru` : 'Henüz soru çözülmedi']
+  ].map(([v, l, s]) => `<div class="card stat"><div class="v">${v}</div><div class="l">${l}</div><div class="s">${s}</div></div>`).join('');
+
+  // --- Son 7 gün grafiği (tek seri: günlük XP) ---
+  const days = Array.from({ length:7 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - (6 - i)); return d; });
+  const data = days.map(d => { const k = today(d), o = (P.gunlukIst || {})[k] || { xp:0, d:0, t:0 }; return { d, k, xp:o.xp, dg:o.d, t:o.t }; });
+  const max = Math.max(...data.map(x => x.xp)), top = max <= 0 ? 100 : Math.ceil(max / 50) * 50;
+  const sum = data.reduce((a, x) => a + x.xp, 0);
+  $('#weekSum').textContent = `Toplam ${sum} XP`;
+  const dayName = d => d.toLocaleDateString('tr-TR', { weekday:'short' });
+  const maxI = max > 0 ? data.findIndex(x => x.xp === max) : -1;
+  $('#weekChart').innerHTML = `
+    <div class="chart" id="chartBox" role="img" aria-label="Son 7 günde günlük kazanılan XP: ${data.map(x => `${dayName(x.d)} ${x.xp}`).join(', ')}">
+      <div class="plot">
+        ${[1, .5].map(f => `<div class="gline" style="bottom:${f * 100}%"><span>${Math.round(top * f)}</span></div>`).join('')}
+        <div class="gline" style="bottom:0;border-top:0"><span>0</span></div>
+        <div class="cols">${data.map((x, i) => `<div class="col" tabindex="0" data-i="${i}" aria-label="${x.d.toLocaleDateString('tr-TR', { day:'numeric', month:'long', weekday:'long' })}: ${x.xp} XP, ${x.dg}/${x.t} doğru">
+            ${x.xp > 0 ? `<div class="bv" style="height:${x.xp / top * 100}%"></div>` : ''}
+            ${(i === maxI || i === 6) && x.xp > 0 ? `<span class="vl" style="bottom:calc(${x.xp / top * 100}% + 4px)">${x.xp}</span>` : ''}
+          </div>`).join('')}</div>
+        ${sum === 0 ? '<div class="chart-empty">Son 7 günde XP kazanmadın. Bir derse girince burada günlük çubuklar oluşur.</div>' : ''}
+      </div>
+      <div class="xlabels">${data.map((x, i) => `<span class="${i === 6 ? 'now' : ''}">${i === 6 ? 'Bugün' : dayName(x.d)}</span>`).join('')}</div>
+      <div class="ctip" id="ctip" hidden></div>
+    </div>
+    <details class="tbl"><summary>Tablo olarak göster</summary>
+      <table><thead><tr><th>Gün</th><th>XP</th><th>Doğru / soru</th></tr></thead><tbody>
+      ${data.map(x => `<tr><td>${x.d.toLocaleDateString('tr-TR', { day:'numeric', month:'short', weekday:'short' })}</td><td>${x.xp}</td><td>${x.dg} / ${x.t}</td></tr>`).join('')}</tbody></table></details>`;
+  const box = $('#chartBox'), tip = $('#ctip');
+  const showTip = col => {
+    const x = data[+col.dataset.i], bar = col.querySelector('.bv');
+    const cr = col.getBoundingClientRect(), br = box.getBoundingClientRect();
+    const topY = bar ? bar.getBoundingClientRect().top : cr.bottom;
+    tip.innerHTML = `${x.d.toLocaleDateString('tr-TR', { day:'numeric', month:'short', weekday:'long' })}<br><b>${x.xp} XP</b> · ${x.t ? `${x.dg}/${x.t} doğru` : 'soru çözülmedi'}`;
+    tip.style.left = (cr.left - br.left + cr.width / 2) + 'px'; tip.style.top = (topY - br.top) + 'px'; tip.hidden = false;
+  };
+  $$('#chartBox .col').forEach(c => { c.addEventListener('mouseenter', () => showTip(c)); c.addEventListener('focus', () => showTip(c)); c.addEventListener('mouseleave', () => tip.hidden = true); c.addEventListener('blur', () => tip.hidden = true); });
+
+  // --- Beceriler ---
+  $('#repSkills').innerHTML = BEC_ADLARI.map(([k, n]) => { const b = P.beceri[k], ok = b.t >= 5, pct = b.t ? Math.round(b.d / b.t * 100) : 0;
+    return `<div class="skill"><div class="sk-top"><b>${n}</b>${ok ? `<span>%${pct} <small class="dim" style="font-weight:500">(${b.d}/${b.t})</small></span>` : `<span class="na">${b.t ? `${b.d}/${b.t} · ` : ''}Henüz yeterli veri yok</span>`}</div><div class="skbar ${ok ? '' : 'na'}">${ok ? `<i style="width:${pct}%"></i>` : ''}</div></div>`; }).join('') +
+    `<p class="hint">Yüzde, en az 5 soru çözülünce gösterilir. Bu oranlar uygulama içindeki performansındır; resmî dil seviyesi değildir.</p>`;
+
+  // --- Kelime durumu ---
+  $('#wordSum').textContent = `${rows.length} kelime çalışıldı`;
+  const F = [['hepsi','Hepsi', rows.length], ['ogrenildi','Öğrenildi', learned.length], ['ogreniliyor','Öğrenilmekte', learning.length], ['bilemedigi','Bilemediklerim', missed.length]];
+  $('#repFilters').innerHTML = F.map(([k, n, c]) => `<button type="button" class="filt" data-f="${k}" aria-pressed="${repFilter === k}">${n} (${c})</button>`).join('');
+  renderRepWords();
+
+  // --- Üniteler ---
+  const units = Object.entries(P.uniteDurum || {});
+  $('#repUnits').innerHTML = units.length ? units.map(([uid, ud]) => {
+    const b = ud.bolumler || {}, done = SEC_ADLARI.filter(([k]) => b[k] && b[k].tamam).length, fin = P.uniteler.some(u => (u.id || u) === uid);
+    return `<div class="unitrow"><div><b>${esc((ud.seviye ? ud.seviye + ' · ' : '') + (ud.ad || uid))}</b><small>${done}/7 bölüm${fin ? ' · <span style="color:#8fe3bb">ünite tamamlandı</span>' : ''}</small></div>
+      <div class="secdots">${SEC_ADLARI.map(([k, n]) => `<span class="${b[k] && b[k].tamam ? 'on' : ''}" title="${n}${b[k] ? ' · en iyi %' + (b[k].enIyi || 0) : ''}">${n}<b>${b[k] && b[k].tamam ? '%' + (b[k].enIyi || 0) : '—'}</b></span>`).join('')}</div>
+      <a class="btn btn-line sm" href="ders.html?u=${uid}">${fin ? 'Tekrar et' : 'Devam et'}</a></div>`;
+  }).join('') : '<div class="empty">Henüz bir üniteye başlamadın. <a href="ders.html?u=a1-rutin">A1 · Günlük rutinler</a> ile başlayabilirsin.</div>';
+}
+function renderRepWords(){
+  const q = ($('#repSearch').value || '').trim().toLocaleLowerCase('tr');
+  let list = wordRows();
+  if(repFilter === 'bilemedigi') list = list.filter(r => r.yanlis > 0 && r.durum !== 'ogrenildi');
+  else if(repFilter !== 'hepsi') list = list.filter(r => r.durum === repFilter);
+  if(q) list = list.filter(r => (r.en + ' ' + r.tr).toLocaleLowerCase('tr').includes(q));
+  const ST = { ogrenildi:['Öğrenildi','ok'], ogreniliyor:['Öğrenilmekte','info'], yeni:['Yeni',''] };
+  const inErr = en => P.hataKutuphanesi.some(h => h.en.toLowerCase() === en.toLowerCase());
+  $('#repWords').innerHTML = list.length ? list.sort((a, b) => (b.yanlis - a.yanlis) || a.en.localeCompare(b.en)).map(r => {
+    const n = Math.min(3, (r.dogru || []).length);
+    return `<div class="word rep"><span class="en">${esc(r.en)}</span><span class="tr">${esc(r.tr)}</span>
+      <span class="ex" style="font-style:normal">${esc(r.unite)} · <span class="pips" title="${n}/3 doğru">${[0,1,2].map(i => `<i class="${i < n ? 'on' : ''}"></i>`).join('')}</span> ${n}/3${r.yanlis ? ` · <span style="color:#ffb0b0">${r.yanlis} yanlış</span>` : ''}</span>
+      <span class="wa"><span class="pill ${ST[r.durum][1]}">${ST[r.durum][0]}</span>
+      ${r.yanlis > 0 && r.durum !== 'ogrenildi' ? (inErr(r.en) ? '<span class="pill bad">Hata kütüphanende</span>' : `<button type="button" class="btn btn-ghost xs" data-toerr="${esc(r.key)}">${ic('bug')} Hata kütüphaneme ekle</button>`) : ''}</span></div>`;
+  }).join('') : `<div class="empty">${rows0Msg()}</div>`;
+}
+function rows0Msg(){
+  if(!Object.keys(P.kelimeler || {}).length) return 'Henüz bir ünitede soru çözmedin. Derslerde cevapladığın her kelime burada görünür.';
+  return repFilter === 'bilemedigi' ? 'Şu an bilemediğin bir kelime yok. Harika!' : 'Bu filtreye uyan kelime yok.';
+}
+$('#repFilters').addEventListener('click', e => { const b = e.target.closest('.filt'); if(b){ repFilter = b.dataset.f; $$('#repFilters .filt').forEach(x => x.setAttribute('aria-pressed', x === b)); renderRepWords(); } });
+$('#repSearch').addEventListener('input', renderRepWords);
+$('#repWords').addEventListener('click', e => {
+  const b = e.target.closest('[data-toerr]'); if(!b) return;
+  const r = P.kelimeler[b.dataset.toerr]; if(!r) return;
+  const ud = (P.uniteDurum || {})[b.dataset.toerr.split(':')[0]] || {};
+  P.hataKutuphanesi.push({ id:'h' + rnd(8), en:r.en, tr:r.tr, not:`${ud.ad || 'Ünite'} · gelişim raporundan eklendi`, t:Date.now() });
+  if(!P.bilemedigi.includes(r.en.toLowerCase())) P.bilemedigi.push(r.en.toLowerCase());
+  log('Hata kütüphanesine eklendi: ' + r.en);
+  afterChange(); toast(`"${r.en}" hata kütüphanene eklendi`);
+});
+
 /* ================= Başlat ================= */
-const RENDER = { genel:renderGenel, ogren:renderOgren, kutuphane:renderKutuphane, basarimlar:renderBasarimlar, siralama:renderSiralama, profil:renderProfil, ayarlar:renderAyarlar };
+const RENDER = { genel:renderGenel, ogren:renderOgren, rapor:renderRapor, kutuphane:renderKutuphane, basarimlar:renderBasarimlar, siralama:renderSiralama, profil:renderProfil, ayarlar:renderAyarlar };
 if(me){
   ensureDaily();
   if(!P.basarimlar.some(b => b.id === 'hosgeldin')) P.basarimlar.push({ id:'hosgeldin', t:me.olusturma || Date.now() });
-  checkAch(true); saveP();
+  const yeni = checkAch(true); saveP();
   renderShell(); route();
+  if(yeni) setTimeout(() => toast(yeni === 1 ? 'Yeni bir başarım açtın! Başarımlar sayfasına göz at.' : `${yeni} yeni başarım açtın!`, 'gold'), 500);
 }
 </script>
 </body>

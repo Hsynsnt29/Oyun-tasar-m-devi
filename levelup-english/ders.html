@@ -190,6 +190,70 @@ svg.i{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:2;stro
 .freq span{font-size:.8rem;color:var(--muted)}
 .freq i{display:block;height:5px;border-radius:9px;background:linear-gradient(90deg,var(--gold),var(--gold2));margin:.4rem auto 0}
 
+/* Okuma ve anlama */
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:900px){.split{grid-template-columns:1fr}}
+.textpanel{position:sticky;top:80px;max-height:calc(100vh - 100px);overflow:auto}
+@media(max-width:900px){.textpanel{position:static;max-height:none}}
+.split .quiz{max-width:none;margin:0}
+.reader h3{margin:0 0 .15rem;font-size:1.3rem}
+.reader .by{color:var(--dim);font-size:.8rem;margin-bottom:.8rem}
+.reader p{font-size:1.07rem;line-height:2.05;margin:0 0 .9rem}
+.reader .tok{border-bottom-color:transparent}
+.reader .tok:hover{border-bottom-color:rgba(255,255,255,.25)}
+.snt{border-radius:6px;transition:background .3s,box-shadow .3s}
+.snt.ev{background:rgba(116,182,255,.3);box-shadow:0 0 0 3px rgba(116,182,255,.3);animation:evpulse 1.2s ease 1}
+.snt.ev .tok{color:#e3f0ff}
+@keyframes evpulse{0%{background:rgba(116,182,255,.65)}100%{background:rgba(116,182,255,.3)}}
+.ph.found .tok{color:var(--gold2);font-weight:700;border-bottom:1px solid rgba(216,178,94,.6)}
+.glossbar{position:sticky;top:0;z-index:2;padding:.6rem .8rem;border-radius:10px;background:#0b1224;border:1px solid var(--line);font-size:.9rem;color:var(--muted);margin-bottom:.9rem;min-height:2.7em;display:flex;flex-wrap:wrap;gap:.3rem .4rem;align-items:center}
+.glossbar b{color:var(--text)}
+.glossbar .u{color:var(--gold2);font-weight:700}
+.hunt{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:.8rem}
+@media(max-width:520px){.hunt{grid-template-columns:1fr}}
+.hunt div{display:flex;justify-content:space-between;align-items:center;gap:.4rem;padding:.45rem .65rem;border-radius:9px;background:rgba(255,255,255,.03);font-size:.86rem;color:var(--muted)}
+.hunt div.ok{color:var(--text);background:rgba(69,196,138,.08)}
+.hunt div.ok b{color:var(--gold2)}
+.hunt div.ok svg{color:var(--ok)}
+.trbox{margin-top:14px;padding:14px 16px;border-radius:12px;background:#0b1224;border:1px solid var(--line);font-size:.92rem;color:var(--muted)}
+.trbox b svg{color:var(--gold2);vertical-align:-2px}
+.trbox p{margin:.6rem 0 0;line-height:1.7}
+.lockline{display:flex;gap:.5rem;align-items:center;color:var(--dim);font-size:.88rem}
+details.mtxt{margin:-.3rem 0 1rem;border:1px solid var(--line);border-radius:10px;background:#0b1224}
+details.mtxt summary{cursor:pointer;padding:.55rem .8rem;color:var(--gold2);font-weight:600;font-size:.88rem}
+details.mtxt .reader{padding:0 .9rem .4rem}
+details.mtxt .reader p{font-size:.95rem;line-height:1.85}
+.qsent.trq{font-style:italic;color:var(--gold2)}
+.intro{display:grid;gap:10px;margin:4px 0}
+.intro > div{display:flex;gap:.7rem;align-items:flex-start;padding:.75rem .9rem;border-radius:12px;background:#0b1224;border:1px solid var(--line);font-size:.92rem;color:var(--muted)}
+.intro b{color:var(--text);display:block}
+.intro svg{color:var(--gold2);margin-top:.2rem}
+/* Kelime sıralama */
+.order .ans{min-height:58px;padding:10px;border-radius:12px;border:1.5px dashed var(--line2);background:#0b1224;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.order .ans:empty::before{content:'Parçalara sırayla tıkla…';color:var(--dim);font-size:.9rem}
+.order .pool{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;min-height:44px}
+.chipw{padding:.5rem .85rem;border-radius:10px;border:1.5px solid var(--line2);background:var(--card2);font-weight:650;font-size:1rem;color:var(--text);transition:transform .12s,border-color .12s}
+.chipw:hover:not([disabled]){border-color:var(--gold);transform:translateY(-1px)}
+.chipw[disabled]{cursor:default}
+.order.good .ans{border-color:var(--ok);border-style:solid}
+.order.bad .ans{border-color:var(--bad);border-style:solid}
+.oacts{display:flex;justify-content:space-between;gap:8px}
+/* Yanlış çeviride fark */
+.diff{margin-top:.4rem;font-size:.9rem;line-height:1.8;color:var(--muted)}
+.diff del{color:#ffb0b0;text-decoration:line-through;background:rgba(240,114,114,.12);border-radius:4px;padding:0 .15rem}
+.diff ins{color:#8fe3bb;text-decoration:none;background:rgba(69,196,138,.14);border-radius:4px;padding:0 .15rem;font-weight:700}
+/* Ünite testi sonucu */
+.rgrid.four{grid-template-columns:repeat(4,1fr)}
+@media(max-width:560px){.rgrid.four{grid-template-columns:1fr 1fr}}
+.rgrid .weakcell{border-color:rgba(240,179,74,.5)}
+.rgrid .weakcell b{color:var(--warn)}
+.unitdone{margin-top:16px;padding:22px;border-radius:16px;text-align:center;background:radial-gradient(400px 200px at 50% 0%,rgba(216,178,94,.18),transparent),#0b1224;border:1px solid rgba(216,178,94,.5)}
+.unitdone h3{margin:.3rem 0;color:var(--gold2);font-size:1.45rem}
+.weak{margin-top:14px;text-align:left;padding:16px;border-radius:14px;background:#0b1224;border:1px solid rgba(240,179,74,.4)}
+.weak h3{margin:0 0 .4rem;font-size:1rem;display:flex;gap:.4rem;align-items:center}
+.weak h3 svg{color:var(--warn)}
+.weak a{margin:.25rem .3rem 0 0}
+
 /* Yakında bölümleri */
 .soon{text-align:center;padding:48px 20px}
 .soon .ic{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;margin:0 auto 12px;background:rgba(216,178,94,.1);border:1px solid rgba(216,178,94,.3);color:var(--gold2)}
@@ -352,7 +416,11 @@ const UNITS = {
       'his':'onun (erkek)', 'teeth':'dişler (tekili: tooth)', 'after':'-den sonra', 'take':'almak', 'a':'bir', 'shower':'duş', 'morning':'sabah',
       'dressed':'giyinmiş (get dressed: giyinmek)', 'quickly':'hızlıca', 'they':'onlar', 'go':'gitmek', 'to':'-e, -a', 'school':'okul', 'by':'ile (taşıtla)',
       'bus':'otobüs', 'my':'benim', 'lessons':'dersler', 'start':'başlamak', 'nine':'dokuz', 'finishes':'biter (finish)', 'three':'üç', 'lunch':'öğle yemeği',
-      'twelve':'on iki', 'thirty':'otuz', 'do':'yapmak', 'homework':'ödev', 'evening':'akşam', 'brother':'erkek kardeş', 'goes':'gider (go)', 'bed':'yatak', 'ten':'on'
+      'twelve':'on iki', 'thirty':'otuz', 'do':'yapmak', 'homework':'ödev', 'evening':'akşam', 'brother':'erkek kardeş', 'goes':'gider (go)', 'bed':'yatak', 'ten':'on',
+      /* okuma metnindeki ek kelimeler */
+      'hi':'merhaba', 'name':'isim, ad', 'is':'-dir (be fiili, he/she/it ile)', 'emma':'Emma (kız ismi)', 'am':'-im (be fiili, I ile)', 'student':'öğrenci',
+      'get':'almak, olmak (get up: kalkmak)', 'then':'sonra, ardından', 'with':'ile, birlikte', 'family':'aile', 'brush':'fırçalamak', 'finish':'bitmek, bitirmek',
+      'friends':'arkadaşlar', 'and':'ve', 'sometimes':'bazen', 'watch':'izlemek', 'tv':'televizyon', 'usually':'genellikle'
     },
     /* 3. bölüm: Dil bilgisi mini alıştırması */
     dilbilgisi:[
@@ -366,8 +434,45 @@ const UNITS = {
       { tip:'yaz', soru:'He ___ TV in the evening. (watch)', dogru:['watches'], tr:'Akşam televizyon izler.', aciklama:'watch -ch ile bittiği için -es alır: watches.' },
       { tip:'yaz', soru:'She ___ her homework after school. (do)', dogru:['does'], tr:'Ödevini okuldan sonra yapar.', aciklama:'do fiili he / she / it ile does olur.' },
       { tip:'yaz', soru:'My brother ___ get up early. (olumsuz)', dogru:["doesn't","does not"], tr:'Erkek kardeşim erken kalkmaz.', aciklama:"He / She / It ile olumsuz: doesn't + yalın fiil (gets değil, get)." }
+    ],
+    /* 4. bölüm: Okuma metni
+       [ifade|kelimeId] işaretli kısımlar ünitenin ifadeleridir (kelime avında bulunur). */
+    okuma:{
+      baslik:"Emma's Day",
+      avHedef:8,
+      paragraflar:[
+        "Hi! My name is Emma. I am a student. I [wake up|wake-up] at seven o'clock every day. I [get up|get-up], [take a shower|shower] and [get dressed|dressed]. Then I [have breakfast|breakfast] with my family. After breakfast, I [brush my teeth|brush-teeth].",
+        "I [go to school|go-school] by bus. My lessons [start|start] at nine and [finish|finish] at three. I [have lunch|lunch] with my friends at school.",
+        "In the evening, I [do my homework|homework]. I sometimes watch TV. I usually [go to bed|go-bed] at ten o'clock."
+      ],
+      ceviri:[
+        "Merhaba! Benim adım Emma. Öğrenciyim. Her gün saat yedide uyanırım. Kalkarım, duş alırım ve giyinirim. Sonra ailemle kahvaltı yaparım. Kahvaltıdan sonra dişlerimi fırçalarım.",
+        "Okula otobüsle giderim. Derslerim dokuzda başlar ve üçte biter. Okulda arkadaşlarımla öğle yemeği yerim.",
+        "Akşam ödevimi yaparım. Bazen televizyon izlerim. Genellikle saat onda yatarım."
+      ]
+    },
+    /* 5. bölüm: Anlama soruları (kanit: cevabın geçtiği cümle) */
+    anlama:[
+      { soru:'What time does Emma wake up?', tr:'Emma saat kaçta uyanır?', dogru:'At seven', yanlis:['At six','At eight'], kanit:"I wake up at seven o'clock every day." },
+      { soru:'Who does Emma have breakfast with?', tr:'Emma kiminle kahvaltı yapar?', dogru:'Her family', yanlis:['Her friends','Her teacher'], kanit:'Then I have breakfast with my family.' },
+      { soru:'How does Emma go to school?', tr:'Emma okula nasıl gider?', dogru:'By bus', yanlis:['By car','On foot'], kanit:'I go to school by bus.' },
+      { soru:'When do her lessons finish?', tr:'Dersleri ne zaman biter?', dogru:'At three', yanlis:['At nine','At twelve'], kanit:'My lessons start at nine and finish at three.' },
+      { soru:'Emma has lunch at home.', tr:'Emma öğle yemeğini evde yer.', dy:true, dogru:'False', kanit:'I have lunch with my friends at school.' },
+      { soru:'What does Emma do in the evening?', tr:'Emma akşam ne yapar?', dogru:'She does her homework.', yanlis:['She plays football.','She takes a shower.'], kanit:'In the evening, I do my homework.' },
+      { soru:'Emma always goes to bed at ten o\'clock.', tr:'Emma her zaman saat onda yatar.', dy:true, dogru:'False', kanit:"I usually go to bed at ten o'clock.", aciklama:'Metinde "always" değil "usually" (genellikle) yazıyor.' }
+    ],
+    /* 6. bölüm: Çeviri (Türkçeden İngilizceye) ve kelime sıralama
+       dogru: kabul edilen bütün cevaplar (alternatifler) */
+    ceviri:[
+      { tip:'yaz', tr:'Saat yedide uyanırım.', w:'wake-up', dogru:["I wake up at seven o'clock.", 'I wake up at seven.', 'I wake up at 7.', "I wake up at 7 o'clock."] },
+      { tip:'yaz', tr:'Sabahları duş alırım.', w:'shower', dogru:['I take a shower in the morning.', 'In the morning, I take a shower.', 'I have a shower in the morning.', 'In the morning, I have a shower.'] },
+      { tip:'yaz', tr:'O, kahvaltıdan sonra dişlerini fırçalar.', w:'brush-teeth', dogru:['He brushes his teeth after breakfast.', 'She brushes her teeth after breakfast.', 'After breakfast, he brushes his teeth.', 'After breakfast, she brushes her teeth.'], not:'Türkçedeki "o" kadın da erkek de olabilir; he ya da she kabul edilir.' },
+      { tip:'yaz', tr:'Okula otobüsle gideriz.', w:'go-school', dogru:['We go to school by bus.'] },
+      { tip:'yaz', tr:'Akşam ödevimi yaparım.', w:'homework', dogru:['I do my homework in the evening.', 'In the evening, I do my homework.'] },
+      { tip:'sirala', tr:'Genellikle saat onda yatarım.', w:'go-bed', parcalar:['I', 'usually', 'go to bed', 'at ten'], dogru:['I usually go to bed at ten.'] },
+      { tip:'sirala', tr:'O, mutfakta kahvaltı yapar.', w:'breakfast', parcalar:['She', 'has', 'breakfast', 'in the kitchen'], dogru:['She has breakfast in the kitchen.'] },
+      { tip:'sirala', tr:'Derslerim dokuzda başlar.', w:'start', parcalar:['My', 'lessons', 'start', 'at nine'], dogru:['My lessons start at nine.'] }
     ]
-    /* okuma, anlama, çeviri ve test içerikleri sonraki adımlarda eklenecek */
   }
 };
 const SECTIONS = [
@@ -377,7 +482,7 @@ const SECTIONS = [
   { id:'okuma',      ad:'Okuma',       ikon:'read' },
   { id:'anlama',     ad:'Anlama',      ikon:'target' },
   { id:'ceviri',     ad:'Çeviri',      ikon:'translate' },
-  { id:'test',       ad:'Ünite testi', ikon:'trophy' }
+  { id:'test',       ad:'Ünite testi', ikon:'trophy', hepsiGerekli:true }
 ];
 const PASS = 0.7;                 // Bölümü geçmek için en az %70
 const LEARN_COUNT = 3;            // Kelime 3 doğru cevapla öğrenilir…
@@ -397,8 +502,16 @@ P = Object.assign({ rank:0, tier:3, xp:0, toplamXp:0, seri:0, sonCalisma:null, o
 P.kelimeler = P.kelimeler || {};     // kelime bazında doğru/yanlış kaydı
 P.uniteDurum = P.uniteDurum || {};   // ünite ve bölüm durumu
 const UD = P.uniteDurum[UID] = P.uniteDurum[UID] || { basla:Date.now(), bolumler:{}, goruldu:[] };
+if(U){ UD.ad = U.ad; UD.seviye = U.seviye; } // gelişim raporunda ünite adını göstermek için
 function saveP(){ localStorage.setItem(PKEY, JSON.stringify(P)); }
 function log(m){ P.hareketler.unshift({ t:Date.now(), m }); P.hareketler = P.hareketler.slice(0, 40); }
+/* Günlük istatistik (gelişim raporundaki grafik için): { 'YYYY-AA-GG': { xp, d, t } } */
+function dayStat(){
+  P.gunlukIst = P.gunlukIst || {};
+  const t = today(), o = P.gunlukIst[t] = P.gunlukIst[t] || { xp:0, d:0, t:0 };
+  const keys = Object.keys(P.gunlukIst).sort(); while(keys.length > 60) delete P.gunlukIst[keys.shift()];
+  return o;
+}
 function markStudy(){
   const t = today(); if(P.sonCalisma === t) return;
   P.seri = P.sonCalisma && daysBetween(P.sonCalisma, t) === 1 ? P.seri + 1 : 1; P.sonCalisma = t;
@@ -406,7 +519,7 @@ function markStudy(){
 function addXp(n, why){
   if(n <= 0) return;
   const before = rankName(P), need = XP_TIER[P.rank];
-  P.toplamXp += n; P.xp += n;
+  P.toplamXp += n; P.xp += n; dayStat().xp += n;
   let up = false;
   while(P.tier > 1 && P.xp >= need){ P.xp -= need; P.tier--; up = true; }
   if(P.tier === 1 && P.xp > need) P.xp = need;
@@ -448,6 +561,7 @@ function pips(w){ const n = learnedCount(w); return `<span class="pips" title="�
 /* Döner: { sayildi, ogrenildi, neden } */
 function recordAnswer(w, ok, bolum, beceri){
   P.beceri[beceri].t++; if(ok) P.beceri[beceri].d++;
+  const ds = dayStat(); ds.t++; if(ok) ds.d++;
   const r = wordRec(w);
   if(!ok){ r.yanlis++; r.sonYanlis = Date.now(); return { sayildi:false }; }
   if(r.dogru.length >= LEARN_COUNT) return { sayildi:false, neden:'zaten' };
@@ -469,9 +583,21 @@ function recordAnswer(w, ok, bolum, beceri){
 const secDone = id => !!(UD.bolumler[id] && UD.bolumler[id].tamam);
 function secOpen(i){
   const s = SECTIONS[i];
-  return i === 0 || s.herZamanAcik || secDone(s.id) || SECTIONS.slice(0, i).filter(x => !x.herZamanAcik).every(x => secDone(x.id));
+  if(i === 0 || s.herZamanAcik || secDone(s.id)) return true;
+  // Ünite testi için dil bilgisi dahil bütün bölümler; diğerleri için "her zaman açık" olmayan önceki bölümler
+  const need = s.hepsiGerekli ? SECTIONS.slice(0, i) : SECTIONS.slice(0, i).filter(x => !x.herZamanAcik);
+  return need.every(x => secDone(x.id));
 }
-function firstOpenUndone(){ const i = SECTIONS.findIndex((s, i) => secOpen(i) && !secDone(s.id) && !s.herZamanAcik); return i < 0 ? 0 : i; }
+function firstOpenUndone(){
+  let i = SECTIONS.findIndex((s, i) => secOpen(i) && !secDone(s.id) && !s.herZamanAcik);
+  if(i < 0) i = SECTIONS.findIndex((s, i) => secOpen(i) && !secDone(s.id));
+  return i < 0 ? 0 : i;
+}
+function nextSection(idx){
+  let i = SECTIONS.findIndex((s, i) => i > idx && secOpen(i) && !secDone(s.id));
+  if(i < 0) i = SECTIONS.findIndex((s, i) => secOpen(i) && !secDone(s.id));
+  return i;
+}
 
 /* ================= Çerçeve ================= */
 function renderFrame(cur){
@@ -654,66 +780,125 @@ function finishQuiz(){
 function soon(s){
   $('#view').innerHTML = `<div class="soon"><div class="ic">${ic(s.ikon)}</div><h2>${s.ad}</h2><p>Bu bölüm bir sonraki geliştirme adımında eklenecek. Şimdilik <a href="#kelime">Kelimeler</a> bölümünü çalışabilirsin.</p></div>`;
 }
-/* ================= Ortak alıştırma motoru (cümleler, dil bilgisi…) =================
-   Soru: { tip:'secim'|'yaz', ust, soru(HTML), ipucu(HTML), secenekler, dogru:[…], w (kelime, varsa), aciklama, tr } */
+/* ================= Ortak alıştırma motoru =================
+   Soru tipleri: 'secim' (şıklı), 'yaz' (yazmalı), 'sirala' (kelime sıralama).
+   Soru alanları: ust, soru (HTML), ipucu / gizliIpucu (HTML), secenekler, karisik (sıralama parçaları), dogru:[kabul edilen cevaplar],
+   w (ünite kelimesi), beceri, aciklama, tr, tam (tam cümle), kanit (okuma metninde cevabın geçtiği cümle), metinGoster, diff */
 let run = null;
-const norm = s => String(s).toLowerCase().replace(/[’`´']/g, '').replace(/[.!?,;:]/g, '').replace(/\s+/g, ' ').trim();
+const norm = s => String(s).toLowerCase().replace(/[’`´']/g, '').replace(/[.!?,;:"“”]/g, '').replace(/\s+/g, ' ').trim();
+const toks = s => norm(s).split(' ').filter(Boolean);
+/* İki kelime dizisinin en uzun ortak alt dizisi: hangi kelimeler eşleşti? */
+function lcsMatch(a, b){
+  const m = a.length, n = b.length, dp = Array.from({ length:m + 1 }, () => new Array(n + 1).fill(0));
+  for(let i = m - 1; i >= 0; i--) for(let j = n - 1; j >= 0; j--) dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+  const ma = new Array(m).fill(false), mb = new Array(n).fill(false);
+  let i = 0, j = 0;
+  while(i < m && j < n){ if(a[i] === b[j]){ ma[i] = mb[j] = true; i++; j++; } else if(dp[i + 1][j] >= dp[i][j + 1]) i++; else j++; }
+  return { len:dp[0][0], ma, mb };
+}
+/* Yanlış cevapta: kullanıcının fazla/yanlış kelimelerini ve eksik kelimeleri göster */
+function diffHtml(given, answers){
+  const g = toks(given); let best = null;
+  answers.forEach(a => { const w = toks(a), r = lcsMatch(g, w), score = r.len * 2 - g.length - w.length; if(!best || score > best.score) best = { a, w, r, score }; });
+  return {
+    ua: g.length ? g.map((t, i) => best.r.ma[i] ? esc(t) : `<del>${esc(t)}</del>`).join(' ') : '<i>(boş)</i>',
+    ca: best.w.map((t, i) => best.r.mb[i] ? esc(t) : `<ins>${esc(t)}</ins>`).join(' '),
+    a: best.a
+  };
+}
 function startRun(cfg){
-  const prevDone = secDone(cfg.bolum);
-  run = Object.assign({ i:0, sonuc:[], xp:0, sayilan:0, ogrenilen:[], prevDone }, cfg);
+  run = Object.assign({ i:0, sonuc:[], xp:0, sayilan:0, ogrenilen:[], prevDone:secDone(cfg.bolum) }, cfg);
   renderRun();
 }
 function renderRun(){
   const q = run.sorular[run.i], n = run.sorular.length;
-  $('#view').innerHTML = `
+  let input;
+  if(q.tip === 'secim') input = `<div class="opts ${q.secenekler.some(o => o.length > 22) ? 'three' : ''}" id="ropts">${q.secenekler.map((o, k) => `<button type="button" class="opt" data-v="${esc(o)}"><span class="k">${k + 1}</span>${esc(o)}</button>`).join('')}</div>`;
+  else if(q.tip === 'yaz') input = `<form class="typed" id="rtyped" autocomplete="off"><input id="rin" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Cevabını yaz…" aria-label="Cevabın"><button class="btn btn-gold" type="submit">Kontrol et</button></form>`;
+  else input = `<div class="order" id="order"><div class="ans" id="oans" aria-label="Cevabın"></div>
+      <div class="pool" id="opool">${q.karisik.map(p => `<button type="button" class="chipw">${esc(p)}</button>`).join('')}</div>
+      <div class="oacts"><button type="button" class="btn btn-ghost sm" id="oclear">${ic('refresh')} Temizle</button><button type="button" class="btn btn-gold" id="ocheck">Kontrol et</button></div></div>`;
+  const tipNote = { secim:`İpucu: Klavyeden 1–${q.secenekler ? q.secenekler.length : 3} ile seçip Enter ile ilerleyebilirsin.`, yaz:'Büyük/küçük harf, nokta ve kesme işareti önemli değil.', sirala:'Parçalara sırayla tıkla. Yanlış yere koyduğun parçaya tekrar tıklarsan geri döner.' }[q.tip];
+  const quiz = `
     <div class="quiz">
       <div class="qtop"><span>${esc(run.baslik)}</span><span>Soru <b>${run.i + 1}</b> / ${n}</span></div>
       <div class="bar"><i style="width:${run.i / n * 100}%"></i></div>
       <div class="card qcard">
         <p class="qask">${q.ust}</p>
-        <div class="qsent">${q.soru}</div>
+        <div class="qsent ${q.trSoru ? 'trq' : ''}">${q.soru}</div>
         ${q.ipucu ? `<div class="qhint">${q.ipucu}</div>` : ''}
-        ${q.tip === 'secim'
-          ? `<div class="opts ${q.secenekler.some(o => o.length > 22) ? 'three' : ''}" id="ropts">${q.secenekler.map((o, k) => `<button type="button" class="opt" data-v="${esc(o)}"><span class="k">${k + 1}</span>${esc(o)}</button>`).join('')}</div>`
-          : `<form class="typed" id="rtyped" autocomplete="off"><input id="rin" spellcheck="false" autocapitalize="off" placeholder="Cevabını yaz…" aria-label="Cevabın"><button class="btn btn-gold" type="submit">Kontrol et</button></form>`}
+        ${q.gizliIpucu ? `<div class="qhint"><button type="button" class="linkbtn" id="hintBtn">${ic('info')} İpucu göster</button><span id="hintTxt" hidden>${q.gizliIpucu}</span></div>` : ''}
+        ${q.metinGoster ? `<details class="mtxt"><summary>Okuma metnini göster</summary>${readerHtml({ phrases:'none' })}</details>` : ''}
+        ${input}
         <div id="rfb"></div>
         <div class="qnav"><button class="btn btn-gold" type="button" id="rnext" hidden>${run.i + 1 < n ? 'Sonraki soru' : 'Sonucu gör'} ${ic('arrow')}</button></div>
       </div>
-      <p class="muted" style="text-align:center;font-size:.82rem;margin-top:10px">${q.tip === 'secim' ? 'İpucu: Klavyeden 1–' + q.secenekler.length + ' ile seçip Enter ile ilerleyebilirsin.' : 'Büyük/küçük harf ve nokta önemli değil.'}</p>
+      <p class="muted" style="text-align:center;font-size:.82rem;margin-top:10px">${tipNote}</p>
     </div>`;
+  $('#view').innerHTML = run.yan ? `<div class="split"><aside class="card pad textpanel" id="tpanel">${run.yan()}</aside>${quiz}</div>` : quiz;
+  if(run.yan) bindReader($('#tpanel'));
+  if(q.metinGoster) bindReader($('details.mtxt'));
+  if(q.gizliIpucu) $('#hintBtn').addEventListener('click', () => { $('#hintTxt').hidden = false; $('#hintBtn').hidden = true; });
   if(q.tip === 'secim') $('#ropts').addEventListener('click', e => { const b = e.target.closest('.opt'); if(b && !b.disabled) runAnswer(b.dataset.v); });
-  else {
+  else if(q.tip === 'yaz'){
     $('#rtyped').addEventListener('submit', e => {
       e.preventDefault();
-      const v = $('#rin').value;
-      if(!v.trim()){ $('#rin').classList.add('bad'); setTimeout(() => $('#rin').classList.remove('bad'), 600); return; }
-      runAnswer(v);
+      if(!$('#rin').value.trim()){ shake($('#rin')); return; }
+      runAnswer($('#rin').value);
     });
     setTimeout(() => $('#rin').focus(), 30);
+  } else {
+    const ans = $('#oans'), pool = $('#opool');
+    $('#order').addEventListener('click', e => {
+      const c = e.target.closest('.chipw'); if(!c || c.disabled) return;
+      (c.parentElement === pool ? ans : pool).appendChild(c);
+    });
+    $('#oclear').addEventListener('click', () => [...ans.children].forEach(c => pool.appendChild(c)));
+    $('#ocheck').addEventListener('click', () => {
+      if(pool.children.length){ toast('Bütün parçaları kullanmalısın.', 'bad'); shake($('#order')); return; }
+      runAnswer([...ans.children].map(c => c.textContent).join(' '));
+    });
   }
   $('#rnext').addEventListener('click', () => { run.i++; run.i < run.sorular.length ? renderRun() : finishRun(); });
 }
 function runAnswer(given){
-  const q = run.sorular[run.i], ok = q.dogru.some(d => norm(d) === norm(given));
+  const q = run.sorular[run.i], ok = q.dogru.some(d => norm(d) === norm(given)), bec = q.beceri || run.beceri;
   if(q.tip === 'secim') $$('#ropts .opt').forEach(b => { b.disabled = true; if(q.dogru.includes(b.dataset.v)) b.classList.add('good'); else if(b.dataset.v === given) b.classList.add('bad'); });
-  else { $('#rin').disabled = true; $('#rin').classList.add(ok ? 'good' : 'bad'); $('#rtyped button').disabled = true; }
+  else if(q.tip === 'yaz'){ $('#rin').disabled = true; $('#rin').classList.add(ok ? 'good' : 'bad'); $('#rtyped button').disabled = true; }
+  else { $$('#order .chipw').forEach(c => c.disabled = true); $('#order').classList.add(ok ? 'good' : 'bad'); $('#oclear').disabled = $('#ocheck').disabled = true; }
   let extra = '';
   if(q.w){
-    const r = recordAnswer(q.w, ok, run.bolum, run.beceri);
+    const r = recordAnswer(q.w, ok, run.bolum, bec);
     if(ok && r.sayildi){ run.xp += 5; run.sayilan++; extra = `"${q.w.en}" öğrenme: ${learnedCount(q.w)}/${LEARN_COUNT} · +5 XP`; if(r.ogrenildi){ run.ogrenilen.push(q.w); extra += ' · Kelime öğrenildi!'; } }
-    else if(ok && r.neden === 'bolum') extra = 'Bu kelime bu bölümde zaten sayıldı.';
-    else if(ok && r.neden === 'sure') extra = `Bu kelimenin son sayılan doğrusundan beri 10 dakika geçmedi (${r.kalan} dk kaldı); öğrenmeye sayılmadı.`;
-    else if(ok && r.neden === 'zaten') extra = 'Bu kelimeyi zaten öğrendin.';
+    else if(ok && r.neden === 'bolum') extra = `"${q.w.en}" bu bölümde zaten sayıldı.`;
+    else if(ok && r.neden === 'sure') extra = `"${q.w.en}" için son sayılan doğrudan beri 10 dakika geçmedi (${r.kalan} dk kaldı); öğrenmeye sayılmadı.`;
+    else if(ok && r.neden === 'zaten') extra = `"${q.w.en}" kelimesini zaten öğrendin.`;
   } else {
-    P.beceri[run.beceri].t++; if(ok) P.beceri[run.beceri].d++;
+    P.beceri[bec].t++; if(ok) P.beceri[bec].d++;
+    const ds = dayStat(); ds.t++; if(ok) ds.d++;
     if(ok && !run.prevDone){ run.xp += 3; extra = '+3 XP'; }
   }
-  run.sonuc.push({ q, ok, given });
+  run.sonuc.push({ q, ok, given, bec });
+  // Okuma sorularında cevabın geçtiği cümleyi metinde işaretle
+  if(q.kanit){
+    const box = $('#tpanel') || $('details.mtxt');
+    if(box){
+      if(box.tagName === 'DETAILS') box.open = true;
+      const s = [...box.querySelectorAll('.snt')].find(x => norm(x.textContent).includes(norm(q.kanit)));
+      if(s){ s.classList.add('ev'); s.scrollIntoView({ block:'nearest', behavior:'smooth' }); }
+    }
+  }
+  let detail = '';
+  if(!ok && q.diff){ const d = diffHtml(given, q.dogru); detail = `<div class="diff">Senin cevabın: ${d.ua}<br>Doğru cevap: ${d.ca}</div>`; }
+  else if(!ok && q.tip === 'yaz') detail = `<small>Senin cevabın: ${esc(given)}</small>`;
+  const others = ok && q.dogru.length > 1 ? q.dogru.filter(d => norm(d) !== norm(given)).slice(0, 2) : [];
   $('#rfb').innerHTML = `<div class="fb ${ok ? 'good' : 'bad'}"><span class="fi">${ic(ok ? 'check' : 'x')}</span><div>
     <b>${ok ? 'Doğru!' : `Yanlış. Doğru cevap: ${esc(q.dogru[0])}`}</b>
-    ${!ok && q.tip === 'yaz' ? `<small>Senin cevabın: ${esc(given)}</small>` : ''}
+    ${detail}
+    ${others.length ? `<small>Bunlar da doğru kabul edilir: ${others.map(esc).join(' · ')}</small>` : ''}
+    ${q.kanit ? `<small>Metinde: <i>“${esc(q.kanit)}”</i></small>` : ''}
     ${q.aciklama ? `<small>${esc(q.aciklama)}</small>` : ''}
-    ${q.tr ? `<small><i>${esc(q.tam || '')}</i>${q.tam ? ' — ' : ''}${esc(q.tr)}</small>` : ''}
+    ${q.tr && !q.trSoru ? `<small>${q.tam ? `<i>${esc(q.tam)}</i> — ` : ''}${esc(q.tr)}</small>` : ''}
     ${extra ? `<div class="cnt">${esc(extra)}</div>` : ''}</div></div>`;
   if(!ok) $('#rfb .fb').classList.add('shake');
   markStudy(); saveP();
@@ -724,18 +909,18 @@ document.addEventListener('keydown', e => {
   if(/^[1-9]$/.test(e.key)){ const b = $$('#ropts .opt')[+e.key - 1]; if(b && !b.disabled) b.click(); }
 });
 function finishRun(){
-  const R = run, n = R.sorular.length, d = R.sonuc.filter(s => s.ok).length, pct = d / n, passed = pct >= PASS;
+  const R = run, n = R.sonuc.length, d = R.sonuc.filter(s => s.ok).length, pct = d / n, passed = pct >= PASS;
   const prev = UD.bolumler[R.bolum] || { tamam:false, enIyi:0, deneme:0 };
   const firstPass = passed && !prev.tamam;
   UD.bolumler[R.bolum] = { tamam: prev.tamam || passed, enIyi: Math.max(prev.enIyi || 0, Math.round(pct * 100)), deneme:(prev.deneme || 0) + 1, t:Date.now() };
   taskProgress('test');
-  const bonus = firstPass ? 20 : 0;
+  const extra = R.sonrasi ? R.sonrasi({ passed, firstPass, pct, sonuc:R.sonuc }) || {} : {};
+  const bonus = (firstPass ? 20 : 0) + (extra.bonus || 0);
   if(firstPass) log(`${U.ad} · ${R.ad} bölümü tamamlandı`);
-  log(`${U.ad} · ${R.ad} alıştırması: ${d}/${n}`);
-  addXp(R.xp + bonus, `${U.ad} · ${R.ad.toLocaleLowerCase('tr')} alıştırması`);
+  log(`${U.ad} · ${R.ad}: ${d}/${n}`);
+  addXp(R.xp + bonus, `${U.ad} · ${R.ad.toLocaleLowerCase('tr')}`);
   saveP();
-  const idx = SECTIONS.findIndex(s => s.id === R.bolum);
-  const nextI = SECTIONS.findIndex((s, i) => i > idx && secOpen(i) && !secDone(s.id));
+  const idx = SECTIONS.findIndex(s => s.id === R.bolum), nextI = nextSection(idx);
   const wrongW = R.sonuc.filter(s => !s.ok && s.q.w).map(s => s.q.w).filter((w, i, a) => a.indexOf(w) === i);
   const wrongQ = R.sonuc.filter(s => !s.ok && !s.q.w);
   const inErr = w => P.hataKutuphanesi.some(h => h.en.toLowerCase() === w.en.toLowerCase());
@@ -748,9 +933,10 @@ function finishRun(){
       <div class="score">${d}<small> / ${n}</small></div>
       <div class="rgrid">
         <div><b>%${Math.round(pct * 100)}</b><span>Başarı</span></div>
-        <div><b>+${R.xp + bonus}</b><span>XP${bonus ? ' (20 bölüm bonusu dahil)' : ''}</span></div>
+        <div><b>+${R.xp + bonus}</b><span>XP${bonus ? ` (${bonus} bonus dahil)` : ''}</span></div>
         <div><b>${R.kelimeli ? R.sayilan : d}</b><span>${R.kelimeli ? 'Öğrenmeye sayılan cevap' : 'Doğru cevap'}</span></div>
       </div>
+      ${extra.html || ''}
       ${R.ogrenilen.length ? `<p class="pill ok" style="font-size:.85rem">Öğrenilen: ${R.ogrenilen.map(w => esc(w.en)).join(', ')}</p>` : ''}
       ${wrongW.length ? `
         <div class="wrong" id="wrongBox">
@@ -765,8 +951,7 @@ function finishRun(){
       ${wrongQ.length ? `
         <div class="wrong" style="border-color:rgba(240,179,74,.4)">
           <h3>Tekrar gözden geçir (${wrongQ.length})</h3>
-          <p>Yanlış yaptığın kurallar:</p>
-          <div class="wl">${wrongQ.map(s => `<label style="cursor:default;flex-wrap:wrap"><b>${esc(s.q.dogru[0])}</b><span class="in" style="margin-left:auto">${esc(s.q.aciklama || '')}</span></label>`).join('')}</div>
+          <div class="wl">${wrongQ.map(s => `<label style="cursor:default;flex-wrap:wrap;gap:.3rem .7rem"><span>${s.q.soru}</span><b style="margin-left:auto;color:var(--ok)">${esc(s.q.dogru[0])}</b>${s.q.aciklama ? `<span class="in" style="width:100%">${esc(s.q.aciklama)}</span>` : ''}</label>`).join('')}</div>
         </div>` : ''}
       ${!wrongW.length && !wrongQ.length ? '<p class="pill ok" style="font-size:.85rem;margin-top:8px">Hiç yanlışın yok, harika!</p>' : ''}
       <div class="racts">
@@ -775,8 +960,9 @@ function finishRun(){
         ${nextI > -1 ? `<a class="btn btn-gold" href="#${SECTIONS[nextI].id}">Sonraki bölüm: ${SECTIONS[nextI].ad} ${ic('arrow')}</a>` : ''}
       </div>
     </div>`;
-  $('#again').addEventListener('click', () => startRun(Object.assign({}, R, { sorular:R.yeniden() })));
+  $('#again').addEventListener('click', () => startRun(Object.assign({}, R, { sorular:R.yeniden(), i:0, sonuc:[], xp:0, sayilan:0, ogrenilen:[], prevDone:secDone(R.bolum) })));
   $('#toStart').addEventListener('click', () => VIEWS[R.bolum](SECTIONS[idx]));
+  if(extra.after) extra.after();
   if(wrongW.length){
     const box = $('#wrongBox');
     $('#addErr').addEventListener('click', () => {
@@ -792,6 +978,218 @@ function finishRun(){
     });
     $('#noErr').addEventListener('click', () => { box.innerHTML = '<p style="margin:0">Tamam, hiçbir kelime eklenmedi. Yanlışların yine de kelime kaydında duruyor.</p>'; });
   }
+  window.scrollTo(0, 0);
+}
+
+/* ================= Okuma metni (4. ve 5. bölümde ortak) ================= */
+const plainOf = s => s.replace(/\[([^|\]]+)\|[^\]]+\]/g, '$1');
+function toksHtml(txt){
+  return txt.split(/(\s+)/).map(t => {
+    if(!t.trim()) return t;
+    const m = t.match(/^([^A-Za-z0-9']*)(.*?)([^A-Za-z0-9']*)$/);
+    return m[2] ? `${esc(m[1])}<button type="button" class="tok" data-k="${esc(m[2].toLowerCase())}">${esc(m[2])}</button>${esc(m[3])}` : esc(t);
+  }).join('');
+}
+/* phrases: 'found' (yalnızca bulunanlar altın renkli), 'all' (hepsi), 'none' */
+function readerHtml(o = {}){
+  const R = U.okuma, av = UD.av || [];
+  let si = 0;
+  const paras = R.paragraflar.map(p => '<p>' + p.split(/(?<=[.!?])\s+/).map(s => `<span class="snt" data-i="${si++}">${
+    s.split(/(\[[^\]]+\])/).map(part => {
+      const m = part.match(/^\[([^|\]]+)\|([^\]]+)\]$/);
+      if(!m) return toksHtml(part);
+      const on = o.phrases === 'all' || (o.phrases === 'found' && av.includes(m[2]));
+      return `<span class="ph${on ? ' found' : ''}" data-w="${m[2]}">${toksHtml(m[1])}</span>`;
+    }).join('')}</span>`).join(' ') + '</p>').join('');
+  const words = R.paragraflar.map(plainOf).join(' ').split(/\s+/).length;
+  return `<div class="reader"><div class="glossbar" aria-live="polite">Bir kelimeye tıkla, anlamı burada görünsün.</div>
+    <h3>${esc(R.baslik)}</h3><div class="by">${U.seviye} · ${esc(U.ad)} · ${words} kelime</div>${paras}</div>`;
+}
+function bindReader(root, o = {}){
+  if(!root) return;
+  root.addEventListener('click', e => {
+    const t = e.target.closest('.tok'); if(!t || !root.contains(t)) return;
+    root.querySelectorAll('.tok.on').forEach(x => x.classList.remove('on')); t.classList.add('on');
+    const ph = t.closest('.ph'), bar = root.querySelector('.glossbar');
+    let html;
+    if(ph){
+      const w = U.kelimeler.find(x => x.id === ph.dataset.w);
+      html = `<span class="u">${esc(ph.textContent)}</span> → ${esc(w.tr)} <span class="pill gold">ünite ifadesi</span>`;
+      if(o.onPhrase) o.onPhrase(ph.dataset.w);
+    } else html = `<b>${esc(t.textContent)}</b> → ${esc(U.sozluk[t.dataset.k] || 'Bu kelime sözlükte yok')}`;
+    if(bar) bar.innerHTML = html;
+  });
+}
+function translationBox(){
+  return `<div class="trbox"><div style="display:flex;justify-content:space-between;align-items:center;gap:.5rem"><b style="color:var(--text)">${ic('translate')} Türkçe çeviri</b>
+    <button type="button" class="linkbtn" id="trToggle">Göster</button></div>
+    <div id="trText" hidden>${U.okuma.ceviri.map(p => `<p>${esc(p)}</p>`).join('')}</div></div>`;
+}
+function bindTranslation(){ const b = $('#trToggle'); if(b) b.addEventListener('click', () => { const t = $('#trText'); t.hidden = !t.hidden; b.textContent = t.hidden ? 'Göster' : 'Gizle'; }); }
+
+/* ================= 4. bölüm: Okuma ================= */
+function viewOkuma(){
+  UD.av = UD.av || [];
+  const R = U.okuma, total = U.kelimeler.length, done = secDone('okuma');
+  $('#view').innerHTML = `
+    <div class="sec-head"><div><h2>${ic('read')} Okuma: ${esc(R.baslik)}</h2><p>Metni oku. Bilmediğin bir kelimeye tıkla, anlamı metnin üstünde görünsün.</p></div>
+      <span class="pill ${done ? 'ok' : ''}">${done ? 'Tamamlandı' : 'Okuma metni'}</span></div>
+    <div class="split">
+      <div class="card pad" id="readBox">${readerHtml({ phrases:'found' })}</div>
+      <div>
+        <div class="card pad">
+          <div class="sec-head" style="margin-bottom:8px"><div><h2 style="font-size:1.02rem">${ic('target')} Kelime avı</h2>
+            <p>Türkçeleri aşağıda olan ifadeleri metinde bul ve üzerine tıkla. En az <b>${R.avHedef}</b> tanesini bulunca okuma tamamlanır.</p></div>
+            <span class="pill gold" id="huntCount"></span></div>
+          <div class="bar"><i id="huntBar"></i></div>
+          <div class="hunt" id="huntList"></div>
+        </div>
+        ${secDone('anlama') ? translationBox() : `<div class="trbox"><div class="lockline">${ic('lock')} Türkçe çeviri, <b style="color:var(--muted)">Anlama</b> sorularını geçince açılır.</div></div>`}
+        <div class="toolbar"><span class="muted" id="huntHint"></span><button class="btn btn-gold" id="finishRead" type="button"></button></div>
+      </div>
+    </div>`;
+  function paint(){
+    const n = UD.av.length, ready = done || n >= R.avHedef;
+    $('#huntCount').textContent = `${n} / ${total}`;
+    $('#huntBar').style.width = n / total * 100 + '%';
+    $('#huntList').innerHTML = U.kelimeler.map(w => { const f = UD.av.includes(w.id); return `<div class="${f ? 'ok' : ''}"><span>${esc(w.tr)}</span><span>${f ? `<b>${esc(w.en)}</b> ${ic('check')}` : '?'}</span></div>`; }).join('');
+    $('#huntHint').textContent = done ? 'Okumayı tamamladın; istersen avı bitirebilirsin.' : ready ? 'Harika! Okumayı tamamlayabilirsin.' : `${R.avHedef - n} ifade daha bul.`;
+    const b = $('#finishRead'); b.disabled = !ready;
+    b.innerHTML = done ? `Anlama sorularına geç ${ic('arrow')}` : `Okumayı tamamla ${ic('check')}`;
+  }
+  paint();
+  bindReader($('#readBox'), { onPhrase:id => {
+    if(UD.av.includes(id)) return;
+    UD.av.push(id); markStudy(); saveP();
+    $$(`#readBox .ph[data-w="${id}"]`).forEach(x => x.classList.add('found'));
+    paint();
+    if(UD.av.length === total) toast('Bütün ifadeleri buldun!', 'gold');
+  } });
+  bindTranslation();
+  $('#finishRead').addEventListener('click', () => {
+    if(!done){
+      const n = UD.av.length;
+      UD.bolumler.okuma = { tamam:true, enIyi:Math.round(n / total * 100), deneme:1, t:Date.now() };
+      log(`${U.ad} · Okuma bölümü tamamlandı (${n}/${total} ifade bulundu)`);
+      taskProgress('okuma');
+      addXp(n * 2 + 20, `${U.ad} · okuma ve kelime avı`);
+      saveP();
+      toast(`Okuma tamamlandı: +${n * 2 + 20} XP`, 'gold');
+    }
+    location.hash = '#anlama';
+  });
+}
+
+/* ================= 5. bölüm: Anlama ================= */
+function anlamaQ(a){
+  return a.dy
+    ? { tip:'secim', ust:'Metne göre bu cümle doğru mu, yanlış mı?', soru:esc(a.soru), secenekler:['True', 'False'], dogru:[a.dogru], kanit:a.kanit, tr:a.tr, trSoru:false, aciklama:a.aciklama, beceri:'okuma', ipucu:`<span class="muted">${esc(a.tr)}</span> · True = Doğru, False = Yanlış` }
+    : { tip:'secim', ust:'Metne göre doğru cevabı seç.', soru:esc(a.soru), secenekler:shuffle([a.dogru, ...a.yanlis]), dogru:[a.dogru], kanit:a.kanit, aciklama:a.aciklama, beceri:'okuma', ipucu:`<span class="muted">${esc(a.tr)}</span>` };
+}
+function anlamaQs(){ return U.anlama.map(a => Object.assign(anlamaQ(a), { tr:null })); }
+function viewAnlama(){
+  const done = secDone('anlama');
+  $('#view').innerHTML = `
+    <div class="sec-head"><div><h2>${ic('target')} Okuduğunu anlama</h2><p>Metin yanında duruyor. Soruları metne bakarak cevapla.</p></div>
+      <span class="pill ${done ? 'ok' : ''}">${done ? 'Tamamlandı · en iyi %' + UD.bolumler.anlama.enIyi : U.anlama.length + ' soru'}</span></div>
+    <div class="split">
+      <aside class="card pad textpanel" id="tpanel">${readerHtml({ phrases:'all' })}</aside>
+      <div>
+        <div class="intro">
+          <div>${ic('target')}<span><b>${U.anlama.length} soru</b>Şıklı sorular ve Doğru/Yanlış (True/False) soruları.</span></div>
+          <div>${ic('read')}<span><b>Metin yanında kalır</b>Her cevaptan sonra cevabın geçtiği cümle metinde işaretlenir.</span></div>
+          <div>${ic(done ? 'check' : 'lock')}<span><b>Türkçe çeviri</b>${done ? 'Açıldı. Aşağıdan okuyabilirsin.' : 'Bu bölümü en az %70 ile geçince metnin Türkçesi açılır.'}</span></div>
+        </div>
+        ${done ? translationBox() : ''}
+        <div class="toolbar"><span class="muted">${done ? 'İstersen soruları tekrar çözebilirsin.' : 'Geçmek için en az %70.'}</span>
+          <button class="btn btn-gold" type="button" id="startA">${done ? 'Tekrar çöz' : 'Sorulara başla'} ${ic('arrow')}</button></div>
+      </div>
+    </div>`;
+  bindReader($('#tpanel')); bindTranslation();
+  $('#startA').addEventListener('click', () => startRun({ bolum:'anlama', ad:'Anlama', beceri:'okuma', baslik:'Okuduğunu anlama', kelimeli:false, donusAd:'Metne dön',
+    yan:() => readerHtml({ phrases:'all' }), sorular:anlamaQs(), yeniden:anlamaQs,
+    sonrasi:r => r.passed ? { html:`<div style="text-align:left">${translationBox()}</div>`, after:bindTranslation } : null }));
+}
+
+/* ================= 6. bölüm: Çeviri ================= */
+function ceviriQ(c){
+  const w = U.kelimeler.find(x => x.id === c.w);
+  if(c.tip === 'sirala'){
+    let k = shuffle(c.parcalar.slice()), tries = 0;
+    while(k.join(' ') === c.parcalar.join(' ') && tries++ < 10) k = shuffle(k);
+    return { tip:'sirala', ust:'Kelimeleri doğru sıraya diz.', soru:`“${esc(c.tr)}”`, trSoru:true, karisik:k, dogru:c.dogru, w, beceri:'ceviri', diff:true, aciklama:c.not };
+  }
+  return { tip:'yaz', ust:'Türkçeden İngilizceye çevir.', soru:`“${esc(c.tr)}”`, trSoru:true, dogru:c.dogru, w, beceri:'ceviri', diff:true, aciklama:c.not,
+    gizliIpucu:`Kullanacağın ifade: <b>${esc(w.en)}</b> (${esc(w.tr)})` };
+}
+function ceviriQs(){
+  const all = U.ceviri;
+  return [...shuffle(all.filter(c => c.tip === 'yaz')), ...shuffle(all.filter(c => c.tip === 'sirala'))].map(ceviriQ);
+}
+function viewCeviri(){
+  const done = secDone('ceviri'), nY = U.ceviri.filter(c => c.tip === 'yaz').length, nS = U.ceviri.length - nY;
+  $('#view').innerHTML = `
+    <div class="sec-head"><div><h2>${ic('translate')} Çeviri</h2><p>Öğrendiklerini kullanarak Türkçe cümleleri İngilizceye çevir.</p></div>
+      <span class="pill ${done ? 'ok' : ''}">${done ? 'Tamamlandı · en iyi %' + UD.bolumler.ceviri.enIyi : U.ceviri.length + ' soru'}</span></div>
+    <div class="intro">
+      <div>${ic('translate')}<span><b>${nY} çeviri sorusu</b>Cümleyi kendin yaz. Birden fazla doğru çeviri varsa hepsi kabul edilir (ör. <i>at seven</i> / <i>at seven o'clock</i>). Takılırsan "İpucu göster"e bas.</span></div>
+      <div>${ic('text')}<span><b>${nY ? nS : 0} kelime sıralama sorusu</b>Karışık verilen parçaları doğru sıraya diz.</span></div>
+      <div>${ic('check')}<span><b>Hatanı gör</b>Yanlış cevapta hangi kelimenin fazla (<del style="color:#ffb0b0">kırmızı</del>) ya da eksik (<b style="color:#8fe3bb">yeşil</b>) olduğu gösterilir.</span></div>
+    </div>
+    <div class="toolbar"><span class="muted">${done ? 'İstersen tekrar çözebilirsin.' : 'Geçmek için en az %70.'}</span>
+      <button class="btn btn-gold" type="button" id="startT">${done ? 'Tekrar çöz' : 'Çeviriye başla'} ${ic('arrow')}</button></div>`;
+  $('#startT').addEventListener('click', () => startRun({ bolum:'ceviri', ad:'Çeviri', beceri:'ceviri', baslik:'Çeviri alıştırması', kelimeli:true, donusAd:'Çeviri bölümüne dön', sorular:ceviriQs(), yeniden:ceviriQs }));
+}
+
+/* ================= 7. bölüm: Ünite testi ================= */
+function blankSent(sentence, part){ return esc(sentence).replace(esc(part), '<span class="blank">&nbsp;</span>'); }
+function testQs(){
+  const ks = shuffle(U.kelimeler.slice()), qs = [];
+  ks.slice(0, 2).forEach(w => qs.push({ tip:'secim', ust:'Kelime · Türkçesi hangisi?', soru:esc(w.en), secenekler:shuffle([w.tr, ...shuffle(U.kelimeler.filter(x => x !== w)).slice(0, 3).map(x => x.tr)]), dogru:[w.tr], w, beceri:'kelime', tam:w.ornek, tr:w.ornekTr }));
+  ks.slice(2, 4).forEach(w => { const [d, y] = U.cumleler[w.id]; qs.push({ tip:'secim', ust:'Cümle · Boşluğa hangisi gelmeli?', soru:blankSent(w.ornek, d), secenekler:shuffle([d, ...y]), dogru:[d], w, beceri:'kelime', tam:w.ornek, tr:w.ornekTr }); });
+  shuffle(U.dilbilgisi.slice()).slice(0, 2).forEach(g => { const q = grammarQ(g); q.ust = 'Dil bilgisi · ' + q.ust; qs.push(q); });
+  shuffle(U.anlama.slice()).slice(0, 2).forEach(a => { const q = anlamaQ(a); q.ust = 'Okuma · ' + q.ust; q.metinGoster = true; qs.push(q); });
+  const cv = shuffle(U.ceviri.slice());
+  [cv.find(c => c.tip === 'yaz'), cv.find(c => c.tip === 'sirala')].forEach(c => { const q = ceviriQ(c); q.ust = 'Çeviri · ' + q.ust; qs.push(q); });
+  return qs;
+}
+const BECERI_AD = { kelime:'Kelime', dilbilgisi:'Dil bilgisi', okuma:'Okuma', ceviri:'Çeviri' };
+const BECERI_BOLUM = { kelime:[['kelime','Kelimeler'],['cumle','Cümleler']], dilbilgisi:[['dilbilgisi','Dil bilgisi']], okuma:[['okuma','Okuma'],['anlama','Anlama']], ceviri:[['ceviri','Çeviri']] };
+function testSonrasi(r){
+  const by = {};
+  r.sonuc.forEach(s => { const b = s.bec; by[b] = by[b] || { d:0, t:0 }; by[b].t++; if(s.ok) by[b].d++; });
+  const breakdown = `<div class="rgrid four">${Object.keys(BECERI_AD).filter(k => by[k]).map(k => `<div class="${by[k].d / by[k].t < PASS ? 'weakcell' : ''}"><b>${by[k].d}/${by[k].t}</b><span>${BECERI_AD[k]}</span></div>`).join('')}</div>`;
+  if(r.passed){
+    const has = P.uniteler.find(u => (u.id || u) === UID), first = !has;
+    if(first){ P.uniteler.push({ id:UID, puan:Math.round(r.pct * 100), t:Date.now() }); log(`Ünite tamamlandı: ${U.seviye} · ${U.ad}`); }
+    else if(typeof has === 'object') has.puan = Math.max(has.puan || 0, Math.round(r.pct * 100));
+    const learned = U.kelimeler.filter(w => learnedCount(w) >= LEARN_COUNT).length;
+    return { bonus:first ? 50 : 0, html: breakdown + `
+      <div class="unitdone">${emblem(P.rank, 72, P.tier)}
+        <h3>${first ? 'Ünite tamamlandı!' : 'Ünite testini yine geçtin!'}</h3>
+        <p class="muted" style="margin:.2rem 0">${U.seviye} · ${esc(U.ad)} — 7/7 bölüm${first ? ' · <b style="color:var(--gold2)">+50 XP ünite ödülü</b>' : ''}</p>
+        <p class="muted" style="margin:.2rem 0 .9rem">Öğrenilen kelime: <b style="color:var(--gold2)">${learned} / ${U.kelimeler.length}</b>${learned < U.kelimeler.length ? '. Kalan kelimeler, farklı bölümlerde ve farklı zamanlarda tekrar doğru bilinince öğrenilir.' : '. Bütün kelimeleri öğrendin!'}</p>
+        <a class="btn btn-gold" href="dashboard.html#ogren">Öğrenme yoluna dön ${ic('arrow')}</a>
+      </div>` };
+  }
+  const weak = Object.keys(by).filter(k => by[k].d / by[k].t < PASS);
+  return { html: breakdown + (weak.length ? `<div class="weak"><h3>${ic('alert')} Zorlandığın alanlar</h3><p class="muted" style="margin:0 0 .5rem">Testi tekrar çözmeden önce şu bölümleri gözden geçirmeni öneririz:</p>${weak.map(k => BECERI_BOLUM[k].map(([id, ad]) => `<a class="btn btn-ghost sm" href="#${id}">${ad}</a>`).join('')).join('')}</div>` : '') };
+}
+function viewTest(){
+  const done = secDone('test');
+  $('#view').innerHTML = `
+    <div class="sec-head"><div><h2>${ic('trophy')} Ünite testi</h2><p>Ünitenin bütün bölümlerinden karışık 10 soru. Geçersen ünite tamamlanır.</p></div>
+      <span class="pill ${done ? 'ok' : 'gold'}">${done ? 'Geçildi · en iyi %' + UD.bolumler.test.enIyi : 'Geçme sınırı %70'}</span></div>
+    <div class="intro">
+      <div>${ic('book')}<span><b>2 kelime + 2 cümle sorusu</b>Kelimelerin anlamı ve cümle içinde doğru biçimi.</span></div>
+      <div>${ic('grammar')}<span><b>2 dil bilgisi sorusu</b>Simple Present ve sıklık zarfları.</span></div>
+      <div>${ic('read')}<span><b>2 okuma sorusu</b>Gerekirse "Okuma metnini göster"e basarak metne bakabilirsin.</span></div>
+      <div>${ic('translate')}<span><b>2 çeviri sorusu</b>Bir yazmalı çeviri, bir kelime sıralama.</span></div>
+      <div>${ic('trophy')}<span><b>Ödül</b>İlk geçişte +20 bölüm bonusu ve +50 ünite ödülü. Geçemezsen zorlandığın alanlar gösterilir; o bölümleri tekrar edip yeniden girebilirsin.</span></div>
+    </div>
+    <div class="toolbar"><span class="muted">${UD.bolumler.test ? `Deneme sayısı: ${UD.bolumler.test.deneme}` : 'İlk denemen.'}</span>
+      <button class="btn btn-gold" type="button" id="startX">${done ? 'Testi tekrar çöz' : 'Teste başla'} ${ic('arrow')}</button></div>`;
+  $('#startX').addEventListener('click', () => startRun({ bolum:'test', ad:'Ünite testi', beceri:'kelime', baslik:'Ünite testi', kelimeli:true, donusAd:'Test bilgilerine dön', sorular:testQs(), yeniden:testQs, sonrasi:testSonrasi }));
 }
 
 /* ================= 2. bölüm: Cümleler ================= */
@@ -886,18 +1284,19 @@ function viewDilbilgisi(){
       <button class="btn btn-gold" type="button" id="startG">Mini alıştırmaya başla ${ic('arrow')}</button></div>`;
   $('#startG').addEventListener('click', () => startRun({ bolum:'dilbilgisi', ad:'Dil bilgisi', beceri:'dilbilgisi', baslik:'Dil bilgisi mini alıştırması', kelimeli:false, donusAd:'Konu anlatımına dön', sorular:grammarQs(), yeniden:grammarQs }));
 }
+function grammarQ(q){
+  const soru = esc(q.soru).replace('___', '<span class="blank">&nbsp;</span>');
+  return q.tip === 'secim'
+    ? { tip:'secim', ust:'Doğru seçeneği işaretle.', soru, secenekler:shuffle([q.dogru, ...q.yanlis]), dogru:[q.dogru], aciklama:q.aciklama, tr:q.tr, beceri:'dilbilgisi' }
+    : { tip:'yaz', ust:'Boşluğu doğru biçimde yaz.', soru, dogru:q.dogru, aciklama:q.aciklama, tr:q.tr, beceri:'dilbilgisi' };
+}
 function grammarQs(){
-  const all = U.dilbilgisi, sec = all.filter(q => q.tip === 'secim'), yaz = all.filter(q => q.tip === 'yaz');
+  const all = U.dilbilgisi;
   // Önce şıklılar (karışık sırada), en sonda yazmalılar
-  return [...shuffle(sec.slice()), ...yaz].map(q => {
-    const soru = esc(q.soru).replace('___', '<span class="blank">&nbsp;</span>');
-    return q.tip === 'secim'
-      ? { tip:'secim', ust:'Doğru seçeneği işaretle.', soru, secenekler:shuffle([q.dogru, ...q.yanlis]), dogru:[q.dogru], aciklama:q.aciklama, tr:q.tr }
-      : { tip:'yaz', ust:'Boşluğu doğru biçimde yaz.', soru, dogru:q.dogru, aciklama:q.aciklama, tr:q.tr };
-  });
+  return [...shuffle(all.filter(q => q.tip === 'secim')), ...all.filter(q => q.tip === 'yaz')].map(grammarQ);
 }
 
-const VIEWS = { kelime:viewKelime, cumle:viewCumle, dilbilgisi:viewDilbilgisi };
+const VIEWS = { kelime:viewKelime, cumle:viewCumle, dilbilgisi:viewDilbilgisi, okuma:viewOkuma, anlama:viewAnlama, ceviri:viewCeviri, test:viewTest };
 
 if(me && U){ ensureDaily(); saveP(); route(); }
 </script>
